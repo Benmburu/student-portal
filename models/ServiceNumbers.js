@@ -4,4 +4,4 @@ const serviceNumberSchema = new mongoose.Schema(
     {}
 )
 
-export default mongoose.model("serviceNumber", serviceNumberSchema, "reg_number")
+export default mongoose.model.serviceNumber || mongoose.model("serviceNumber", serviceNumberSchema, "reg_number")
