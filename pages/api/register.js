@@ -4,25 +4,40 @@ import serviceNumbers from "@models/ServiceNumbers";
 
 export default async function handler(req, res) {
   if (req.method === "POST"){
-    initDB()
-    
-    const { service_number, email, password } = req.body;
-    try {
-      let number = await serviceNumbers.findOne({service_number});
-      if (!number) {
-        throw new Error("Service number does not exist")
-      }else {
-        userExists = await User.findOne({ email })
-        if (userExists){
-          throw new Error("User already exists")
-        }else {
-          user = User.create({ service_number, email, password })
-          res.json(user)
-        }
-      }
+        // console.log(req.body)
+        initDB()
+        
+        const { serviceNumber, name, email, password } = req.body;
+        console.log(req.body)
 
-    } catch (error) {
-      console.log(error);
+        try {
+            const serviceNumberExists = await serviceNumbers.findOne({ serviceNumber });
+            console.log(serviceNumberExists)
+            if (!serviceNumberExists) {
+                // throw new Error("Service number does not exist")
+                // const serviceNumberExists = await serviceNumbers.create({serviceNumber})
+                // console.log(serviceNumberExists)
+                return res.status(404).json("service number does not exist")
+                
+                // pass
+
+            }else {
+                let userExists = await User.findOne({ email })
+                // console.log(userExists)
+
+                if (userExists){
+                    // throw new Error("User already exists")
+                    res.status(400).json("User already exists")
+
+                }else {
+                    const user = await User.create({ serviceNumber, name, email, password })
+                    // console.log(user)
+                    res.status(201).json("User created  successfuly")
+                }
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
     }
-  }
   }
