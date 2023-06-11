@@ -8,12 +8,12 @@ export default async function handler(req, res) {
         initDB()
         
         const { serviceNumber, name, email, password } = req.body;
-        console.log(req.body)
+        // console.log(req.body)
 
         try {
             // check if student exists
             const serviceNumberExists = await serviceNumbers.findOne({ serviceNumber });
-            console.log(serviceNumberExists)
+            // console.log(serviceNumberExists)
 
             if (!serviceNumberExists) {
                 res.status(404).json("service number does not exist")

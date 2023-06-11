@@ -43,17 +43,17 @@ export default function Register(){
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="serviceNumber">Service Number</label>
-          <input type="text" id="serviceNumber" value={serviceNumber} onChange={handleServiceNumberChange} required />
+          <input type="text" id="serviceNumber" value={serviceNumber} onChange={handleServiceNumberChange} placeholder="ABC123-001/2018" required />
         </div>
 
         <div className="form-group">
           <label htmlFor="name">Name</label>
-          <input type="text" id="name" value={name} onChange={handleNameChange} required />
+          <input type="text" id="name" value={name} onChange={handleNameChange} placeholder="John Smith" required />
         </div>
 
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" value={email} onChange={handleEmailChange} required />
+          <input type="email" id="email" value={email} onChange={handleEmailChange} placeholder="example@gmail.com" required />
         </div>
 
         <div className="form-group">
@@ -72,6 +72,9 @@ export default function Register(){
           justify-content: center;
           min-height: 100vh;
           background-color: #f5f5f5;
+          font-family: monospace;
+          font-size: 15px;
+          color: #28282b;
         }
 
         h1 {
@@ -85,6 +88,7 @@ export default function Register(){
           width: 300px;
           padding: 20px;
           background-color: #ffffff;
+          border: 1px solid black;
           border-radius: 8px;
           box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
         }
@@ -105,11 +109,13 @@ export default function Register(){
           border: 1px solid #cccccc;
           border-radius: 4px;
           outline: none;
+          background-color: #ffffff;
+          color: black;
         }
 
         button {
           padding: 10px 20px;
-          background-color: #4caf50;
+          background-color: #1a6aeb;
           color: white;
           border: none;
           border-radius: 4px;
@@ -117,7 +123,7 @@ export default function Register(){
         }
 
         button:hover {
-          background-color: #45a049;
+          background-color: #0855d1;
         }
       `}</style>
     </div>
