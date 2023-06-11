@@ -23,13 +23,6 @@ export default function Register(){
     setPassword(e.target.value);
   };
   
-  // const options = {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: { serviceNumber, name, email, password },
-  // }
   
   const handleSubmit = async (e) =>{
     e.preventDefault()

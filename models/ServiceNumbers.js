@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { model } from "mongoose";
 
 const serviceNumberSchema = new mongoose.Schema(
     {serviceNumber: {
@@ -7,4 +7,4 @@ const serviceNumberSchema = new mongoose.Schema(
     {collection: 'serviceNumbers'}
 );
 
-export default mongoose.model.serviceNumbers || mongoose.model("serviceNumbers", serviceNumberSchema)
+export default mongoose.models.serviceNumbers || mongoose.model("serviceNumbers", serviceNumberSchema)
