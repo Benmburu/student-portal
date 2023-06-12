@@ -1,16 +1,23 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Header from "@components/Header";
-import {  useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export default function Login(){
+  // const { loggedIn } = useSession()
+  // console.log(loggedIn)
+  // if (loggedIn){
+  //   router.push("/")
+  // }
+
   const [ serviceNumber, setServiceNumber ] = useState("");
   const [ password, setPassword ] = useState("");
   const [ error, setError ] = useState("");
 
   const router = useRouter();
   // check if there's a callback url
-  const callbackUrl = (router.query?.callbackUrl) ?? "/";
+  const callbackUrl = (router.query?.callbackUrl) ?? "/dashboard";
   
   const handleServiceNumberChange = (e) => {
     setServiceNumber(e.target.value);
@@ -57,7 +64,10 @@ export default function Login(){
             <input type="password" id="password" value={password} onChange={handlePasswordChange} required />
           </div>
           { error && <p className="error">{error}</p> }
-          <button type="submit">Login</button>
+          <button 
+            type="submit"
+            disabled={ !password || !serviceNumber }          
+          >Login</button>
         </form>
 
         <style jsx>{`
@@ -126,7 +136,8 @@ export default function Login(){
             color: #e62c38;
             margin-bottom: 10px;
             font-family: 'Courier New', Courier, monospace;
-            // font-size: 10px;
+            font-size: 13px;
+            text-align: center;
           }
         `}</style>
       </div>

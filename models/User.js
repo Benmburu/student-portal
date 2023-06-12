@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    confirmed: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   { collection: 'users' },
   { timestamps: true }

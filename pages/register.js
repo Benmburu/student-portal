@@ -2,10 +2,12 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function Register(){
-  const [ serviceNumber, setServiceNumber ] = useState("")
-  const [ name, setName ] = useState("")
-  const [ email, setEmail ] = useState("")
-  const [ password, setPassword ] = useState("")
+  const [ serviceNumber, setServiceNumber ] = useState("");
+  const [ name, setName ] = useState("");
+  const [ email, setEmail ] = useState("");
+  const [ password, setPassword ] = useState("");
+  const [ errorMessage, setErrorMessage ] = useState("");
+  const [ successMessage, setSuccessMessage ] = useState("");
 
   const handleServiceNumberChange = (e) => {
     setServiceNumber(e.target.value);
@@ -29,11 +31,13 @@ export default function Register(){
     // console.log(serviceNumber, name, email, password)
 
     try{
-      const { data } = await axios.post("/api/register", JSON.stringify({ serviceNumber, name, email, password }), {headers:{"Content-Type" : "application/json"} })
-      // console.log({data})
+      const { res } = await axios.post("/api/register", JSON.stringify({ serviceNumber, name, email, password }), {headers:{"Content-Type" : "application/json"} })
+      setSuccessMessage("User successfully registered. Please click the link sent to your email address to verify your account.")
+      setErrorMessage("")
 
     }catch(error){
-      console.log(error)
+      setErrorMessage(error.response.data)
+      setSuccessMessage("")
     }
   }
   
@@ -60,7 +64,8 @@ export default function Register(){
           <label htmlFor="password">Password</label>
           <input type="password" id="password" value={password} onChange={handlePasswordChange} required />
         </div>
-
+        { successMessage && <p className="success">{successMessage}</p> }
+        { errorMessage && <p className="error">{errorMessage}</p> }
         <button type="submit">Register</button>
       </form>
 
@@ -124,6 +129,29 @@ export default function Register(){
 
         button:hover {
           background-color: #0855d1;
+        }
+
+        .error{
+          background-color: rgba(232, 46, 46, 0.2);
+          padding: 5px;
+          border: 1px solid #e62c38;
+          border-radius: 4px;
+          color: #e62c38;
+          margin-bottom: 10px;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 13px;
+          text-align: center;
+        }
+
+        .success{
+          background-color: rgba(103, 230, 143, 0.1);
+          padding: 5px;
+          border: 1px solid #67e68f;
+          border-radius: 4px;
+          color: #67e68f;
+          margin-bottom: 10px;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 13px;
         }
       `}</style>
     </div>

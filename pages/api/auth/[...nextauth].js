@@ -14,27 +14,27 @@ export default NextAuth({
                 initDB()
 
                 const { serviceNumber, password } = credentials
-                // console.log(serviceNumber, password)
                 try {
                     // check if user is registered            
                     const user = await User.findOne({ serviceNumber })
                     if (!user){
-                        // return res.status(400).json("Invalid email or password")
-                        // throw new Error("Invalid email or password")
                         return null
                     }
                     
                     // check if password is correct
                     const isPasswordMatched = await bcrypt.compare( password, user.password )
                     if (!isPasswordMatched){
-                        // return res.status(400).json("Invalid email or password")
-                        // throw new Error("Invalid email or password")
                         return null
+                    }else{
+                        // confirm if user is verified
+                        console.log(user)
+                        if (user.confirmed){
+                            return user
+                        }else{
+                            return null
+                        }
                     }
-                    
-                    // return response
-                    // // res.status(200).json("Login successful")
-                    return user
+                    // return user
         
                 } catch (error) {
                     // log errors

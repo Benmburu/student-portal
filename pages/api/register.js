@@ -16,7 +16,7 @@ export default async function handler(req, res) {
             // console.log(serviceNumberExists)
 
             if (!serviceNumberExists) {
-                res.status(404).json("service number does not exist")
+                res.status(404).json("Service Number does not exist")
 
             }else {
                 // check is student is already registered
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
                 }else {
                     // register student only if they're unregistered
                     const user = await User.create({ serviceNumber, name, email, password })
-                    res.status(201).json("User created  successfuly")
+                    res.status(200).json("User created  successfuly")
                 }
             }
 

@@ -1,15 +1,8 @@
-import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 
 export default function Header() {
     const { data } = useSession()
-    // console.log(session)
-
-    const handleLogout = () => {
-        // Simulated logout logic
-        
-    };
-
+   
     return (
         <header className="header">
             <div className="user-info">
