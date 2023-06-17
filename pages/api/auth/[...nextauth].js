@@ -11,9 +11,10 @@ export default NextAuth({
     providers: [
         CredentialsProvider({
             async authorize( credentials, req ){
+                // initialize database
                 initDB()
 
-                const { serviceNumber, password } = credentials
+                const { serviceNumber, password, verificationCode } = credentials
                 try {
                     // check if user is registered            
                     const user = await User.findOne({ serviceNumber })
@@ -25,16 +26,21 @@ export default NextAuth({
                     const isPasswordMatched = await bcrypt.compare( password, user.password )
                     if (!isPasswordMatched){
                         return null
-                    }else{
-                        // confirm if user is verified
-                        console.log(user)
-                        if (user.confirmed){
-                            return user
-                        }else{
-                            return null
-                        }
                     }
-                    // return user
+
+                    // check if verification code is correct
+                    if (parseInt(verificationCode) === user.verificationCode){
+                        const user = await User.findOneAndUpdate(
+                            {serviceNumber: serviceNumber},
+                            {verificationCode: ""},
+                            {new: true},
+                            )
+                        // return session if authentication passes
+                        return user
+                    }else{
+                        // return error
+                        return null
+                    }
         
                 } catch (error) {
                     // log errors
@@ -44,7 +50,7 @@ export default NextAuth({
         })
     ],
     pages: {
-        signIn: "/login"
+        signIn: "/login" // to tell next-auth to redirect us to our custom login page 
     },
-    secret: process.env.NEXTAUTH_SECRET
+    secret: process.env.NEXTAUTH_SECRET // next-auth secret in the .env file which it uses to sign jwt sessions
 })

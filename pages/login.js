@@ -2,18 +2,15 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Header from "@components/Header";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import axios from "axios";
 
 export default function Login(){
-  // const { loggedIn } = useSession()
-  // console.log(loggedIn)
-  // if (loggedIn){
-  //   router.push("/")
-  // }
-
+ 
   const [ serviceNumber, setServiceNumber ] = useState("");
   const [ password, setPassword ] = useState("");
   const [ error, setError ] = useState("");
+  const [ verificationCode, setVerificationCode ] = useState("")
+  const [ toVerification, setToVerification ] = useState(false)
 
   const router = useRouter();
   // check if there's a callback url
@@ -27,120 +24,168 @@ export default function Login(){
     setPassword(e.target.value);
   };
 
-  const handleSubmit = async (e) =>{
+  // this function handles the verification code part of sign-in
+  async function verify(e){
     e.preventDefault()
 
-    try{
-      const data = await signIn("credentials", {
-        redirect: false,
-        serviceNumber,
-        password
-      })
+    // get next-auth login session if all credentials are correct
+    const data = await signIn("credentials", {
+      redirect: false,
+      serviceNumber,
+      password,
+      verificationCode
+    })
 
-      if (data?.error){
-        setError("Invalid email or password")
-      }else{
-        router.push(callbackUrl)
-      }
+    if (data.error){
+      setError("Invalid verification code.")
+    }else{
+      router.push(callbackUrl)
+    }
+  }
+
+  // asychronous function to handle the sign-in form once the submit button is clicked
+  const handleSubmit = async (e) =>{
+    e.preventDefault() //prevent default behavior of form to refresh page once submit button is clicked
+
+    try{  
+      // send POST data to server in order to verify credentials
+      const res = await axios.post("/api/login", JSON.stringify({ serviceNumber, password }), {headers:{"Content-Type" : "application/json"} })
+      setError("") 
+
+      // if verification is successful, this is set to true in order to access the page that allows for input of the verification code
+      setToVerification(true)
+      
 
     }catch(e){
-      console.log(e)
+      setError(e.response.data)
     }
   }
   
   return (
     <>
-      <Header/>
-      <div className="container">
-        <h1>Login Page</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="serviceNumber">Service Number</label>
-            <input type="text" id="serviceNumber" value={serviceNumber} onChange={handleServiceNumberChange} placeholder="ABC123-001/2018" required />
+      {toVerification? //javascript ternary operator which chooses which form to display based on the value of the variable 'toVerification'
+        <div className="container">
+          <form onSubmit={verify}>
+            <label>
+              Verification Code
+              <input
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                name="verificationCode"
+                autoComplete="one-time-code"
+                type="text"
+              />
+            </label>
+            { error && <p className="error">{error}</p> }
+            <button type="submit">Log in</button>
+          </form>
+          <style jsx>{`
+              .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                background-color: #f5f5f5;
+                font-family: monospace;
+                font-size: 15px;
+                color: #28282b;
+              }`}</style>
+        </div>
+      :
+        <>
+          <Header/>
+          <div className="container">
+            <h1>Login Page</h1>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="serviceNumber">Service Number</label>
+                <input type="text" id="serviceNumber" value={serviceNumber} onChange={handleServiceNumberChange} placeholder="ABC123-001/2018" required />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input type="password" id="password" value={password} onChange={handlePasswordChange} required />
+              </div>
+              { error && <p className="error">{error}</p> }
+              <button 
+                type="submit"
+                disabled={ !password || !serviceNumber }          
+              >Login</button>
+            </form>
+
+            <style jsx>{`
+              .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                background-color: #f5f5f5;
+                font-family: monospace;
+                font-size: 15px;
+                color: #28282b;
+              }
+
+              h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+              }
+
+              form {
+                display: flex;
+                flex-direction: column;
+                width: 300px;
+                padding: 20px;
+                background-color: #ffffff;
+                border: 1px solid black;
+                border-radius: 8px;
+                box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+              }
+
+              .form-group {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+              }
+
+              label {
+                font-weight: bold;
+                margin-bottom: 5px;
+              }
+
+              input {
+                padding: 10px;
+                border: 1px solid #cccccc;
+                border-radius: 4px;
+                outline: none;
+                background-color: #ffffff;
+                color: black;
+              }
+
+              button {
+                padding: 10px 20px;
+                background-color: #1a6aeb;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+              }
+
+              button:hover {
+                background-color: #0855d1;
+              }
+
+              .error{
+                color: #e62c38;
+                margin-bottom: 10px;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 13px;
+                text-align: center;
+              }
+            `}</style>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" value={password} onChange={handlePasswordChange} required />
-          </div>
-          { error && <p className="error">{error}</p> }
-          <button 
-            type="submit"
-            disabled={ !password || !serviceNumber }          
-          >Login</button>
-        </form>
-
-        <style jsx>{`
-          .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: #f5f5f5;
-            font-family: monospace;
-            font-size: 15px;
-            color: #28282b;
-          }
-
-          h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-          }
-
-          form {
-            display: flex;
-            flex-direction: column;
-            width: 300px;
-            padding: 20px;
-            background-color: #ffffff;
-            border: 1px solid black;
-            border-radius: 8px;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-          }
-
-          .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 15px;
-          }
-
-          label {
-            font-weight: bold;
-            margin-bottom: 5px;
-          }
-
-          input {
-            padding: 10px;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-            outline: none;
-            background-color: #ffffff;
-            color: black;
-          }
-
-          button {
-            padding: 10px 20px;
-            background-color: #1a6aeb;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-          }
-
-          button:hover {
-            background-color: #0855d1;
-          }
-
-          .error{
-            color: #e62c38;
-            margin-bottom: 10px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 13px;
-            text-align: center;
-          }
-        `}</style>
-      </div>
+      </>}
     </>
     )
 }
