@@ -1,8 +1,10 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 import { signIn } from "next-auth/react";
 import Header from "@components/Header";
 import { useRouter } from "next/router";
 import axios from "axios";
+import AuthCode from 'react-auth-code-input';
+import styles from "./login.module.css"
 
 export default function Login(){
  
@@ -65,20 +67,17 @@ export default function Login(){
     <>
       {toVerification? //javascript ternary operator which chooses which form to display based on the value of the variable 'toVerification'
         <div className="container">
-          <form onSubmit={verify}>
-            <label>
-              Verification Code
-              <input
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                name="verificationCode"
-                autoComplete="one-time-code"
-                type="text"
-              />
-            </label>
-            { error && <p className="error">{error}</p> }
-            <button type="submit">Log in</button>
-          </form>
+          <h1>Verification code</h1>
+          <AuthCode
+            allowedCharacters="numeric"
+            ariaLabel="OTP input form"
+            length="4"
+            containerClassName={styles.formContainer}
+            inputClassName={styles.singleInput}
+            // className={styles.error}
+          />
+          <button>Submit</button>
+
           <style jsx>{`
               .container {
                 display: flex;
@@ -86,12 +85,42 @@ export default function Login(){
                 align-items: center;
                 justify-content: center;
                 min-height: 100vh;
-                background-color: #f5f5f5;
+                background-color: rgb(32, 32, 32);
                 font-family: monospace;
                 font-size: 15px;
-                color: #28282b;
-              }`}</style>
+                color: white;
+              }
+
+              button{
+                margin: 12px;
+                width: 8em;
+                height: 35px;
+                background-color: pink;
+                color: black;
+                border: 2px solid black;
+                border-radius: 5px;
+              }
+              `}
+            </style>
         </div>
+        
+        // <div className="container">
+        //   <form onSubmit={verify}>
+        //     <label>
+        //       Verification Code
+        //       <input
+        //         value={verificationCode}
+        //         onChange={(e) => setVerificationCode(e.target.value)}
+        //         name="verificationCode"
+        //         autoComplete="one-time-code"
+        //         type="text"
+        //       />
+        //     </label>
+        //     { error && <p className="error">{error}</p> }
+        //     <button type="submit">Log in</button>
+        //   </form>
+          
+        // </div>
       :
         <>
           <Header/>

@@ -24,7 +24,11 @@ export default function Register(){
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  
+
+  const refreshMessages = ()=>{
+    setErrorMessage("")
+    setSuccessMessage("")
+  };
   
   const handleSubmit = async (e) =>{
     e.preventDefault()
@@ -32,10 +36,12 @@ export default function Register(){
 
     try{
       const { res } = await axios.post("/api/register", JSON.stringify({ serviceNumber, name, email, password }), {headers:{"Content-Type" : "application/json"} })
+      refreshMessages()
       setSuccessMessage("User successfully registered. Please click the link sent to your email address to verify your account.")
       setErrorMessage("")
 
     }catch(error){
+      refreshMessages()
       setErrorMessage(error.response.data)
       setSuccessMessage("")
     }

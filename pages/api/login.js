@@ -33,7 +33,7 @@ export default async function handler(req, res) {
                 res.status(200).json("Login successful")
 
                 // generate verification code
-                const verificationCode = Math.floor(100000 + Math.random() * 900000)
+                const verificationCode = Math.floor(1000 + Math.random() * 9000)
 
                 // save verification code in the database
                 const user = await User.findOneAndUpdate(
