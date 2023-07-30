@@ -26,11 +26,15 @@ export default function Login(){
     setPassword(e.target.value);
   };
 
+  const handleVerificationCodeChange = (e)=>{
+    setVerificationCode(e)
+  }
+
   // this function handles the verification code part of sign-in
   async function verify(e){
     e.preventDefault()
-
     // get next-auth login session if all credentials are correct
+    setError("") 
     const data = await signIn("credentials", {
       redirect: false,
       serviceNumber,
@@ -74,10 +78,12 @@ export default function Login(){
             length="4"
             containerClassName={styles.formContainer}
             inputClassName={styles.singleInput}
+            onChange={handleVerificationCodeChange}
             // className={styles.error}
           />
-          <button>Submit</button>
-
+          { error && <p className="error">{error}</p> }
+          <button onClick={verify}>Submit</button>
+          {/* <add functionality to button */}
           <style jsx>{`
               .container {
                 display: flex;
@@ -85,20 +91,30 @@ export default function Login(){
                 align-items: center;
                 justify-content: center;
                 min-height: 100vh;
-                background-color: rgb(32, 32, 32);
+                background-color: white;
                 font-family: monospace;
-                font-size: 15px;
-                color: white;
+                font-size: 1em;
+                color: black;
+                text-align: center;
               }
 
               button{
                 margin: 12px;
                 width: 8em;
                 height: 35px;
-                background-color: pink;
+                background-color: inherit;
                 color: black;
                 border: 2px solid black;
                 border-radius: 5px;
+                
+              }
+
+              .error{
+                color: #e62c38;
+                margin-top: 9px;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 13px;
+                text-align: center;
               }
               `}
             </style>
@@ -141,6 +157,7 @@ export default function Login(){
                 type="submit"
                 disabled={ !password || !serviceNumber }          
               >Login</button>
+              <a href="/forgot_password/verify_email">Forgot password?</a>
             </form>
 
             <style jsx>{`
@@ -154,6 +171,7 @@ export default function Login(){
                 font-family: monospace;
                 font-size: 15px;
                 color: #28282b;
+                
               }
 
               h1 {
@@ -211,6 +229,13 @@ export default function Login(){
                 font-family: 'Courier New', Courier, monospace;
                 font-size: 13px;
                 text-align: center;
+              }
+
+              a{
+                text-align: center;
+                margin-top: 5px;
+                color: blue;
+                font-size: 15px;
               }
             `}</style>
           </div>

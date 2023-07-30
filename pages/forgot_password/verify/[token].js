@@ -1,0 +1,145 @@
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useState } from "react";
+
+export default function verify(){
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmedPassword, setConfirmedPassword] = useState("");
+
+    const router = useRouter()
+    const token = router?.query?.token
+
+    const handleSubmit = async (e)=>{
+        e.preventDefault()
+        setErrorMessage("")
+        setSuccessMessage("")
+        
+        // console.log(password, confirmedPassword, token)
+        if (password !== confirmedPassword){
+            setErrorMessage("Passwords must match.")
+        }
+        else{
+            try {
+                const res = await axios.post("/api/forgot_password/reset_password", JSON.stringify({ token, password }), {headers:{"Content-Type" : "application/json"} })
+
+            } catch (error) {
+                
+            }
+        }
+
+    }
+   
+
+    return(
+        
+        <>
+            <div className="container">
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="serviceNumber">New Password</label>
+                <input type="password" id="password" value={password} onChange={(e)=>setPassword(e.target.value)} required />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password">Confirm Password</label>
+                <input type="password" id="password" value={confirmedPassword} onChange={(e)=>setConfirmedPassword(e.target.value)} required />
+              </div>
+              { successMessage && <p className="success">{successMessage}</p> }
+              { errorMessage && <p className="error">{errorMessage}</p> }
+              <button 
+                type="submit"
+                disabled={ !password || !confirmedPassword }          
+              >Login</button>
+            </form>
+                
+            </div>
+            <style jsx>{`
+
+              .body{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+
+              .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                background-color: #f5f5f5;
+                font-family: monospace;
+                font-size: 15px;
+                color: #28282b;
+                
+              }
+
+              h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+              }
+
+              form {
+                display: flex;
+                flex-direction: column;
+                width: 300px;
+                padding: 20px;
+                background-color: #ffffff;
+                border: 1px solid black;
+                border-radius: 8px;
+                box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+              }
+
+              .form-group {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+              }
+
+              label {
+                font-weight: bold;
+                margin-bottom: 5px;
+              }
+
+              input {
+                padding: 10px;
+                border: 1px solid #cccccc;
+                border-radius: 4px;
+                outline: none;
+                background-color: #ffffff;
+                color: black;
+              }
+
+              button {
+                padding: 10px 20px;
+                background-color: #1a6aeb;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+              }
+
+              button:hover {
+                background-color: #0855d1;
+              }
+
+              .error{
+                color: #e62c38;
+                margin-bottom: 10px;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 13px;
+                text-align: center;
+              }
+
+              a{
+                text-align: center;
+                margin-top: 5px;
+                color: blue;
+                font-size: 15px;
+              }
+            `}</style>
+        </>
+    )
+}
