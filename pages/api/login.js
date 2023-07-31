@@ -44,8 +44,9 @@ export default async function handler(req, res) {
 
                 // send email containing the verification code
                 // change this function if you want to send the verification code through text instead
+                console.log(user.email)
                 transporter.sendMail({
-                    to: email,
+                    to: user.email,
                     from: "noreply@gmail.com", //gmail, by default, uses the senders email address as the senders so this field is unchangeable
                     subject: "Verification code",
                     html: `Your verification code is:<br><strong>${verificationCode}</strong> <br>Please do not share it with anyone.`
