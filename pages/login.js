@@ -158,6 +158,7 @@ export default function Login(){
                 disabled={ !password || !serviceNumber }          
               >Login</button>
               <a href="/forgot_password/verify_email">Forgot password?</a>
+              <a href="/register">New User? Register</a>
             </form>
 
             <style jsx>{`

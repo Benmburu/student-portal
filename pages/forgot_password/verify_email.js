@@ -88,7 +88,7 @@ export default function verifyEmail(){
 
         label {
           margin-bottom: 5px;
-          font-size: 10px;
+          font-size: 13px;
         }
 
         input {
