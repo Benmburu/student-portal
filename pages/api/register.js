@@ -37,7 +37,7 @@ export default async function handler(req, res) {
                     // create the url to be sent via email
                     const url = `http://localhost:3000/verify/${emailToken}`
                     transporter.sendMail({
-                        to: "bennjuguna0@gmail.com",
+                        to: email,
                         from: "akirajin01@gmail.com",
                         subject: "Confirm email",
                         html: `Please click on this <a href=${url}>link</a> to verify your account.`
