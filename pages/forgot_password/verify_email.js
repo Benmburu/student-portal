@@ -32,7 +32,7 @@ export default function verifyEmail(){
 
     }catch(error){
       refreshMessages()
-      setErrorMessage(error.response.data)
+      setErrorMessage("An error occurred.")
       setSuccessMessage("")
     }
   }

@@ -23,8 +23,15 @@ export default function verify(){
         else{
             try {
                 const res = await axios.post("/api/forgot_password/reset_password", JSON.stringify({ token, password }), {headers:{"Content-Type" : "application/json"} })
+                console.log(res.data)
+                setSuccessMessage(res.data)
+                // setTimeout(()=>{
+                //     router.push("/login")
+                // }, 2000)
 
             } catch (error) {
+              setErrorMessage(error.response.data)
+              // console.log(error.response.data)
                 
             }
         }
@@ -51,7 +58,7 @@ export default function verify(){
               <button 
                 type="submit"
                 disabled={ !password || !confirmedPassword }          
-              >Login</button>
+              >Reset</button>
             </form>
                 
             </div>
@@ -138,6 +145,29 @@ export default function verify(){
                 margin-top: 5px;
                 color: blue;
                 font-size: 15px;
+              }
+              
+              .error{
+                background-color: rgba(232, 46, 46, 0.2);
+                padding: 5px;
+                border: 1px solid #e62c38;
+                border-radius: 4px;
+                color: #e62c38;
+                margin-bottom: 10px;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 13px;
+                text-align: center;
+              }
+      
+              .success{
+                background-color: rgba(103, 230, 143, 0.1);
+                padding: 5px;
+                border: 1px solid #67e68f;
+                border-radius: 4px;
+                color: #67e68f;
+                margin-bottom: 10px;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 13px;
               }
             `}</style>
         </>

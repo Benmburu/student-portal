@@ -5,8 +5,11 @@ import transporter from "@lib/nodemailer";
 export default async function handler(req, res){
     if (req.method === 'POST'){
         const { email } = req.body
+        
+        // const user = await User.findOne({ email })
         const user = await User.findOne({ email })
-        // verify jwt email token
+        console.log(user)
+        // send jwt email token for password reset
         if (user){        
             
             const emailToken = jwt.sign({ email: user.email }, process.env.EMAIL_SECRET, {
@@ -17,7 +20,7 @@ export default async function handler(req, res){
             const url = `http://localhost:3000/forgot_password/verify/${emailToken}`
             transporter.sendMail({
                 to: email,
-                from: "akirajin01@gmail.com",
+                from: "ndukdeftec@gmail.com",
                 subject: "Confirm email",
                 html: `Please click on this <a href=${url}>link</a> to reset your password.`
             })  

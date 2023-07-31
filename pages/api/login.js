@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         initDB()
         
         // get data stored in the request body
-        const { serviceNumber, password } = req.body;        
+        const { serviceNumber, password } = req.body;    
 
         try {
             // check if user is registered            
