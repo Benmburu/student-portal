@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "@models/User";
+import Admin from "@models/Admin";
 import initDB from "@lib/mongodb";
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth/next";
@@ -14,10 +15,12 @@ export default NextAuth({
                 // initialize database
                 initDB()
 
-                const { serviceNumber, password, verificationCode } = credentials
+                const { serviceNumber, password, verificationCode, role } = credentials
                 try {
-                    // check if user is registered            
-                    const user = await User.findOne({ serviceNumber })
+                    // check if user is registered
+                    const schema = role === 'admin'? Admin : User   
+                    // console.log(schema)         
+                    const user = await schema.findOne({ serviceNumber })
                     if (!user){
                         return null
                     }
@@ -30,7 +33,7 @@ export default NextAuth({
 
                     // check if verification code is correct
                     if (parseInt(verificationCode) === user.verificationCode){
-                        const user = await User.findOneAndUpdate(
+                        const user = await schema.findOneAndUpdate(
                             {serviceNumber: serviceNumber},
                             {verificationCode: ""},
                             {new: true},
