@@ -1,37 +1,37 @@
 import Link from 'next/link';
 import styles from '@styles/VerticalNavBar.module.css';
 
-const VerticalNavBar = () => {
+const AdminNavBar = () => {
   return (
     <nav className={styles.verticalNavBar}>
       <ul>
         <li>
-          <Link href="/dashboard" passHref>
+          <Link href="/admin/home" passHref>
             <div className={styles.navItem}>Home</div>
           </Link>
         </li>
         <li>
-          <Link href="/home/course-registration" passHref>
-            <div className={styles.navItem}>Course Registration</div>
+          <Link href="/admin/home/student-registration" passHref>
+            <div className={styles.navItem}>Student Registration</div>
           </Link>
         </li>
         <li>
-          <Link href="/home/class-registration" passHref>
-            <div className={styles.navItem}>Class Registration</div>
+          <Link href="/admin/home/courses" passHref>
+            <div className={styles.navItem}>Courses</div>
           </Link>
         </li>
         <li>
-          <Link href="/home/course-schedule" passHref>
+          <Link href="/admin/home/course-schedule" passHref>
             <div className={styles.navItem}>Course Schedule</div>
           </Link>
         </li>
         <li>
-          <Link href="/home/exam-results" passHref>
+          <Link href="/admin/home/exam-results" passHref>
             <div className={styles.navItem}>Exam Results</div>
           </Link>
         </li>
         <li>
-          <Link href="/home/transcripts" passHref>
+          <Link href="/admin/home/transcripts" passHref>
             <div className={styles.navItem}>Transcripts</div>
           </Link>
         </li>
@@ -40,4 +40,4 @@ const VerticalNavBar = () => {
   );
 };
 
-export default VerticalNavBar;
+export default AdminNavBar;

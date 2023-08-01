@@ -159,6 +159,7 @@ export default function Login(){
               >Login</button>
               <a href="/forgot_password/verify_email">Forgot password?</a>
               <a href="/register">New User? Register</a>
+              <a href="/admin/login">Log in as admin</a>
             </form>
 
             <style jsx>{`
