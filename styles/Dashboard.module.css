@@ -1,0 +1,13 @@
+.Dashboard{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    font-family: Helvetica, sans-serif;
+    font-size: small;
+    background-color: aliceblue;
+}
+
+.body{
+
+    width: 100%;
+}

@@ -32,7 +32,8 @@ export default function Header() {
                     padding: 20px;
                     background-color: #d5d5e6;
                     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-                    width: 100vw;
+                    width: 100%;
+                    height: 50px;
                 
                 }
 

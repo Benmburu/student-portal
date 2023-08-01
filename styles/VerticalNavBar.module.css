@@ -1,0 +1,30 @@
+.verticalNavBar {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    padding: 20px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .verticalNavBar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .verticalNavBar li {
+    margin-bottom: 10px;
+  }
+  
+  .verticalNavBar a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+  
+  .verticalNavBar a:hover {
+    background-color: #ddd;
+  }
+  
