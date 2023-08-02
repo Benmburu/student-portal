@@ -1,10 +1,12 @@
 import Admin from "@models/Admin";
 import jwt from "jsonwebtoken";
 import transporter from "@lib/nodemailer";
+import initDB from "@lib/mongodb";
 
 export default async function handler(req, res){
     if (req.method === 'POST'){
         const { email } = req.body
+        initDB()
         
         // const user = await Admin.findOne({ email })
         const user = await Admin.findOne({ email })

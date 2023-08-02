@@ -158,7 +158,7 @@ export default function Login(){
                 type="submit"
                 disabled={ !password || !serviceNumber }          
               >Login</button>
-              <a href="/forgot_password/verify_email">Forgot password?</a>
+              <a href="/admin/forgot_password/verify_email">Forgot password?</a>
             </form>
 
             <style jsx>{`

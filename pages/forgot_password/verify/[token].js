@@ -25,9 +25,9 @@ export default function verify(){
                 const res = await axios.post("/api/forgot_password/reset_password", JSON.stringify({ token, password }), {headers:{"Content-Type" : "application/json"} })
                 console.log(res.data)
                 setSuccessMessage(res.data)
-                // setTimeout(()=>{
-                //     router.push("/login")
-                // }, 2000)
+                setTimeout(()=>{
+                    router.push("/login")
+                }, 2000)
 
             } catch (error) {
               setErrorMessage(error.response.data)

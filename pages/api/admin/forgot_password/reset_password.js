@@ -18,13 +18,14 @@ export default async function handler(req, res) {
                 // update password when verification of the token is successful
                 const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(password, salt);
+                console.log(password, hashedPassword)
                 try {
                     const user = await Admin.findOneAndUpdate(
                         {email: decoded.email},
                         {password: hashedPassword},
                         {new: true},
                         )
-                    // console.log(user)
+                    console.log(user)
                     res.status(200).json("Password changed successfully. You'll be redirected to the login page.")
                 } catch (error) {
                     res.status(401).json("Password reset link expired.")

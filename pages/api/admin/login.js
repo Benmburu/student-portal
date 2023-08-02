@@ -16,6 +16,8 @@ export default async function handler(req, res) {
         try {
             // check if user is registered            
             let user = await Admin.findOne({ serviceNumber })
+            // console.log(user)
+
             if (!user){
                 return res.status(401).json("Invalid email or password")
             }

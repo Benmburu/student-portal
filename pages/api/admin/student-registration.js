@@ -8,15 +8,18 @@ export default async function handler(req, res){
         // const list = ServiceNumbers.replace(/ /g,'')
         console.log(serviceNumber)
         let user = await ServiceNumbers.find({ serviceNumber })
-        console.log(user)
+        console.log(user.length)
         if (user.length > 0){
             res.status(401).json("Student already exists.")
+        }else{
+            user = await ServiceNumbers.create({serviceNumber: serviceNumber})
+            res.status(200).json('Success')
         }
-        user = await ServiceNumbers.create({serviceNumber: serviceNumber})
+        
         
         // const user = await User.findOne({ email })
         // const user = await User.findOne({ email })
         // console.log(user)
-        res.status(200).json('nice')
+        
     }
 }

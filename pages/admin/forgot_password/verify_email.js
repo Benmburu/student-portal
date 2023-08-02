@@ -10,10 +10,6 @@ export default function verifyEmail(){
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
   const refreshMessages = ()=>{
     setErrorMessage("")
     setSuccessMessage("")
