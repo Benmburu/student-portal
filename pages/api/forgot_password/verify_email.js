@@ -1,4 +1,4 @@
-import User from "@models/User";
+import Admin from "@models/Admin";
 import jwt from "jsonwebtoken";
 import transporter from "@lib/nodemailer";
 
@@ -6,8 +6,8 @@ export default async function handler(req, res){
     if (req.method === 'POST'){
         const { email } = req.body
         
-        // const user = await User.findOne({ email })
-        const user = await User.findOne({ email })
+        // const user = await Admin.findOne({ email })
+        const user = await Admin.findOne({ email })
         console.log(user)
         // send jwt email token for password reset
         if (user){        
@@ -28,7 +28,7 @@ export default async function handler(req, res){
             // give response to the client-side
             res.status(200).json("Click on the link sent to your email to reset your password.")
         }else{
-            res.status(401).json("User not found.")
+            res.status(401).json("Admin not found.")
         }
     }
 }

@@ -22,6 +22,10 @@ const adminSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    name: {
+      type: String,
+      required: false,
+    },
   },
   { collection: 'admin' }, // the collection this schema refers to
   { timestamps: true }

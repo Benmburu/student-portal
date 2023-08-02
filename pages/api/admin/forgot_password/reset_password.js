@@ -1,5 +1,5 @@
 import initDB from "@lib/mongodb";
-import User from "@models/User";
+import Admin from "@models/Admin";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
                 const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(password, salt);
                 try {
-                    const user = await User.findOneAndUpdate(
+                    const user = await Admin.findOneAndUpdate(
                         {email: decoded.email},
                         {password: hashedPassword},
                         {new: true},
