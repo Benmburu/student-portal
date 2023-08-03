@@ -8,11 +8,13 @@ import styles from '@styles/Dashboard.module.css';
 // import courseStyles from '@styles/courseStyles.module.css'
 
 const Course = () =>{
-    const [ courses, setCourses ] = useState([])
-    const [ school, setSchool] = useState("SITDS")
-    const [ course_code, setCourseCode ] = useState("12345")
-    const [ courseName, setCourseName ] = useState("Diploma in ICT")
+    // const [ courses, setCourses ] = useState([])
+    // const [ school, setSchool] = useState("SITDS")
+    // const [ course_code, setCourseCode ] = useState("12345")
+    // const [ courseName, setCourseName ] = useState("Diploma in ICT")
     const [ action, setAction ] = useState("get")
+    const [ errorMessage, setErrorMessage ] = useState("");
+    const [ successMessage, setSuccessMessage ] = useState("");
 
     
     useEffect(()=>{
@@ -21,7 +23,7 @@ const Course = () =>{
             
                 // const {res} = await axios.post("/api/admin/courses", JSON.stringify({ action: "get" }), {headers:{"Content-Type" : "application/json"} })
                 const  res  = await axios.post("/api/admin/courses", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
-                setCourses(res.data)
+                // setCourses(res.data)
 
                 res.data.map((res, index)=>{addRow(res, index)})
                 // console.log(res.data)
@@ -99,28 +101,31 @@ const Course = () =>{
         // console.log('delete')
         let table = document.getElementById('courses');
         let length = table.children[0].children.length ;
-        for (let i=1; i<length; i++){
+        for (let row = 1; row < length; row++){
             // console.log(i)
             // let row = i
-            console.log(table)
-            let checked = table.children[0].children[i].children[0].children[0].checked 
-            let code = table.children[0].children[i].children[3].textContent
-            // console.log(checked)
+            // console.log(table)
+            let check = table.children[0].children[row].children[0].children[0].checked 
+            let code = table.children[0].children[row].children[2].textContent
+            console.log(row, check, code)
             // console.log(code)
-            let row = i
-            console.log(row)
+            // let row = i
+            // console.log(row)
             // setCourseCode(code)
-            if(checked === true){
+            if(check === true){
                 try {
                     const  res  = await axios.post("/api/admin/courses", JSON.stringify({ action: "delete", code }), {headers:{"Content-Type" : "application/json"} })
                     // console.log(res)
                     table.children[0].deleteRow(row)
                 } catch (error) {
-                    
+                    console.log(error)
                 }
                 
                 // console.log(course_code)
             }
+            // else{
+            //     // break
+            // }
         }
     }
 
@@ -151,6 +156,7 @@ const Course = () =>{
             console.log(course_code)
             // }
         }
+        setSuccessMessage("Success")
     }
 
     
@@ -175,7 +181,9 @@ const Course = () =>{
                         
                         
                     </table>
+                    { successMessage && <p className="success">{successMessage}</p> }
                     <div className="row">
+                    {/* { successMessage && <p className="success">{successMessage}</p> } */}
                         <button onClick={handleSubmit}>Add new row</button>
                         <button onClick={handleAdd}>Add new course</button>
                         <button onClick={handleDelete}>Delete selected fields</button>
@@ -219,6 +227,16 @@ const Course = () =>{
                     .row{
                         display: flex;
                     }
+
+                    .success{
+                        background-color: rgba(103, 230, 143, 0.1);
+                        padding: 5px;
+                        border: 1px solid #67e68f;
+                        border-radius: 4px;
+                        color: #67e68f;
+                        margin-bottom: 10px;
+                        font-family: 'Courier New', Courier, monospace;
+                        font-size: 13px;
                     `
                 }
             </style>
