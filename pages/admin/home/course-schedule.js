@@ -8,10 +8,10 @@ import styles from '@styles/Dashboard.module.css';
 // import courseStyles from '@styles/courseStyles.module.css'
 
 const CourseSchedule = () =>{
-    const [ courses, setCourses ] = useState([])
-    const [ school, setSchool] = useState("SITDS")
-    const [ course_code, setCourseCode ] = useState("12345")
-    const [ courseName, setCourseName ] = useState("Diploma in ICT")
+    // const [ courses, setCourses ] = useState([])
+    // const [ school, setSchool] = useState("SITDS")
+    // const [ course_code, setCourseCode ] = useState("12345")
+    // const [ courseName, setCourseName ] = useState("Diploma in ICT")
     const [ action, setAction ] = useState("get")
 
     
@@ -21,7 +21,7 @@ const CourseSchedule = () =>{
             
                 // const {res} = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "get" }), {headers:{"Content-Type" : "application/json"} })
                 const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
-                setCourses(res.data)
+                // setCourses(res.data)
 
                 res.data.map((res, index)=>{addRow(res, index)})
                 // console.log(res.data)
@@ -104,7 +104,7 @@ const CourseSchedule = () =>{
             // let row = i
             console.log(table)
             let checked = table.children[0].children[i].children[0].children[0].checked 
-            let code = table.children[0].children[i].children[3].textContent
+            let code = table.children[0].children[i].children[2].textContent
             // console.log(checked)
             // console.log(code)
             let row = i
@@ -161,15 +161,13 @@ const CourseSchedule = () =>{
             <div className={styles.body}>
                 <Header/>
                 <div className="body">
-                    <table id="courses">
+                    {/* <table id="courses">
                         <tbody>
                         <tr>
                             <th>Checked</th>
-                            {/* <th>Course No.</th> */}
                             <th>School</th>
                             <th>Course code</th>
                             <th>Course name</th>
-                            {/* <th>Action</th> */}
                         </tr>
                         </tbody>
                         
@@ -179,7 +177,7 @@ const CourseSchedule = () =>{
                         <button onClick={handleSubmit}>Add new row</button>
                         <button onClick={handleAdd}>Add new course</button>
                         <button onClick={handleDelete}>Delete selected fields</button>
-                    </div>
+                    </div> */}
                     
                 </div>
             </div>

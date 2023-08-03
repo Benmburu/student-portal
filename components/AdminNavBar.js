@@ -11,6 +11,11 @@ const AdminNavBar = () => {
           </Link>
         </li>
         <li>
+          <Link href="/admin/home/class-registration" passHref>
+            <div className={styles.navItem}>Register a class</div>
+          </Link>
+        </li>
+        <li>
           <Link href="/admin/home/student-registration" passHref>
             <div className={styles.navItem}>Student Registration</div>
           </Link>

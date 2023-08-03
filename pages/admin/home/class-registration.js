@@ -13,7 +13,7 @@ const StudentRegistration = () =>{
     // const [ course_code, setCourseCode ] = useState("12345")
     // const [ courseName, setCourseName ] = useState("Diploma in ICT")
     const [ action, setAction ] = useState("get")
-    const [ errorMessage, setErrorMessage ] = useState("");
+    // const [ errorMessage, setErrorMessage ] = useState("");
     const [ successMessage, setSuccessMessage ] = useState("");
     
 
@@ -165,26 +165,24 @@ const StudentRegistration = () =>{
             <div className={styles.body}>
                 <Header/>
                 <div className="body">
-                    <table id="courses">
+                    {/* <table id="courses">
                         <tbody>
                         <tr>
                             <th>Select</th>
-                            {/* <th>Course No.</th> */}
                             <th>serviceNumber</th>
                             <th>Name</th>
                             <th>Email</th>
-                            {/* <th>Action</th> */}
                         </tr>
                         </tbody>
                         
                         
-                    </table>
-                    { successMessage && <p className="success">{successMessage}</p> }
+                    </table> */}
+                    {/* { successMessage && <p className="success">{successMessage}</p> }
                     <div className="row">
                         <button onClick={handleSubmit}>Add new row</button>
-                        <button onClick={handleAdd}>Add new Student</button>
+                        <button onClick={handleAdd}>Add new Class</button>
                         <button onClick={handleDelete}>Delete selected fields</button>
-                    </div>
+                    </div> */}
                     
                 </div>
             </div>
