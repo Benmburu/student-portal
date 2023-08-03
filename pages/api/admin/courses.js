@@ -20,9 +20,9 @@ export default async function handler(req, res) {
                 res.status(200).json(user)
             }
             else if(action === "delete"){
-                const { action, code } = req.body; 
+                const { action, course_code, school, course_name } = req.body; 
                 
-                const user = await Courses.deleteOne({course_code: code})
+                const user = await Courses.deleteOne({ course_code })
                 console.log(user)
                 // const user = await Courses.create({ 
                 //     course_code: "1234",
