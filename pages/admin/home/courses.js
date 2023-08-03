@@ -80,6 +80,7 @@ const Course = () =>{
             let course_name = clickedRow.children[2].innerHTML
             const  res  = await axios.post("/api/admin/courses", JSON.stringify({ action: "delete", course_code, school, course_name }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
+            clickedRow.remove()
             setSuccessMessage("Success")
             
         });
@@ -133,7 +134,7 @@ const Course = () =>{
             e.preventDefault()
             setSuccessMessage("")
 
-            console.log(e.target)
+            // console.log(e.target)
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
             console.log(clickedRow)

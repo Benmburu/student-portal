@@ -81,6 +81,7 @@ const StudentRegistration = () =>{
             let email = clickedRow.children[2].innerHTML
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "delete", serviceNumber, name, email }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
+            clickedRow.remove()
             setSuccessMessage("Success")
             
         });
@@ -143,6 +144,7 @@ const StudentRegistration = () =>{
             let email = clickedRow.children[2].innerHTML
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "delete", serviceNumber, name, email }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
+            clickedRow.remove()
             setSuccessMessage("Success")
             
         });
