@@ -5,59 +5,34 @@ import AdminNavBar from "@components/AdminNavBar"
 import styles from '@styles/Dashboard.module.css';
 
 
-const StudentRegistration = () =>{
+// import classesStyles from '@styles/classesStyles.module.css'
+
+const classesSchedule = () =>{
+    // const [ users, setUsers ] = useState([])
+    // const [ school, setSchool] = useState("SITDS")
+    // const [ classes_code, setclassesCode ] = useState("12345")
+    // const [ classesName, setclassesName ] = useState("Diploma in ICT")
     const [ action, setAction ] = useState("get")
     const [ errorMessage, setErrorMessage ] = useState("");
     const [ successMessage, setSuccessMessage ] = useState("");
-    // const [ classDropDownOption, setClassDropDownOption ] = useState("")
+    
 
-
+    
     useEffect(()=>{
         (async ()=>{
             try {
-                const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action, className: "" }), {headers:{"Content-Type" : "application/json"} })
-                res.data.students.map((student)=>{addRow(student)})
-                res.data.classes.map((className)=>{addOptions(className)})
-                
+            
+                const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
+                res.data.map((res)=>{addRow(res)})
+
             } catch (error) {
                 console.log(error)
             }
         })()
     },[])
 
-    const updateTable = async (value)=>{
-        try {
-            
-            console.log('classDropDownOption: ', value)
-            let table = document.getElementById("courses")
-            // let rows = table.rows.length 
-            // for (let i=1; i<rows; i++){
-            //     table.children[0].childNodes[i].remove() 
-            //     // console.log(table.children[0].children[i])
-            // }
-
-            for(let i = table.rows.length - 1; i > 0; i--)
-            {
-                table.deleteRow(i);
-            }
-            console.log('deleted')
-            const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action, className: value }), {headers:{"Content-Type" : "application/json"} })
-            res.data.students.map((student)=>{addRow(student)})
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const addOptions = (classes) =>{
-        let classDropDown = document.getElementById("class")
-        let option = document.createElement("option");
-        option.text = classes.className;
-        option.value = classes.className;
-        classDropDown.add(option);
-    }
-
-    const addRow = (course)=>{
-        let table = document.getElementById("courses")
+    const addRow = (classes)=>{
+        let table = document.getElementById("classess")
         let row = table.insertRow(-1)
 
         let cell1 = row.insertCell(0);
@@ -65,17 +40,17 @@ const StudentRegistration = () =>{
         let cell3 = row.insertCell(2);
         let cell4 = row.insertCell(3);
         
-        cell1.innerHTML = course.serviceNumber
-        cell2.innerHTML = course.name
-        cell3.innerHTML = course.email
-        cell4.innerHTML = `<button id=${course.serviceNumber}>save</button> <button id=${course.serviceNumber+"-del"}>delete</button>`
+        cell1.innerHTML = classes.className
+        cell2.innerHTML = classes.school
+        cell3.innerHTML = classes.course
+        cell4.innerHTML = `<button id=${classes.className}>save</button> <button id=${classes.className+"-del"}>delete</button>`
 
         cell1.setAttribute("contenteditable", true)
         cell2.setAttribute("contenteditable", true)
         cell3.setAttribute("contenteditable", true)
 
-        let editButton = document.getElementById(course.serviceNumber);
-        let deleteButton = document.getElementById(`${course.serviceNumber+"-del"}`);
+        let editButton = document.getElementById(classes.className);
+        let deleteButton = document.getElementById(`${classes.className+"-del"}`);
 
         editButton.addEventListener('click', async (e) => {
             e.preventDefault()
@@ -84,11 +59,10 @@ const StudentRegistration = () =>{
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
             console.log(clickedRow.children[0].innerHTML)
-            let serviceNumber = clickedRow.children[0].innerHTML
-            let name = clickedRow.children[1].innerHTML
-            let email = clickedRow.children[2].innerHTML
-            let className = document.getElementById('class').value 
-            const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "add", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
+            let className = clickedRow.children[0].innerHTML
+            let school = clickedRow.children[1].innerHTML
+            let course = clickedRow.children[2].innerHTML
+            const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action: "add", className, school, course }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             setSuccessMessage("Success")
             
@@ -102,11 +76,10 @@ const StudentRegistration = () =>{
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
             console.log(clickedRow.children[0].innerHTML)
-            let serviceNumber = clickedRow.children[0].innerHTML
-            let name = clickedRow.children[1].innerHTML
-            let email = clickedRow.children[2].innerHTML
-            let className = document.getElementById('class').value
-            const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "delete", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
+            let className = clickedRow.children[0].innerHTML
+            let school = clickedRow.children[1].innerHTML
+            let course = clickedRow.children[2].innerHTML
+            const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action: "delete", className, school, course }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             clickedRow.remove()
             setSuccessMessage("Success")
@@ -119,7 +92,7 @@ const StudentRegistration = () =>{
         
         
         
-        let table = document.getElementById("courses")
+        let table = document.getElementById("classess")
         let row = table.insertRow(-1)
         let buttonId = Math.floor((Math.random() * 10000) + 3);
 
@@ -149,11 +122,10 @@ const StudentRegistration = () =>{
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
             console.log(clickedRow.children[0].innerHTML)
-            let serviceNumber = clickedRow.children[0].innerHTML
-            let name = clickedRow.children[1].innerHTML
-            let email = clickedRow.children[2].innerHTML
-            let className = document.getElementById('class').value
-            const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "add", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
+            let className = clickedRow.children[0].innerHTML
+            let school = clickedRow.children[1].innerHTML
+            let course = clickedRow.children[2].innerHTML
+            const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action: "add", className, school, course }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             setSuccessMessage("Success")
             
@@ -167,11 +139,10 @@ const StudentRegistration = () =>{
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
             console.log(clickedRow.children[0].innerHTML)
-            let serviceNumber = clickedRow.children[0].innerHTML
-            let name = clickedRow.children[1].innerHTML
-            let email = clickedRow.children[2].innerHTML
-            let className = document.getElementById('class').value
-            const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "delete", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
+            let className = clickedRow.children[0].innerHTML
+            let school = clickedRow.children[1].innerHTML
+            let course = clickedRow.children[2].innerHTML
+            const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action: "delete", className, school, course }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             clickedRow.remove()
             setSuccessMessage("Success")
@@ -186,18 +157,13 @@ const StudentRegistration = () =>{
             <div className={styles.body}>
                 <Header/>
                 <div className="body">
-
-                    <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
-                        <option value=""></option>
-                    </select>
-
-                    <table id="courses">
+                    <table id="classess">
                         <tbody>
                         <tr>
                             
-                            <th>serviceNumber</th>
-                            <th>Name</th>
-                            <th>Email</th>
+                            <th>Class name</th>
+                            <th>School</th>
+                            <th>Course</th>
                             <th>Action</th>
                         </tr>
                         </tbody>
@@ -224,7 +190,7 @@ const StudentRegistration = () =>{
                         flex-direction: column;
                     }
 
-                    #courses td, th {
+                    #classess td, th {
                         border: 1px solid #000000;
                         text-align: left;
                         padding: 8px;
@@ -264,4 +230,4 @@ const StudentRegistration = () =>{
     )
 }
 
-export default StudentRegistration;
+export default classesSchedule;

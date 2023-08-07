@@ -8,21 +8,11 @@ const ClassSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    email: {
-      type: String,
-      required: false,
-      unique: false,
-    },
-    password: {
+    course: {
       type: String,
       required: false,
     },
-    verificationCode:{
-      type: Number,
-      required: false,
-      default: null,
-    },
-    name: {
+    school: {
       type: String,
       required: false,
     },
@@ -32,4 +22,4 @@ const ClassSchema = new mongoose.Schema(
 );
 
 // use this model if it exists, otherwise create a new model named User using the userSchema
-export default mongoose.models.Class || mongoose.model("Admin", ClassSchema);
+export default mongoose.models.Class || mongoose.model("Class", ClassSchema);

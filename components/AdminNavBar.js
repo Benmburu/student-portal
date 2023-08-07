@@ -26,6 +26,11 @@ const AdminNavBar = () => {
           </Link>
         </li>
         <li>
+          <Link href="/admin/home/classes" passHref>
+            <div className={styles.navItem}>Classes</div>
+          </Link>
+        </li>
+        <li>
           <Link href="/admin/home/course-schedule" passHref>
             <div className={styles.navItem}>Course Schedule</div>
           </Link>

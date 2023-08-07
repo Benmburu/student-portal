@@ -20,9 +20,9 @@ export default async function handler(req, res) {
                 res.status(200).json(user)
             }
             else if(action === "delete"){
-                const { action, code } = req.body; 
+                const { action, className, school, course } = req.body; 
                 
-                const user = await Class.deleteOne({course_code: code})
+                const user = await Class.deleteOne({ className })
                 console.log(user)
                 // const user = await Class.create({ 
                 //     course_code: "1234",
@@ -31,14 +31,14 @@ export default async function handler(req, res) {
                 res.status(200).json("deleted")
             }
             else if(action === 'add'){
-                const {action, school, course_code, course_name} = req.body
+                const { action, className, school, course } = req.body
                 // console.log(course_number, school, code, course_name)
-                const user = await Class.find({ course_code })
+                const user = await Class.find({ className })
                 // console.log(user.length)
                 if (user.length > 0){
-                    const user = await Class.findOneAndUpdate({ course_code }, { school, course_name}, { new: true })
+                    const user = await Class.findOneAndUpdate({ className }, { school, course}, { new: true })
                 }else{
-                    const user = await Class.create({ course_code, school, course_name, new: true })
+                    const user = await Class.create({ className, school, course, new: true })
                 }
                 // const user = await Class.create({ course_code, school, course_name, upsert: true, new: true, setDefaultsOnInsert: true })
                 console.log(user)

@@ -31,6 +31,11 @@ const userSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    className: {
+      type: String,
+      required: false,
+      default: false,
+    },
   },
   { collection: 'users' }, // the collection this schema refers to
   { timestamps: true }
