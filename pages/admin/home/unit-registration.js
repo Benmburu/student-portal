@@ -16,8 +16,9 @@ const CourseSchedule = () =>{
         (async ()=>{
             try {
             
-                const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
-                res.data.map((res)=>{addRow(res)})
+                const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action, className: "" }), {headers:{"Content-Type" : "application/json"} })
+                res.data.classes.map((className)=>{addOptions(className)})
+                res.data.units.map((unit)=>{addRow(unit)})
 
             } catch (error) {
                 console.log(error)
@@ -25,27 +26,27 @@ const CourseSchedule = () =>{
         })()
     },[])
 
-    const addRow = async (course)=>{
+    const addRow = async (unit)=>{
         
-        let table = document.getElementById("results")
+        let table = document.getElementById("units")
         let row = table.insertRow(-1)
         let buttonId = Math.floor((Math.random() * 1000000) + 3);
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
+        // let cell3 = row.insertCell(2);
         let cell3 = row.insertCell(2);
-        let cell4 = row.insertCell(3);
 
         // Add some text to the new cells:
-        cell1.innerHTML = course?.activity || "NEW";
-        cell2.innerHTML = course?.startDate || "NEW";
-        cell3.innerHTML = course?.endDate || "NEW";
-        cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
+        cell1.innerHTML = unit?.unitCode || "NEW";
+        cell2.innerHTML = unit?.unitName || "NEW";
+        // cell3.innerHTML = unit?.endDate || "NEW";
+        cell3.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
         cell1.setAttribute("contenteditable", true)
         cell2.setAttribute("contenteditable", true)
-        cell3.setAttribute("contenteditable", true)
+        // cell3.setAttribute("contenteditable", true)
 
         let editButton = document.getElementById(buttonId);
         let deleteButton = document.getElementById(`${buttonId+"-del"}`);
@@ -56,10 +57,11 @@ const CourseSchedule = () =>{
 
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
-            let activity = clickedRow.children[0].innerHTML
-            let startDate = clickedRow.children[1].innerHTML
-            let endDate = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "add", activity, startDate, endDate }), {headers:{"Content-Type" : "application/json"} })
+            let unitCode = clickedRow.children[0].innerHTML
+            let unitName = clickedRow.children[1].innerHTML
+            let className = document.getElementById("class").value 
+            // let endDate = clickedRow.children[2].innerHTML
+            const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action: "add", unitCode, unitName, className }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             setSuccessMessage("Success")
             
@@ -73,10 +75,10 @@ const CourseSchedule = () =>{
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
             console.log(clickedRow.children[0].innerHTML)
-            let activity = clickedRow.children[0].innerHTML
-            let startDate = clickedRow.children[1].innerHTML
-            let endDate = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "delete", activity, startDate, endDate }), {headers:{"Content-Type" : "application/json"} })
+            let unitCode = clickedRow.children[0].innerHTML
+            let unitName = clickedRow.children[1].innerHTML
+            // let endDate = clickedRow.children[2].innerHTML
+            const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action: "delete", unitCode, unitName }), {headers:{"Content-Type" : "application/json"} })
             // console.log( res)
             clickedRow.remove()
             setSuccessMessage("Success")
@@ -88,17 +90,17 @@ const CourseSchedule = () =>{
     const updateTable = async (value)=>{
         try {
             
-            console.log('classDropDownOption: ', value)
-            let table = document.getElementById("results")
+            console.log('unitDropDownOption: ', value)
+            let table = document.getElementById("units")
 
             for(let i = table.rows.length - 1; i > 0; i--)
             {
                 table.deleteRow(i);
             }
             console.log('deleted')
-            const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action, className: value }), {headers:{"Content-Type" : "application/json"} })
+            const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action, className: value }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res.data.students)
-            res.data.students.map((student)=>{addRow(student)})
+            res.data.units.map((unit)=>{addRow(unit)})
         } catch (error) {
             console.log(error)
         }
@@ -122,13 +124,13 @@ const CourseSchedule = () =>{
                         <option value=""></option>
                     </select>
 
-                    <table id="results">
+                    <table id="units">
                         <tbody>
                         <tr>
                             
-                            <th>Activity</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
+                            <th>Unit code</th>
+                            <th>Unit name</th>
+                            {/* <th>End Date</th> */}
                             <th>Action</th>
                         </tr>
                         </tbody>
@@ -136,9 +138,9 @@ const CourseSchedule = () =>{
                         
                     </table>
                     { successMessage && <p id="successMessage">{successMessage}</p>
-                        && setTimeout(()=>{
-                            setSuccessMessage("")
-                        }, 3000)
+                        // && setTimeout(()=>{
+                        //     setSuccessMessage("")
+                        // }, 3000)
                     }
                     <div className="row">
                         <button onClick={addRow}>Add new row</button>

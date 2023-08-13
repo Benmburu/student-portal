@@ -19,7 +19,7 @@ export default async function handler(req, res) {
                 const students = await User.find(options)
 
                 const classes = await Classes.find({})
-                // console.log(students)
+                console.log(students)
                 res.status(200).json({ students, classes })
             }
             else if(action === "delete"){

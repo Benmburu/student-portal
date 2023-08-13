@@ -30,11 +30,6 @@ const StudentRegistration = () =>{
             
             console.log('classDropDownOption: ', value)
             let table = document.getElementById("courses")
-            // let rows = table.rows.length 
-            // for (let i=1; i<rows; i++){
-            //     table.children[0].childNodes[i].remove() 
-            //     // console.log(table.children[0].children[i])
-            // }
 
             for(let i = table.rows.length - 1; i > 0; i--)
             {
@@ -42,6 +37,7 @@ const StudentRegistration = () =>{
             }
             console.log('deleted')
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action, className: value }), {headers:{"Content-Type" : "application/json"} })
+            // console.log(res.data.students)
             res.data.students.map((student)=>{addRow(student)})
         } catch (error) {
             console.log(error)

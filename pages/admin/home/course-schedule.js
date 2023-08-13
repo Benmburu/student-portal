@@ -5,13 +5,7 @@ import AdminNavBar from "@components/AdminNavBar"
 import styles from '@styles/Dashboard.module.css';
 
 
-// import courseStyles from '@styles/courseStyles.module.css'
-
 const CourseSchedule = () =>{
-    // const [ users, setUsers ] = useState([])
-    // const [ school, setSchool] = useState("SITDS")
-    // const [ course_code, setCourseCode ] = useState("12345")
-    // const [ courseName, setCourseName ] = useState("Diploma in ICT")
     const [ action, setAction ] = useState("get")
     const [ errorMessage, setErrorMessage ] = useState("");
     const [ successMessage, setSuccessMessage ] = useState("");
@@ -31,70 +25,11 @@ const CourseSchedule = () =>{
         })()
     },[])
 
-    const addRow = (course)=>{
-        let table = document.getElementById("courses")
+    const addRow = async (course)=>{
+        
+        let table = document.getElementById("schedule")
         let row = table.insertRow(-1)
-
-        let cell1 = row.insertCell(0);
-        let cell2 = row.insertCell(1);
-        let cell3 = row.insertCell(2);
-        let cell4 = row.insertCell(3);
-        
-        cell1.innerHTML = course.serviceNumber
-        cell2.innerHTML = course.name
-        cell3.innerHTML = course.email
-        cell4.innerHTML = `<button id=${course.serviceNumber}>save</button> <button id=${course.serviceNumber+"-del"}>delete</button>`
-
-        cell1.setAttribute("contenteditable", true)
-        cell2.setAttribute("contenteditable", true)
-        cell3.setAttribute("contenteditable", true)
-
-        let editButton = document.getElementById(course.serviceNumber);
-        let deleteButton = document.getElementById(`${course.serviceNumber+"-del"}`);
-
-        editButton.addEventListener('click', async (e) => {
-            e.preventDefault()
-            setSuccessMessage("")
-
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
-            console.log(clickedRow.children[0].innerHTML)
-            let serviceNumber = clickedRow.children[0].innerHTML
-            let name = clickedRow.children[1].innerHTML
-            let email = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "add", serviceNumber, name, email }), {headers:{"Content-Type" : "application/json"} })
-            // console.log(res)
-            setSuccessMessage("Success")
-            
-        });
-
-        deleteButton.addEventListener('click', async (e) => {
-            e.preventDefault()
-            setSuccessMessage("")
-
-            console.log(e.target)
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
-            console.log(clickedRow.children[0].innerHTML)
-            let serviceNumber = clickedRow.children[0].innerHTML
-            let name = clickedRow.children[1].innerHTML
-            let email = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "delete", serviceNumber, name, email }), {headers:{"Content-Type" : "application/json"} })
-            // console.log(res)
-            clickedRow.remove()
-            setSuccessMessage("Success")
-            
-        });
-    }
-
-    const handleSubmit = async (e)=>{
-        e.preventDefault()
-        
-        
-        
-        let table = document.getElementById("courses")
-        let row = table.insertRow(-1)
-        let buttonId = Math.floor((Math.random() * 10000) + 3);
+        let buttonId = Math.floor((Math.random() * 1000000) + 3);
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
@@ -102,9 +37,9 @@ const CourseSchedule = () =>{
         let cell4 = row.insertCell(3);
 
         // Add some text to the new cells:
-        cell1.innerHTML = 'NEW';
-        cell2.innerHTML = "NEW";
-        cell3.innerHTML = "NEW";
+        cell1.innerHTML = course?.activity || "NEW";
+        cell2.innerHTML = course?.startDate || "NEW";
+        cell3.innerHTML = course?.endDate || "NEW";
         cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
@@ -121,11 +56,10 @@ const CourseSchedule = () =>{
 
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
-            console.log(clickedRow.children[0].innerHTML)
-            let serviceNumber = clickedRow.children[0].innerHTML
-            let name = clickedRow.children[1].innerHTML
-            let email = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "add", serviceNumber, name, email }), {headers:{"Content-Type" : "application/json"} })
+            let activity = clickedRow.children[0].innerHTML
+            let startDate = clickedRow.children[1].innerHTML
+            let endDate = clickedRow.children[2].innerHTML
+            const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "add", activity, startDate, endDate }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             setSuccessMessage("Success")
             
@@ -139,11 +73,11 @@ const CourseSchedule = () =>{
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
             console.log(clickedRow.children[0].innerHTML)
-            let serviceNumber = clickedRow.children[0].innerHTML
-            let name = clickedRow.children[1].innerHTML
-            let email = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "delete", serviceNumber, name, email }), {headers:{"Content-Type" : "application/json"} })
-            // console.log(res)
+            let activity = clickedRow.children[0].innerHTML
+            let startDate = clickedRow.children[1].innerHTML
+            let endDate = clickedRow.children[2].innerHTML
+            const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "delete", activity, startDate, endDate }), {headers:{"Content-Type" : "application/json"} })
+            // console.log( res)
             clickedRow.remove()
             setSuccessMessage("Success")
             
@@ -157,22 +91,26 @@ const CourseSchedule = () =>{
             <div className={styles.body}>
                 <Header/>
                 <div className="body">
-                    <table id="courses">
+                    <table id="schedule">
                         <tbody>
                         <tr>
                             
-                            <th>serviceNumber</th>
-                            <th>Name</th>
-                            <th>Email</th>
+                            <th>Activity</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
                             <th>Action</th>
                         </tr>
                         </tbody>
                         
                         
                     </table>
-                    { successMessage && <p className="success">{successMessage}</p> }
+                    { successMessage && <p id="successMessage">{successMessage}</p>
+                        // && setTimeout(()=>{
+                        //     setSuccessMessage("")
+                        // }, 3000)
+                    }
                     <div className="row">
-                        <button onClick={handleSubmit}>Add new row</button>
+                        <button onClick={addRow}>Add new row</button>
                     </div>
                     
                 </div>
@@ -190,7 +128,7 @@ const CourseSchedule = () =>{
                         flex-direction: column;
                     }
 
-                    #courses td, th {
+                    #schedule td, th {
                         border: 1px solid #000000;
                         text-align: left;
                         padding: 8px;
@@ -214,7 +152,7 @@ const CourseSchedule = () =>{
                         display: flex;
                     }
 
-                    .success{
+                    #successMessage{
                         background-color: rgba(103, 230, 143, 0.1);
                         padding: 5px;
                         border: 1px solid #67e68f;

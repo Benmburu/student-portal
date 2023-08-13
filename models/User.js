@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
-    className: {
+    class: {
       type: String,
       required: false,
       default: false,
