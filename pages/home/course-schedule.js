@@ -51,7 +51,6 @@ const CourseSchedule = () =>{
                             <th>Activity</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Action</th>
                         </tr>
                         </tbody>
                         
