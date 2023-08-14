@@ -21,6 +21,11 @@ const AdminNavBar = () => {
           </Link>
         </li>
         <li>
+          <Link href="/admin/home/course-schedule" passHref>
+            <div className={styles.navItem}>Course Schedule</div>
+          </Link>
+        </li>
+        <li>
           <Link href="/admin/home/courses" passHref>
             <div className={styles.navItem}>Courses</div>
           </Link>
@@ -35,21 +40,17 @@ const AdminNavBar = () => {
             <div className={styles.navItem}>Classes</div>
           </Link>
         </li>
-        <li>
-          <Link href="/admin/home/course-schedule" passHref>
-            <div className={styles.navItem}>Course Schedule</div>
-          </Link>
-        </li>
+        
         <li>
           <Link href="/admin/home/exam-results" passHref>
             <div className={styles.navItem}>Exam Results</div>
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link href="/admin/home/transcripts" passHref>
             <div className={styles.navItem}>Transcripts</div>
           </Link>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );
