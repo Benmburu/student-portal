@@ -17,7 +17,7 @@ const Dashboard = () =>{
                 <Carousel>
                   <div>
                       <img src="https://mod.go.ke/wp-content/uploads/2021/12/deftec-01-01-01-01-01-1024x427-1.png" alt="image1"/>
-                      <p className="legend">DefTec School is a cutting-edge educational institution renowned for its exceptional Information Technology (IT) course. With a reputation for innovation and excellence, DefTec equips students with a comprehensive understanding of IT fundamentals, advanced programming languages, network architecture, cybersecurity, and software development methodologies. Through hands-on projects, real-world simulations, and expert guidance from industry practitioners, DefTec School empowers students to thrive in the dynamic and ever-evolving field of technology. Graduates emerge well-prepared to tackle the challenges of the digital age, making DefTec School a prime choice for those seeking a top-tier IT education.</p>
+                      <p className="legend">This is a cutting-edge educational institution renowned for its exceptional Information Technology (IT) course. With a reputation for innovation and excellence, DefTec equips students with a comprehensive understanding of IT fundamentals, advanced programming languages, network architecture, cybersecurity, and software development methodologies. Through hands-on projects, real-world simulations, and expert guidance from industry practitioners, DefTec School empowers students to thrive in the dynamic and ever-evolving field of technology. Graduates emerge well-prepared to tackle the challenges of the digital age, making DefTec School a prime choice for those seeking a top-tier IT education.</p>
   
                   </div>
                   <div>
