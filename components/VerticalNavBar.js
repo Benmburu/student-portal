@@ -11,13 +11,8 @@ const VerticalNavBar = () => {
           </Link>
         </li>
         <li>
-          <Link href="/home/course-registration" passHref>
+          <Link href="/home/unit-registration" passHref>
             <div className={styles.navItem}>Course Registration</div>
-          </Link>
-        </li>
-        <li>
-          <Link href="/home/class-registration" passHref>
-            <div className={styles.navItem}>Class Registration</div>
           </Link>
         </li>
         <li>

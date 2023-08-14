@@ -1,21 +1,5 @@
 import mongoose, { model } from "mongoose";
 
-const resultSchema = new mongoose.Schema(
-    {
-      unitCode: {
-        type: String,
-        required: false,
-      },
-      unitName: {
-        type: String,
-        required: false,
-      },
-      marks: {
-        type: String,
-        required: false,
-      },
-    }
-)
 
 const examResultSchema = new mongoose.Schema(
     {
@@ -33,7 +17,51 @@ const examResultSchema = new mongoose.Schema(
         required: false,
         unique: false,
       },
-      results: [resultSchema],
+      className: {
+        type: String,
+        required: false,
+        unique: false,
+      },
+      unit1: {
+        type: String,
+        required: false,
+        unique: false,
+      },
+      unit2: {
+        type: String,
+        required: false,
+        unique: false,
+      },
+      unit3: {
+        type: String,
+        required: false,
+        unique: false,
+      },
+      unit4: {
+        type: String,
+        required: false,
+        unique: false,
+      },
+      unit5: {
+        type: String,
+        required: false,
+        unique: false,
+      },
+      unit6: {
+        type: String,
+        required: false,
+        unique: false,
+      },
+      unit7: {
+        type: String,
+        required: false,
+        unique: false,
+      },
+      unit8: {
+        type: String,
+        required: false,
+        unique: false,
+      },
     },
     { collection: 'examResults' }, // the collection this schema refers to
     { timestamps: true }

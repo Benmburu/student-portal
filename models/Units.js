@@ -12,7 +12,11 @@ const unitSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    className: {
+    courseName: {
+      type: String,
+      required: false,
+    },
+    semester: {
       type: String,
       required: false,
     },
