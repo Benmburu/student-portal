@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Header from "@components/Header";
-import AdminNavBar from "@components/AdminNavBar"
+import VerticalNavBar from "@components/VerticalNavBar"
 import styles from '@styles/Dashboard.module.css';
 
 
@@ -35,54 +35,12 @@ const CourseSchedule = () =>{
         cell1.innerHTML = course?.activity
         cell2.innerHTML = course?.startDate
         cell3.innerHTML = course?.endDate
-        // cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
-        
-
-        // cell1.setAttribute("contenteditable", true)
-        // cell2.setAttribute("contenteditable", true)
-        // cell3.setAttribute("contenteditable", true)
-
-        // let editButton = document.getElementById(buttonId);
-        // let deleteButton = document.getElementById(`${buttonId+"-del"}`);
-
-        // editButton.addEventListener('click', async (e) => {
-        //     e.preventDefault()
-        //     setSuccessMessage("")
-
-        //     let clickedElement = e.target
-        //     let clickedRow = clickedElement.parentNode.parentNode;
-        //     let activity = clickedRow.children[0].innerHTML
-        //     let startDate = clickedRow.children[1].innerHTML
-        //     let endDate = clickedRow.children[2].innerHTML
-        //     const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "add", activity, startDate, endDate }), {headers:{"Content-Type" : "application/json"} })
-        //     // console.log(res)
-        //     setSuccessMessage("Success")
-            
-        // });
-
-        // deleteButton.addEventListener('click', async (e) => {
-        //     e.preventDefault()
-        //     setSuccessMessage("")
-
-        //     console.log(e.target)
-        //     let clickedElement = e.target
-        //     let clickedRow = clickedElement.parentNode.parentNode;
-        //     console.log(clickedRow.children[0].innerHTML)
-        //     let activity = clickedRow.children[0].innerHTML
-        //     let startDate = clickedRow.children[1].innerHTML
-        //     let endDate = clickedRow.children[2].innerHTML
-        //     const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "delete", activity, startDate, endDate }), {headers:{"Content-Type" : "application/json"} })
-        //     // console.log( res)
-        //     clickedRow.remove()
-        //     setSuccessMessage("Success")
-            
-        // });
         
     }
 
     return (
         <div className={styles.Dashboard}>
-            <AdminNavBar/>
+            <VerticalNavBar/>
             <div className={styles.body}>
                 <Header/>
                 <div className="body">
