@@ -23,26 +23,26 @@ export default async function handler(req, res) {
                 res.status(200).json({ units, classes })
             }
             else if(action === "delete"){
-                const { action, unitCode, unitName } = req.body                
-                const units = await Units.deleteOne({ unitCode })
+                const { action, unitCode, semester } = req.body                
+                const units = await Units.deleteOne({ unitCode, semester })
                 
                 res.status(200).json("deleted")
             } 
             else if(action === 'add'){
-                const { action, unitCode, unitName, className } = req.body
+                const { action, unitCode, unitName, className, semester } = req.body
                 // console.log(action, unitCode, unitName )
                 const units = await Units.find({ unitCode })
                 if (units.length > 0){
-                    const units = await Units.findOneAndUpdate({ unitCode }, { unitName, className }, { new: true })
+                    const units = await Units.findOneAndUpdate({ unitCode }, {semester, unitName, className }, { new: true })
                 }else{
-                    const units = await Units.create({ unitCode, unitName, className  , new: true })
+                    const units = await Units.create({ unitCode, unitName, className, semester  , new: true })
                 }
                 // const Units = await Courses.create({ course_code, school, course_name, upsert: true, new: true, setDefaultsOnInsert: true })
                 console.log(units)
                 res.status(200).json("added")
             }
             
-            
+             
 
         } catch (error) {
             // log errors

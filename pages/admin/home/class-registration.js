@@ -154,7 +154,15 @@ const StudentRegistration = () =>{
             // console.log(course_code)
             // }
         }
-        setSuccessMessage("Success.")
+        // setSuccessMessage("Success.")
+        setSuccess()
+    }
+
+    const setSuccess = ()=>{
+        setSuccessMessage("Success")
+        setTimeout(()=>{
+            setSuccessMessage("")
+        }, 3000)
     }
 
     
@@ -165,24 +173,6 @@ const StudentRegistration = () =>{
             <div className={styles.body}>
                 <Header/>
                 <div className="body">
-                    {/* <table id="courses">
-                        <tbody>
-                        <tr>
-                            <th>Select</th>
-                            <th>serviceNumber</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                        </tr>
-                        </tbody>
-                        
-                        
-                    </table> */}
-                    {/* { successMessage && <p className="success">{successMessage}</p> }
-                    <div className="row">
-                        <button onClick={handleSubmit}>Add new row</button>
-                        <button onClick={handleAdd}>Add new Class</button>
-                        <button onClick={handleDelete}>Delete selected fields</button>
-                    </div> */}
                     
                 </div>
             </div>

@@ -4,7 +4,8 @@ import Header from "@components/Header";
 import { useRouter } from "next/router";
 import axios from "axios";
 import AuthCode from 'react-auth-code-input';
-import styles from "./login.module.css"
+import styles from "./login.module.css";
+import Image from 'next/image'
 
 export default function Login(){
  
@@ -119,28 +120,11 @@ export default function Login(){
               `}
             </style>
         </div>
-        
-        // <div className="container">
-        //   <form onSubmit={verify}>
-        //     <label>
-        //       Verification Code
-        //       <input
-        //         value={verificationCode}
-        //         onChange={(e) => setVerificationCode(e.target.value)}
-        //         name="verificationCode"
-        //         autoComplete="one-time-code"
-        //         type="text"
-        //       />
-        //     </label>
-        //     { error && <p className="error">{error}</p> }
-        //     <button type="submit">Log in</button>
-        //   </form>
-          
-        // </div>
       :
         <>
           <Header/>
           <div className="container">
+          <Image src="/deftec.png" alt="deftec logo" width="150" height="120" />
             <h1>Login Page</h1>
             <form onSubmit={handleSubmit}>
               <div className="form-group">

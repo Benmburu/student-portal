@@ -63,7 +63,7 @@ const Course = () =>{
             let course_name = clickedRow.children[2].innerHTML
             const  res  = await axios.post("/api/admin/courses", JSON.stringify({ action: "add", course_code, school, course_name }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
 
@@ -81,7 +81,7 @@ const Course = () =>{
             const  res  = await axios.post("/api/admin/courses", JSON.stringify({ action: "delete", course_code, school, course_name }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             clickedRow.remove()
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
     }
@@ -126,7 +126,7 @@ const Course = () =>{
             let course_name = clickedRow.children[2].innerHTML
             const  res  = await axios.post("/api/admin/courses", JSON.stringify({ action: "add", course_code, school, course_name }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
 
@@ -144,10 +144,17 @@ const Course = () =>{
             const  res  = await axios.post("/api/admin/courses", JSON.stringify({ action: "delete", course_code, school, course_name }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             clickedRow.remove()
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
         
+    }
+
+    const setSuccess = ()=>{
+        setSuccessMessage("Success")
+        setTimeout(()=>{
+            setSuccessMessage("")
+        }, 3000)
     }
 
 

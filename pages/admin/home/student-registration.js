@@ -86,7 +86,7 @@ const StudentRegistration = () =>{
             let className = document.getElementById('class').value 
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "add", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
 
@@ -105,7 +105,7 @@ const StudentRegistration = () =>{
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "delete", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             clickedRow.remove()
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
     }
@@ -151,7 +151,7 @@ const StudentRegistration = () =>{
             let className = document.getElementById('class').value
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "add", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
 
@@ -170,10 +170,17 @@ const StudentRegistration = () =>{
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "delete", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             clickedRow.remove()
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
         
+    }
+
+    const setSuccess = ()=>{
+        setSuccessMessage("Success")
+        setTimeout(()=>{
+            setSuccessMessage("")
+        }, 3000)
     }
 
     return (

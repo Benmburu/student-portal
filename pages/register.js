@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import Image from 'next/image'
 
 export default function Register(){
   const [ serviceNumber, setServiceNumber ] = useState("");
@@ -49,6 +50,7 @@ export default function Register(){
   
   return (
     <div className="container">
+      <Image src="/deftec.png" alt="deftec logo" width="150" height="120" />
       <h1>Registration Page</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

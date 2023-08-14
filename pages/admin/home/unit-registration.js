@@ -34,19 +34,19 @@ const CourseSchedule = () =>{
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
-        // let cell3 = row.insertCell(2);
         let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
 
         // Add some text to the new cells:
         cell1.innerHTML = unit?.unitCode || "NEW";
         cell2.innerHTML = unit?.unitName || "NEW";
-        // cell3.innerHTML = unit?.endDate || "NEW";
-        cell3.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
+        cell3.innerHTML = unit?.semester || "NEW";
+        cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
         cell1.setAttribute("contenteditable", true)
         cell2.setAttribute("contenteditable", true)
-        // cell3.setAttribute("contenteditable", true)
+        cell3.setAttribute("contenteditable", true)
 
         let editButton = document.getElementById(buttonId);
         let deleteButton = document.getElementById(`${buttonId+"-del"}`);
@@ -60,10 +60,11 @@ const CourseSchedule = () =>{
             let unitCode = clickedRow.children[0].innerHTML
             let unitName = clickedRow.children[1].innerHTML
             let className = document.getElementById("class").value 
-            // let endDate = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action: "add", unitCode, unitName, className }), {headers:{"Content-Type" : "application/json"} })
+            let semester = clickedRow.children[2].innerHTML
+
+            const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action: "add", unitCode, unitName, className, semester }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
 
@@ -77,11 +78,12 @@ const CourseSchedule = () =>{
             console.log(clickedRow.children[0].innerHTML)
             let unitCode = clickedRow.children[0].innerHTML
             let unitName = clickedRow.children[1].innerHTML
-            // let endDate = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action: "delete", unitCode, unitName }), {headers:{"Content-Type" : "application/json"} })
+            let semester = clickedRow.children[2].innerHTML 
+
+            const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action: "delete", unitCode, semester }), {headers:{"Content-Type" : "application/json"} })
             // console.log( res)
             clickedRow.remove()
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
         
@@ -114,6 +116,13 @@ const CourseSchedule = () =>{
         classDropDown.add(option);
     }
 
+    const setSuccess = ()=>{
+        setSuccessMessage("Success")
+        setTimeout(()=>{
+            setSuccessMessage("")
+        }, 3000)
+    }
+
     return (
         <div className={styles.Dashboard}>
             <AdminNavBar/>
@@ -130,7 +139,7 @@ const CourseSchedule = () =>{
                             
                             <th>Unit code</th>
                             <th>Unit name</th>
-                            {/* <th>End Date</th> */}
+                            <th>Semester</th>
                             <th>Action</th>
                         </tr>
                         </tbody>

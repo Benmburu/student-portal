@@ -98,7 +98,7 @@ const CourseSchedule = () =>{
 
             const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action: "add", serviceNumber, studentName, semester, className, unit1, unit2, unit3, unit4, unit5, unit6, unit7, unit8 }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
 
@@ -116,7 +116,7 @@ const CourseSchedule = () =>{
             const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action: "delete", serviceNumber, studentName, semester }), {headers:{"Content-Type" : "application/json"} })
             // console.log( res)
             clickedRow.remove()
-            setSuccessMessage("Success")
+            setSuccess()
             
         });
         
@@ -147,6 +147,13 @@ const CourseSchedule = () =>{
         option.text = classes.className;
         option.value = classes.className;
         classDropDown.add(option);
+    }
+
+    const setSuccess = ()=>{
+        setSuccessMessage("Success")
+        setTimeout(()=>{
+            setSuccessMessage("")
+        }, 3000)
     }
 
     return (
