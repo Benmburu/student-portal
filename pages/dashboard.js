@@ -4,8 +4,13 @@ import VerticalNavBar from "@components/VerticalNavBar"
 import styles from '@styles/Dashboard.module.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+import { useSession } from 'next-auth/react';
+
 
 const Dashboard = () =>{
+
+    const { data } = useSession()
+    console.log(data)
 
 
     return (

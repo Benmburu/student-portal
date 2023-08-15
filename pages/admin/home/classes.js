@@ -5,13 +5,7 @@ import AdminNavBar from "@components/AdminNavBar"
 import styles from '@styles/Dashboard.module.css';
 
 
-// import classesStyles from '@styles/classesStyles.module.css'
-
-const classesSchedule = () =>{
-    // const [ users, setUsers ] = useState([])
-    // const [ school, setSchool] = useState("SITDS")
-    // const [ classes_code, setclassesCode ] = useState("12345")
-    // const [ classesName, setclassesName ] = useState("Diploma in ICT")
+const ClassesSchedule = () =>{
     const [ action, setAction ] = useState("get")
     const [ errorMessage, setErrorMessage ] = useState("");
     const [ successMessage, setSuccessMessage ] = useState("");
@@ -237,4 +231,4 @@ const classesSchedule = () =>{
     )
 }
 
-export default classesSchedule;
+export default ClassesSchedule;

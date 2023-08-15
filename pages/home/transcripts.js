@@ -3,7 +3,7 @@ import Header from "@components/Header";
 import VerticalNavBar from "@components/VerticalNavBar"
 import styles from '@styles/Dashboard.module.css';
 
-const Dashboard = () =>{
+const Transcripts = () =>{
     return (
         <div className={styles.Dashboard}>
             <VerticalNavBar/>
@@ -17,4 +17,4 @@ const Dashboard = () =>{
     )
 }
 
-export default Dashboard
+export default Transcripts

@@ -4,8 +4,7 @@ import Header from "@components/Header";
 import AdminNavBar from "@components/AdminNavBar"
 import styles from '@styles/Dashboard.module.css';
 
-
-const CourseSchedule = () =>{
+const UnitRegistration = () =>{
     const [ action, setAction ] = useState("get")
     const [ errorMessage, setErrorMessage ] = useState("");
     const [ successMessage, setSuccessMessage ] = useState("");
@@ -210,4 +209,4 @@ const CourseSchedule = () =>{
     )
 }
 
-export default CourseSchedule;
+export default UnitRegistration;

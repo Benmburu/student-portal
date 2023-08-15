@@ -5,7 +5,7 @@ import AdminNavBar from "@components/AdminNavBar"
 import styles from '@styles/Dashboard.module.css';
 
 
-const CourseSchedule = () =>{
+const ExamResults = () =>{
     const [ action, setAction ] = useState("get")
     const [ errorMessage, setErrorMessage ] = useState("");
     const [ successMessage, setSuccessMessage ] = useState("");
@@ -17,7 +17,10 @@ const CourseSchedule = () =>{
             try {
             
                 const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
-                res.data.results.map((res)=>{addRow(res)})
+                // res.data.units.map((unit)=>{addRow(unit)})
+                console.log(res.data.units)
+                modifyColumnName(res.data.units)
+                res.data.examResults.map((res)=>{addRow(res)})
                 res.data.classes.map((className)=>{addOptions(className)})
 
             } catch (error) {
@@ -26,7 +29,21 @@ const CourseSchedule = () =>{
         })()
     },[])
 
-    const addRow = async (course)=>{
+    const modifyColumnName = (units)=>{
+        let table = document.getElementById("results")
+
+        //set the column names for the units for each class
+        table.rows[0].children[3].innerHTML = units[0]?.unitName || "unit1"
+        table.rows[0].children[4].innerHTML = units[1]?.unitName || "unit2"
+        table.rows[0].children[5].innerHTML = units[2]?.unitName || "unit3"
+        table.rows[0].children[6].innerHTML = units[3]?.unitName || "unit4"
+        table.rows[0].children[7].innerHTML = units[4]?.unitName || "unit5"
+        table.rows[0].children[8].innerHTML = units[5]?.unitName || "unit6"
+        table.rows[0].children[9].innerHTML = units[6]?.unitName || "unit7"
+        table.rows[0].children[10].innerHTML = units[7]?.unitName || "unit8"
+    }
+
+    const addRow = async (results)=>{
         
         let table = document.getElementById("results")
         let row = table.insertRow(-1)
@@ -42,24 +59,39 @@ const CourseSchedule = () =>{
         let cell8 = row.insertCell(7);
         let cell9 = row.insertCell(8);        
         let cell10 = row.insertCell(9);
-        let cell11 = row.insertCell(0);
+        let cell11 = row.insertCell(10);
         let cell12 = row.insertCell(11);
 
-        // Add some text to the new cells:
-        cell1.innerHTML = course?.serviceNumber || "NEW";
-        cell2.innerHTML = course?.studentName || "NEW";
-        cell3.innerHTML = course?.className || "NEW";
-        cell4.innerHTML = course?.unit1 || "NEW";
-        cell5.innerHTML = course?.unit2 || "NEW";
-        cell6.innerHTML = course?.unit3 || "NEW";
-        cell7.innerHTML = course?.unit4 || "NEW";
-        cell8.innerHTML = course?.unit5 || "NEW";
-        cell9.innerHTML = course?.unit6 || "NEW";
-        cell10.innerHTML = course?.unit7 || "NEW";
-        cell11.innerHTML = course?.unit8 || "NEW";
-        cell12.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
+        //read the column names for the units for each class which are to be used to populate the table according to the respective units
+        let unit1Name = table.rows[0].children[3].innerHTML 
+        let unit2Name = table.rows[0].children[4].innerHTML 
+        let unit3Name = table.rows[0].children[5].innerHTML 
+        let unit4Name = table.rows[0].children[6].innerHTML 
+        let unit5Name = table.rows[0].children[7].innerHTML 
+        let unit6Name = table.rows[0].children[8].innerHTML 
+        let unit7Name = table.rows[0].children[9].innerHTML 
+        let unit8Name = table.rows[0].children[10].innerHTML 
+
+        // Add some text to the new cells:
+        cell1.innerHTML = results?.serviceNumber || "NEW";
+        cell2.innerHTML = results?.studentName || "NEW";
+        cell3.innerHTML = results?.semester || "NEW";
+
+        //populate the table according to the respective units
+        cell4.innerHTML = results?.results?.filter((result)=>result.unitName === unit1Name)[0]?.marks || "NEW1";
+        cell5.innerHTML = results?.results?.filter((result)=>result.unitName === unit2Name)[0]?.marks || "NEW2";
+        cell6.innerHTML = results?.results?.filter((result)=>result.unitName === unit3Name)[0]?.marks || "NEW3";
+        cell7.innerHTML = results?.results?.filter((result)=>result.unitName === unit4Name)[0]?.marks || "NEW4";
+        cell8.innerHTML = results?.results?.filter((result)=>result.unitName === unit5Name)[0]?.marks || "NEW5";
+        cell9.innerHTML = results?.results?.filter((result)=>result.unitName === unit6Name)[0]?.marks || "NEW6";
+        cell10.innerHTML = results?.results?.filter((result)=>result.unitName === unit7Name)[0]?.marks || "NEW7";
+        cell11.innerHTML = results?.results?.filter((result)=>result.unitName === unit8Name)[0]?.marks || "NEW8";
+
+        cell12.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
+        
+        //make the cells editable
         cell1.setAttribute("contenteditable", true)
         cell2.setAttribute("contenteditable", true)
         cell3.setAttribute("contenteditable", true)
@@ -96,7 +128,42 @@ const CourseSchedule = () =>{
 
             let className = document.getElementById("class").value
 
-            const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action: "add", serviceNumber, studentName, semester, className, unit1, unit2, unit3, unit4, unit5, unit6, unit7, unit8 }), {headers:{"Content-Type" : "application/json"} })
+            let results = [
+                {
+                    unitName: unit1Name,
+                    marks: unit1
+                },
+                {
+                    unitName: unit2Name,
+                    marks: unit2
+                },
+                {
+                    unitName: unit3Name,
+                    marks: unit3
+                },
+                {
+                    unitName: unit4Name,
+                    marks: unit4
+                },
+                {
+                    unitName: unit5Name,
+                    marks: unit5
+                },
+                {
+                    unitName: unit6Name,
+                    marks: unit6
+                },
+                {
+                    unitName: unit7Name,
+                    marks: unit7
+                },
+                {
+                    unitName: unit8Name,
+                    marks: unit8
+                },
+            ]
+
+            const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action: "add", serviceNumber, studentName, semester, className, results }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             setSuccess()
             
@@ -135,7 +202,9 @@ const CourseSchedule = () =>{
             console.log('deleted')
             const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action, className: value }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res.data.students)
-            res.data.results.map((student)=>{addRow(student)})
+            console.log(res.data.units)
+            modifyColumnName(res.data.units)
+            res.data.examResults.map((student)=>{addRow(student)})
         } catch (error) {
             console.log(error)
         }
@@ -254,4 +323,4 @@ const CourseSchedule = () =>{
     )
 }
 
-export default CourseSchedule;
+export default ExamResults;

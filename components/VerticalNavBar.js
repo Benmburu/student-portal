@@ -12,7 +12,7 @@ const VerticalNavBar = () => {
         </li>
         <li>
           <Link href="/home/unit-registration" passHref>
-            <div className={styles.navItem}>Course Registration</div>
+            <div className={styles.navItem}>Unit Registration</div>
           </Link>
         </li>
         <li>
