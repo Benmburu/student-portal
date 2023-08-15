@@ -71,7 +71,7 @@ const UnitRegistration = () =>{
             console.log(filtered)
             // res.data.units.map((unit)=>addRow(unit))
 
-            res.data.students.map((student)=>{addRow(student)})
+            filtered.map((student)=>{addRow(student)})
         } catch (error) {
             console.log(error)
         }

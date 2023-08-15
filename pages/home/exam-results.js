@@ -59,8 +59,8 @@ const examResults = () =>{
     const updateTable = async (value)=>{
         try {
 
-            // const { data } = useSession()
-            // let email = data.user.email
+            const { data } = useSession()
+            let email = data.user.email
             
             console.log('classDropDownOption: ', value)
             let table = document.getElementById("results")
@@ -73,13 +73,8 @@ const examResults = () =>{
 
             const  res  = await axios.post("/api/exam-results", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
 
-            const filtered = res.data.results.filter((unit)=>results.semester===value)
+            const filtered = res.data.results.filter((results)=>results.semester===value)
             console.log(filtered)
-            // const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action, className: value }), {headers:{"Content-Type" : "application/json"} })
-            // // console.log(res.data.students)
-            // console.log(res.data.units)
-            // modifyColumnName(res.data.units)
-            // res.data.examResults.map((student)=>{addRow(student)})
         } catch (error) {
             console.log(error)
         }
