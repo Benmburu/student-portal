@@ -43,7 +43,7 @@ const CourseSchedule = () =>{
             <VerticalNavBar/>
             <div className={styles.body}>
                 <Header/>
-                <div className="body">
+                <div className="info">
                     <table id="schedule">
                         <tbody>
                         <tr>

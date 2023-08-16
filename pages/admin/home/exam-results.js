@@ -18,7 +18,6 @@ const ExamResults = () =>{
             
                 const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
                 // res.data.units.map((unit)=>{addRow(unit)})
-                console.log(res.data.units)
                 modifyColumnName(res.data.units)
                 res.data.examResults.map((res)=>{addRow(res)})
                 res.data.classes.map((className)=>{addOptions(className)})
@@ -75,19 +74,19 @@ const ExamResults = () =>{
         let unit8Name = table.rows[0].children[10].innerHTML 
 
         // Add some text to the new cells:
-        cell1.innerHTML = results?.serviceNumber || "NEW";
-        cell2.innerHTML = results?.studentName || "NEW";
-        cell3.innerHTML = results?.semester || "NEW";
+        cell1.innerHTML = results?.serviceNumber || "";
+        cell2.innerHTML = results?.studentName || "";
+        cell3.innerHTML = results?.semester || "";
 
         //populate the table according to the respective units
-        cell4.innerHTML = results?.results?.filter((result)=>result.unitName === unit1Name)[0]?.marks || "NEW1";
-        cell5.innerHTML = results?.results?.filter((result)=>result.unitName === unit2Name)[0]?.marks || "NEW2";
-        cell6.innerHTML = results?.results?.filter((result)=>result.unitName === unit3Name)[0]?.marks || "NEW3";
-        cell7.innerHTML = results?.results?.filter((result)=>result.unitName === unit4Name)[0]?.marks || "NEW4";
-        cell8.innerHTML = results?.results?.filter((result)=>result.unitName === unit5Name)[0]?.marks || "NEW5";
-        cell9.innerHTML = results?.results?.filter((result)=>result.unitName === unit6Name)[0]?.marks || "NEW6";
-        cell10.innerHTML = results?.results?.filter((result)=>result.unitName === unit7Name)[0]?.marks || "NEW7";
-        cell11.innerHTML = results?.results?.filter((result)=>result.unitName === unit8Name)[0]?.marks || "NEW8";
+        cell4.innerHTML = results?.results?.filter((result)=>result.unitName === unit1Name)[0]?.marks || "";
+        cell5.innerHTML = results?.results?.filter((result)=>result.unitName === unit2Name)[0]?.marks || "";
+        cell6.innerHTML = results?.results?.filter((result)=>result.unitName === unit3Name)[0]?.marks || "";
+        cell7.innerHTML = results?.results?.filter((result)=>result.unitName === unit4Name)[0]?.marks || "";
+        cell8.innerHTML = results?.results?.filter((result)=>result.unitName === unit5Name)[0]?.marks || "";
+        cell9.innerHTML = results?.results?.filter((result)=>result.unitName === unit6Name)[0]?.marks || "";
+        cell10.innerHTML = results?.results?.filter((result)=>result.unitName === unit7Name)[0]?.marks || "";
+        cell11.innerHTML = results?.results?.filter((result)=>result.unitName === unit8Name)[0]?.marks || "";
 
         cell12.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
@@ -131,37 +130,47 @@ const ExamResults = () =>{
             let results = [
                 {
                     unitName: unit1Name,
-                    marks: unit1
+                    marks: unit1,
+                    grade: gradeMarks(unit1)
                 },
                 {
                     unitName: unit2Name,
-                    marks: unit2
+                    marks: unit2,
+                    grade: gradeMarks(unit2)
                 },
                 {
                     unitName: unit3Name,
-                    marks: unit3
+                    marks: unit3,
+                    grade: gradeMarks(unit3)
                 },
                 {
                     unitName: unit4Name,
-                    marks: unit4
+                    marks: unit4,
+                    grade: gradeMarks(unit4)
                 },
                 {
                     unitName: unit5Name,
-                    marks: unit5
+                    marks: unit5,
+                    grade: gradeMarks(unit5)
                 },
                 {
                     unitName: unit6Name,
-                    marks: unit6
+                    marks: unit6,
+                    grade: gradeMarks(unit6)
                 },
                 {
                     unitName: unit7Name,
-                    marks: unit7
+                    marks: unit7,
+                    grade: gradeMarks(unit7)
                 },
                 {
                     unitName: unit8Name,
-                    marks: unit8
+                    marks: unit8,
+                    grade: gradeMarks(unit8)
                 },
             ]
+
+            console.log(results)
 
             const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action: "add", serviceNumber, studentName, semester, className, results }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
@@ -189,6 +198,25 @@ const ExamResults = () =>{
         
     }
 
+    const gradeMarks = (result)=>{
+        let marks = parseInt(result)
+        if (marks >= 70){
+            return 'A'
+        }
+        else if (marks >= 60){
+            return 'B'
+        }
+        else if (marks >= 50){
+            return 'C'
+        }
+        else if (marks >= 40){
+            return 'PASS'
+        }
+        else{
+            return 'FAIL'
+        }
+    }
+
     const updateTable = async (value)=>{
         try {
             
@@ -201,13 +229,42 @@ const ExamResults = () =>{
             }
             console.log('deleted')
             const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action, className: value }), {headers:{"Content-Type" : "application/json"} })
+            
+            modifyColumnName(res.data.units)
+            // console.log('units: ',res.data.units)
+            res.data.examResults.map((student)=>{addRow(student)})
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const updateSemesterTable = async (value)=>{
+        try {
+            
+            console.log('classDropDownOption: ', value)
+            let table = document.getElementById("results")
+
+            for(let i = table.rows.length - 1; i > 0; i--)
+            {
+                table.deleteRow(i);
+            }
+            console.log('deleted')
+            const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action, semester: value }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res.data.students)
-            console.log(res.data.units)
+            // console.log(res.data.units)
             modifyColumnName(res.data.units)
             res.data.examResults.map((student)=>{addRow(student)})
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const addSemesterOptions = (classes)=>{
+        let classDropDown = document.getElementById("semester")
+        let option = document.createElement("option");
+        option.text = classes.semester;
+        option.value = classes.semester;
+        classDropDown.add(option);
     }
 
     const addOptions = (classes) =>{
@@ -230,10 +287,18 @@ const ExamResults = () =>{
             <AdminNavBar/>
             <div className={styles.body}>
                 <Header/>
-                <div className="body">
-                    <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
-                        <option value=""></option>
-                    </select>
+                <div className="info">
+                    <div className="options">
+                        <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
+                            <option value="">Select class</option>
+                        </select>
+
+                        {/* <select name="semester" id="semester" onChange={(e)=>updateSemesterTable(e.target.value)}>
+                            <option value="">Select semester</option>
+                        </select> */}
+
+                    </div>
+                    
 
                     <table id="results">
                         <tbody>
@@ -274,23 +339,10 @@ const ExamResults = () =>{
             <style jsx>
                 {
                     `
-                    .body{
-                        height: 100%;
-                        color: black;
+                    
+
+                    .options{
                         display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-direction: column;
-                    }
-
-                    #schedule td, th {
-                        border: 1px solid #000000;
-                        text-align: left;
-                        padding: 8px;
-                      }
-
-                    tr:nth-child(even) {
-                        background-color: #dddddd;
                     }
 
                     button{

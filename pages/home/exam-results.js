@@ -6,21 +6,21 @@ import styles from '@styles/Dashboard.module.css';
 import { useSession } from "next-auth/react";
 
 
-const examResults = () =>{
-    
+export default function examResults(){
+
+    let email = "";
+    let res = "";
+
     (async ()=>{
         try {
             const { data } = useSession()
-            let email = data.user.email
-            // // console.log(email)
+            email = data?.user?.email
+            console.log(email)
 
-            const  res  = await axios.post("/api/exam-results", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
-            // console.log(res.data.results[0].results)
-            // res.data.results.map((result)=>addRow(result))
+            res  = await axios.post("/api/exam-results", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
+
             for (let i=0; i<res.data.results.length;i++){
-                console.log(i)
                 let semester = res.data.results[i].semester
-                // let grade = res.data.results[i]?.grade
                 res.data.results[i].results.map((result)=>addRow(result, semester))
             }
 
@@ -31,7 +31,6 @@ const examResults = () =>{
                 }
             })
 
-            // console.log(semesters)
             semesters.map((semester)=>addOptions(semester))
 
         } catch (error) {
@@ -39,29 +38,27 @@ const examResults = () =>{
         }
     })()
 
-    const addRow = async (results, semester)=>{
+    const addRow = async (results, semester, grade)=>{
         
         let table = document.getElementById("results")
         let row = table.insertRow(-1)
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
-        // let cell3 = row.insertCell(2);
         let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
         
        
         cell1.innerHTML = results?.unitName
         cell2.innerHTML = results?.marks
-        // cell3.innerHTML = grade  
-        cell3.innerHTML = semester        
+        cell3.innerHTML = results?.grade  
+        cell4.innerHTML = semester        
     }
 
     const updateTable = async (value)=>{
         try {
+            console.log('email2', email)
 
-            const { data } = useSession()
-            let email = data.user.email
-            
             console.log('classDropDownOption: ', value)
             let table = document.getElementById("results")
 
@@ -70,11 +67,11 @@ const examResults = () =>{
                 table.deleteRow(i);
             }
             console.log('deleted')
-
-            const  res  = await axios.post("/api/exam-results", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
-
+            // const  res  = await axios.post("/api/exam-results", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
             const filtered = res.data.results.filter((results)=>results.semester===value)
-            console.log(filtered)
+            filtered[0].results.map((result)=>addRow(result, filtered[0].semester))
+
+
         } catch (error) {
             console.log(error)
         }
@@ -93,9 +90,9 @@ const examResults = () =>{
             <VerticalNavBar/>
             <div className={styles.body}>
                 <Header/>
-                <div className="body">
+                <div className="info">
                     <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
-                        <option value=""></option>
+                        <option value="">Select</option>
                     </select>
 
                     <table id="results">
@@ -104,7 +101,7 @@ const examResults = () =>{
                             
                             <th>Unit name</th>
                             <th>Total marks</th>
-                            {/* <th>Grade</th> */}
+                            <th>Grade</th>
                             <th>Semester</th>
                             
                         </tr>
@@ -119,14 +116,7 @@ const examResults = () =>{
             <style jsx>
                 {
                     `
-                    .body{
-                        height: 100%;
-                        color: black;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-direction: column;
-                    }
+                    
 
                     #schedule td, th {
                         border: 1px solid #000000;
@@ -168,4 +158,3 @@ const examResults = () =>{
     )
 }
 
-export default examResults;

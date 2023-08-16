@@ -13,7 +13,7 @@ const Dashboard = () =>{
             <AdminNavBar/>
             <div className={styles.body}>
                 <Header/>
-                <div className="body">
+                <div className="info">
                 <Carousel>
                   <div>
                       <img src="https://mod.go.ke/wp-content/uploads/2021/12/deftec-01-01-01-01-01-1024x427-1.png" alt="image1"/>

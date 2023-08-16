@@ -83,10 +83,10 @@ const ClassRegistration = () =>{
 
         // Add some text to the new cells:
         cell1.innerHTML = '<input type="checkbox">';
-        cell2.innerHTML = "NEW";
-        cell3.innerHTML = "NEW";
-        cell4.innerHTML = "NEW";
-        // cell5.innerHTML = "NEW CELL2";
+        cell2.innerHTML = "";
+        cell3.innerHTML = "";
+        cell4.innerHTML = "";
+        // cell5.innerHTML = "";
         // cell6.innerHTML = "<button>save</button> <button>delete</button>";
 
         cell1.setAttribute("contenteditable", false)
@@ -172,7 +172,7 @@ const ClassRegistration = () =>{
             <AdminNavBar/>
             <div className={styles.body}>
                 <Header/>
-                <div className="body">
+                <div className="info">
                     
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@components/Header";
 import VerticalNavBar from "@components/VerticalNavBar"
 import styles from '@styles/Dashboard.module.css';
@@ -6,15 +6,20 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 
 const UnitRegistration = () =>{
+    const [ successMessage, setSuccessMessage ] = useState("");
+    // let successMessage = "";
+    let email = "";
+    let res = "";
+    let registeredUnits = [];
+    let unitDetails = "";
 
     (async ()=>{
         try {
             const { data } = useSession()
-            let email = data.user.email
-            // // console.log(email)
+            email = data?.user?.email
 
-            const  res  = await axios.post("/api/unit-registration", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
-            console.log(res.data.units)
+            res  = await axios.post("/api/unit-registration", JSON.stringify({ action: "get", email: email }), {headers:{"Content-Type" : "application/json"} })
+            // console.log(res.data.units)
             res.data.units.map((unit)=>addRow(unit))
 
             let semesters = []
@@ -48,14 +53,43 @@ const UnitRegistration = () =>{
         cell2.innerHTML = unit.unitCode
         cell3.innerHTML = unit.unitName
         cell4.innerHTML = unit.semester
+
+        let rowCheckbox = document.getElementById(rowId);
+        rowCheckbox.addEventListener('change', (e)=>{
+            let unitCode = e.target.parentNode.parentNode.children[1].innerHTML
+            let unitName = e.target.parentNode.parentNode.children[2].innerHTML
+            let semester = e.target.parentNode.parentNode.children[3].innerHTML
+
+            unitDetails = {
+                unitCode: unitCode,
+                unitName: unitName,
+                semester: semester
+            }
+
+            if (e.target.checked){
+                registeredUnits.push(unitDetails)
+                // console.log('dets', unitCode, unitName, semester)
+            }
+            // else{
+            //     let index = registeredUnits.indexOf(unitDetails)
+            //     console.log('index', index)
+            //     registeredUnits.splice(index, 1)
+            // }
+            // console.log('registeredUnits', registeredUnits)
+        })
            
+    }
+
+    const submitUnits = async ()=>{
+        // e.preventDefault()
+
+        res  = await axios.post("/api/unit-registration", JSON.stringify({ action: "add", email: email, registeredUnits }), {headers:{"Content-Type" : "application/json"} })
+        console.log(res.data.units)
+        // setSuccess()
     }
 
     const updateTable = async (value)=>{
         try {
-
-            const { data } = useSession()
-            let email = data.user.email
             
             console.log('classDropDownOption: ', value)
             let table = document.getElementById("units")
@@ -65,11 +99,9 @@ const UnitRegistration = () =>{
                 table.deleteRow(i);
             }
             console.log('deleted')
-            const  res  = await axios.post("/api/unit-registration", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
+            // const  res  = await axios.post("/api/unit-registration", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
 
             const filtered = res.data.units.filter((unit)=>unit.semester===value)
-            console.log(filtered)
-            // res.data.units.map((unit)=>addRow(unit))
 
             filtered.map((student)=>{addRow(student)})
         } catch (error) {
@@ -85,14 +117,23 @@ const UnitRegistration = () =>{
         unitsDropDown.add(option);
     }
 
+    // const setSuccess = ()=>{
+    //     // successMessage = "Success";
+    //     setSuccessMessage("Success")
+    //     setTimeout(()=>{
+    //         // successMessage = "";
+    //         setSuccessMessage("")
+    //     }, 3000)
+    // }
+
     return (
         <div className={styles.Dashboard}>
             <VerticalNavBar/>
             <div className={styles.body}>
                 <Header/>
-                <div className="body">
+                <div className="info">
                     <select name="class" id="semester" onChange={(e)=>updateTable(e.target.value)}>
-                        <option value=""></option>
+                        <option value="">Select</option>
                     </select>
 
                     <table id="units">
@@ -106,8 +147,8 @@ const UnitRegistration = () =>{
                         </tr>
                         </tbody>
                     </table>
-
-                    <button>Submit</button>
+                    { successMessage && <p id="successMessage">{successMessage}</p>}
+                    <button onClick={submitUnits}>Submit</button>
                 </div>
             </div>
             <style jsx>
@@ -136,6 +177,17 @@ const UnitRegistration = () =>{
                         color: black;
                         border: 2px solid black;
                         border-radius: 5px;
+                    }
+
+                    #successMessage{
+                        background-color: rgba(103, 230, 143, 0.1);
+                        padding: 5px;
+                        border: 1px solid #67e68f;
+                        border-radius: 4px;
+                        color: #67e68f;
+                        margin-bottom: 10px;
+                        font-family: 'Courier New', Courier, monospace;
+                        font-size: 13px; 
                     }
                     `
                 }

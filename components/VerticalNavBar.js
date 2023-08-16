@@ -25,11 +25,6 @@ const VerticalNavBar = () => {
             <div className={styles.navItem}>Exam Results</div>
           </Link>
         </li>
-        <li>
-          <Link href="/home/transcripts" passHref>
-            <div className={styles.navItem}>Transcripts</div>
-          </Link>
-        </li>
       </ul>
     </nav>
   );

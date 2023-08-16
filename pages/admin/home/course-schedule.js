@@ -37,9 +37,9 @@ const CourseSchedule = () =>{
         let cell4 = row.insertCell(3);
 
         // Add some text to the new cells:
-        cell1.innerHTML = course?.activity || "NEW";
-        cell2.innerHTML = course?.startDate || "NEW";
-        cell3.innerHTML = course?.endDate || "NEW";
+        cell1.innerHTML = course?.activity || "";
+        cell2.innerHTML = course?.startDate || "";
+        cell3.innerHTML = course?.endDate || "";
         cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
@@ -99,7 +99,7 @@ const CourseSchedule = () =>{
             <AdminNavBar/>
             <div className={styles.body}>
                 <Header/>
-                <div className="body">
+                <div className="info">
                     <table id="schedule">
                         <tbody>
                         <tr>
@@ -113,11 +113,7 @@ const CourseSchedule = () =>{
                         
                         
                     </table>
-                    { successMessage && <p id="successMessage">{successMessage}</p>
-                        // && setTimeout(()=>{
-                        //     setSuccessMessage("")
-                        // }, 3000)
-                    }
+                    { successMessage && <p id="successMessage">{successMessage}</p>}
                     <div className="row">
                         <button onClick={addRow}>Add new row</button>
                     </div>
@@ -170,6 +166,7 @@ const CourseSchedule = () =>{
                         margin-bottom: 10px;
                         font-family: 'Courier New', Courier, monospace;
                         font-size: 13px;
+                    }
                     `
                 }
             </style>

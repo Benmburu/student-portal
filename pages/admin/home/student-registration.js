@@ -126,8 +126,8 @@ const StudentRegistration = () =>{
 
         // Add some text to the new cells:
         cell1.innerHTML = 'NEW';
-        cell2.innerHTML = "NEW";
-        cell3.innerHTML = "NEW";
+        cell2.innerHTML = "";
+        cell3.innerHTML = "";
         cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
@@ -188,10 +188,10 @@ const StudentRegistration = () =>{
             <AdminNavBar/>
             <div className={styles.body}>
                 <Header/>
-                <div className="body">
+                <div className="info">
 
                     <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
-                        <option value=""></option>
+                        <option value="">Select</option>
                     </select>
 
                     <table id="courses">

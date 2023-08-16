@@ -16,12 +16,10 @@ export default async function handler(req, res) {
         console.log(email)
 
         try {
-            // const options = className === ""? {semester: ""} : { semester: semester }
             let user = await User.findOne({ email })
-            let serviceNumber = user.serviceNumber
+            let serviceNumber = user?.serviceNumber
             const results = await ExamResults.find({ serviceNumber })
 
-            console.log(serviceNumber)
             res.status(200).json({ results })
 
         } catch (error) {

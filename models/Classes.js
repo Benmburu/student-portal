@@ -12,6 +12,10 @@ const ClassSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    courseCode: {
+      type: String,
+      required: false,
+    },
     school: {
       type: String,
       required: false,

@@ -33,15 +33,18 @@ const ClassesSchedule = () =>{
         let cell2 = row.insertCell(1);
         let cell3 = row.insertCell(2);
         let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
         
         cell1.innerHTML = classes.className
         cell2.innerHTML = classes.school
-        cell3.innerHTML = classes.course
-        cell4.innerHTML = `<button id=${classes.className}>save</button> <button id=${classes.className+"-del"}>delete</button>`
+        cell3.innerHTML = classes.courseCode
+        cell4.innerHTML = classes.course
+        cell5.innerHTML = `<button id=${classes.className}>save</button> <button id=${classes.className+"-del"}>delete</button>`
 
         cell1.setAttribute("contenteditable", true)
         cell2.setAttribute("contenteditable", true)
         cell3.setAttribute("contenteditable", true)
+        cell4.setAttribute("contenteditable", true)
 
         let editButton = document.getElementById(classes.className);
         let deleteButton = document.getElementById(`${classes.className+"-del"}`);
@@ -55,8 +58,9 @@ const ClassesSchedule = () =>{
             console.log(clickedRow.children[0].innerHTML)
             let className = clickedRow.children[0].innerHTML
             let school = clickedRow.children[1].innerHTML
-            let course = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action: "add", className, school, course }), {headers:{"Content-Type" : "application/json"} })
+            let courseCode = clickedRow.children[2].innerHTML
+            let course = clickedRow.children[3].innerHTML
+            const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action: "add", className, school, courseCode, course }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             setSuccess()
             
@@ -72,8 +76,9 @@ const ClassesSchedule = () =>{
             console.log(clickedRow.children[0].innerHTML)
             let className = clickedRow.children[0].innerHTML
             let school = clickedRow.children[1].innerHTML
-            let course = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action: "delete", className, school, course }), {headers:{"Content-Type" : "application/json"} })
+            let courseCode = clickedRow.children[3].innerHTML
+            let course = clickedRow.children[3].innerHTML
+            const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action: "delete", className, school, courseCode, course }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             clickedRow.remove()
             setSuccess()
@@ -94,17 +99,20 @@ const ClassesSchedule = () =>{
         let cell2 = row.insertCell(1);
         let cell3 = row.insertCell(2);
         let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
 
         // Add some text to the new cells:
-        cell1.innerHTML = 'NEW';
-        cell2.innerHTML = "NEW";
-        cell3.innerHTML = "NEW";
-        cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
+        cell1.innerHTML = "";
+        cell2.innerHTML = "";
+        cell3.innerHTML = "";
+        cell4.innerHTML = "";
+        cell5.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
         cell1.setAttribute("contenteditable", true)
         cell2.setAttribute("contenteditable", true)
         cell3.setAttribute("contenteditable", true)
+        cell4.setAttribute("contenteditable", true)
 
         let editButton = document.getElementById(buttonId);
         let deleteButton = document.getElementById(`${buttonId+"-del"}`);
@@ -118,8 +126,9 @@ const ClassesSchedule = () =>{
             console.log(clickedRow.children[0].innerHTML)
             let className = clickedRow.children[0].innerHTML
             let school = clickedRow.children[1].innerHTML
-            let course = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action: "add", className, school, course }), {headers:{"Content-Type" : "application/json"} })
+            let courseCode = clickedRow.children[2].innerHTML
+            let course = clickedRow.children[3].innerHTML
+            const  res  = await axios.post("/api/admin/classes", JSON.stringify({ action: "add", className, school, courseCode, course }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             setSuccess()
             
@@ -157,13 +166,14 @@ const ClassesSchedule = () =>{
             <AdminNavBar/>
             <div className={styles.body}>
                 <Header/>
-                <div className="body">
+                <div className="info">
                     <table id="classess">
                         <tbody>
                         <tr>
                             
                             <th>Class name</th>
                             <th>School</th>
+                            <th>Course code</th>
                             <th>Course</th>
                             <th>Action</th>
                         </tr>
@@ -190,12 +200,6 @@ const ClassesSchedule = () =>{
                         justify-content: center;
                         flex-direction: column;
                     }
-
-                    #classess td, th {
-                        border: 1px solid #000000;
-                        text-align: left;
-                        padding: 8px;
-                      }
 
                     tr:nth-child(even) {
                         background-color: #dddddd;

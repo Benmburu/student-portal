@@ -93,6 +93,9 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    
+  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 a {
@@ -104,4 +107,92 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+td, th {
+  border: 1px solid #000000;
+  text-align: center;
+  text-overflow: ellipsis;
+  padding: 5px;
+  
+}
+
+tr:nth-child(even) {
+  background-color: #f1dddd;
+  /* background-color: #f3f3f3; */
+}
+
+table{
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+tbody th {
+  background-color: #30534c;
+  color: #ffffff;
+  text-align: center;
+}
+
+tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:last-of-type {
+  border-bottom: 2px solid #497e73;
+  
+}
+
+
+.info{
+  height: 100%;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 20px;
+  margin-right: 20px;
+  overflow-x:scroll;
+  overflow-y: scroll;
+}
+
+
+
+select {
+  margin: 10px;
+  text-align: center;
+  font-weight: bold;
+  width: 170px;
+  padding: 7px;
+  border: 0 !important;
+  background-color: #497e73;
+  /* needed */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* SVG background image */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Ctitle%3Edown-arrow%3C%2Ftitle%3E%3Cg%20fill%3D%22%23000000%22%3E%3Cpath%20d%3D%22M10.293%2C3.293%2C6%2C7.586%2C1.707%2C3.293A1%2C1%2C0%2C0%2C0%2C.293%2C4.707l5%2C5a1%2C1%2C0%2C0%2C0%2C1.414%2C0l5-5a1%2C1%2C0%2C1%2C0-1.414-1.414Z%22%20fill%3D%22%23000000%22%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    background-size: .6em;
+    background-position: calc(100% - 1.3em) center;
+    background-repeat: no-repeat;
+}
+select::-ms-expand {
+    display: none;
+}
+
+button{
+  min-width: 57px;
+  background-color: inherit;
+  display: block;
+  color: #000000;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 1px;
+  cursor: pointer;
 }
