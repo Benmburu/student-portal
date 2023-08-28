@@ -56,13 +56,13 @@ export default NextAuth({
     ],
     callbacks: {
         async jwt({ token, user }) {
-            console.log('step 1', user)
+            // console.log('step 1', user)
           /* Step 1: update the token based on the user object */
           if (user) {
             // console.log('step 2')
             token.role = user.role;
           }
-          console.log('step 2', token)
+        //   console.log('step 2', token)
           return token;
         },
         session({ session, token }) {
@@ -71,7 +71,7 @@ export default NextAuth({
           if (token && session.user) {
             session.user.role = token.role;
           }
-          console.log('step 3', session)
+        //   console.log('step 3', session)
           return session;
         }, 
       },

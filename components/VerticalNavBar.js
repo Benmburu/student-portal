@@ -8,7 +8,7 @@ const VerticalNavBar = () => {
       <Image src="/deftec.png" alt="deftec logo" width="150" height="120" />
       <ul>
         <li>
-          <Link href="/dashboard" passHref>
+          <Link href="/home/dashboard" passHref>
             <div className={styles.navItem}>Home</div>
           </Link>
         </li>

@@ -25,7 +25,7 @@ export default function examResults(){
             }
 
             let semesters = []
-            res.data.results.map((unit)=>{
+            res.data.results.map((unit)=>{ 
                 if (semesters.indexOf(unit.semester) === -1){
                     semesters.push(unit.semester)
                 }
@@ -92,7 +92,7 @@ export default function examResults(){
                 <Header/>
                 <div className="info">
                     <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
-                        <option value="">Select</option>
+                        <option value="">Select semester</option>
                     </select>
 
                     <table id="results">
