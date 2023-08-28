@@ -36,6 +36,11 @@ const userSchema = new mongoose.Schema(
       required: false,
       default: false,
     },
+    role: {
+      type: String,
+      required: true,
+      default: "student",
+    },
   },
   { collection: 'users' }, // the collection this schema refers to
   { timestamps: true }

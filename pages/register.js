@@ -33,19 +33,31 @@ export default function Register(){
   
   const handleSubmit = async (e) =>{
     e.preventDefault()
+    refreshMessages()
     // console.log(serviceNumber, name, email, password)
 
     try{
       const { res } = await axios.post("/api/register", JSON.stringify({ serviceNumber, name, email, password }), {headers:{"Content-Type" : "application/json"} })
-      refreshMessages()
-      setSuccessMessage("User successfully registered. Please click the link sent to your email address to verify your account.")
-      setErrorMessage("")
+      
+      setSuccess("User successfully registered. Please click the link sent to your email address to verify your account.")
 
     }catch(error){
-      refreshMessages()
-      setErrorMessage(error.response.data)
-      setSuccessMessage("")
+      setError(error.response.data)
     }
+  }
+
+  const setSuccess = (message)=>{
+    setSuccessMessage(message)
+    setTimeout(()=>{
+        setSuccessMessage("")
+    }, 3000)
+  }
+
+  const setError = (message)=>{
+    setErrorMessage(message)
+    setTimeout(()=>{
+      setErrorMessage("")
+    }, 3000)
   }
   
   return (

@@ -16,10 +16,14 @@ export default async function handler(req, res) {
         try {
             // check if user is registered            
             const user = await User.findOne({ serviceNumber })
+            console.log(user)
             if (!user){
                 return res.status(401).json("Invalid email or password")
             }
             
+            if (!user.password){
+                return res.status(401).json("Please register to set your password.")
+            }
             // check if password is correct
             const isPasswordMatched = await bcrypt.compare( password, user.password )
             if (!isPasswordMatched){

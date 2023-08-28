@@ -35,17 +35,19 @@ const UnitRegistration = () =>{
         let cell2 = row.insertCell(1);
         let cell3 = row.insertCell(2);
         let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
 
         // Add some text to the new cells:
         cell1.innerHTML = unit?.unitCode || "";
         cell2.innerHTML = unit?.unitName || "";
-        cell3.innerHTML = unit?.semester || "";
-        cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
+        cell3.innerHTML = unit?.className || document.getElementById("class").value;
+        cell4.innerHTML = unit?.semester || "";
+        cell5.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
         cell1.setAttribute("contenteditable", true)
         cell2.setAttribute("contenteditable", true)
-        cell3.setAttribute("contenteditable", true)
+        cell4.setAttribute("contenteditable", true)
 
         let editButton = document.getElementById(buttonId);
         let deleteButton = document.getElementById(`${buttonId+"-del"}`);
@@ -128,9 +130,7 @@ const UnitRegistration = () =>{
             <div className={styles.body}>
                 <Header/>
                 <div className="info">
-                    <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
-                        <option value="">Select</option>
-                    </select>
+                    
 
                     <table id="units">
                         <tbody>
@@ -138,6 +138,11 @@ const UnitRegistration = () =>{
                             
                             <th>Unit code</th>
                             <th>Unit name</th>
+                            <th>
+                                <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
+                                    <option value="">Select class</option>
+                                </select>
+                            </th>
                             <th>Semester</th>
                             <th>Action</th>
                         </tr>

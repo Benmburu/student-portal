@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
         try {
             if (action === "get"){
-                const options = className === ""? {class: ""} : { class: className }
+                const options = className === ""? {} : { class: className }
                 const students = await User.find(options)
 
                 const classes = await Classes.find({})

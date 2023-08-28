@@ -16,7 +16,7 @@ const ExamResults = () =>{
         (async ()=>{
             try {
             
-                const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
+                const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action, className: "" }), {headers:{"Content-Type" : "application/json"} })
                 // res.data.units.map((unit)=>{addRow(unit)})
                 modifyColumnName(res.data.units)
                 res.data.examResults.map((res)=>{addRow(res)})
@@ -300,7 +300,7 @@ const ExamResults = () =>{
                     </div>
                     
 
-                    <table id="results">
+                    <table id="results"> 
                         <tbody>
                         <tr id="10">
                             

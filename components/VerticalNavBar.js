@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import styles from '@styles/VerticalNavBar.module.css';
+import Image from 'next/image';
 
 const VerticalNavBar = () => {
   return (
     <nav className={styles.verticalNavBar}>
+      <Image src="/deftec.png" alt="deftec logo" width="150" height="120" />
       <ul>
         <li>
           <Link href="/dashboard" passHref>

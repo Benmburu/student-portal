@@ -52,67 +52,7 @@ const StudentRegistration = () =>{
         classDropDown.add(option);
     }
 
-    const addRow = (course)=>{
-        let table = document.getElementById("courses")
-        let row = table.insertRow(-1)
-
-        let cell1 = row.insertCell(0);
-        let cell2 = row.insertCell(1);
-        let cell3 = row.insertCell(2);
-        let cell4 = row.insertCell(3);
-        
-        cell1.innerHTML = course.serviceNumber
-        cell2.innerHTML = course.name
-        cell3.innerHTML = course.email
-        cell4.innerHTML = `<button id=${course.serviceNumber}>save</button> <button id=${course.serviceNumber+"-del"}>delete</button>`
-
-        cell1.setAttribute("contenteditable", true)
-        cell2.setAttribute("contenteditable", true)
-        cell3.setAttribute("contenteditable", true)
-
-        let editButton = document.getElementById(course.serviceNumber);
-        let deleteButton = document.getElementById(`${course.serviceNumber+"-del"}`);
-
-        editButton.addEventListener('click', async (e) => {
-            e.preventDefault()
-            setSuccessMessage("")
-
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
-            console.log(clickedRow.children[0].innerHTML)
-            let serviceNumber = clickedRow.children[0].innerHTML
-            let name = clickedRow.children[1].innerHTML
-            let email = clickedRow.children[2].innerHTML
-            let className = document.getElementById('class').value 
-            const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "add", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
-            // console.log(res)
-            setSuccess()
-            
-        });
-
-        deleteButton.addEventListener('click', async (e) => {
-            e.preventDefault()
-            setSuccessMessage("")
-
-            console.log(e.target)
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
-            console.log(clickedRow.children[0].innerHTML)
-            let serviceNumber = clickedRow.children[0].innerHTML
-            let name = clickedRow.children[1].innerHTML
-            let email = clickedRow.children[2].innerHTML
-            let className = document.getElementById('class').value
-            const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "delete", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
-            // console.log(res)
-            clickedRow.remove()
-            setSuccess()
-            
-        });
-    }
-
-    const handleSubmit = async (e)=>{
-        e.preventDefault()
-        
+    const addRow = async (course)=>{
         
         
         let table = document.getElementById("courses")
@@ -123,17 +63,20 @@ const StudentRegistration = () =>{
         let cell2 = row.insertCell(1);
         let cell3 = row.insertCell(2);
         let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
 
         // Add some text to the new cells:
-        cell1.innerHTML = 'NEW';
-        cell2.innerHTML = "";
-        cell3.innerHTML = "";
-        cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
+        cell1.innerHTML = course?.serviceNumber || ""
+        cell2.innerHTML = course?.name || ""
+        cell3.innerHTML = course?.email || ""
+        cell4.innerHTML = course?.class || document.getElementById("class").value
+        cell5.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
         cell1.setAttribute("contenteditable", true)
         cell2.setAttribute("contenteditable", true)
         cell3.setAttribute("contenteditable", true)
+        // cell4.setAttribute("contenteditable", true)
 
         let editButton = document.getElementById(buttonId);
         let deleteButton = document.getElementById(`${buttonId+"-del"}`);
@@ -148,7 +91,7 @@ const StudentRegistration = () =>{
             let serviceNumber = clickedRow.children[0].innerHTML
             let name = clickedRow.children[1].innerHTML
             let email = clickedRow.children[2].innerHTML
-            let className = document.getElementById('class').value
+            let className = clickedRow.children[3].innerHTML
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "add", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             setSuccess()
@@ -166,7 +109,7 @@ const StudentRegistration = () =>{
             let serviceNumber = clickedRow.children[0].innerHTML
             let name = clickedRow.children[1].innerHTML
             let email = clickedRow.children[2].innerHTML
-            let className = document.getElementById('class').value
+            let className = clickedRow.children[3].innerHTML
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "delete", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             clickedRow.remove()
@@ -190,9 +133,9 @@ const StudentRegistration = () =>{
                 <Header/>
                 <div className="info">
 
-                    <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
-                        <option value="">Select</option>
-                    </select>
+                    {/* <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
+                        <option value="">Select class</option>
+                    </select> */}
 
                     <table id="courses">
                         <tbody>
@@ -201,6 +144,12 @@ const StudentRegistration = () =>{
                             <th>serviceNumber</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>
+                                <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
+                                    <option value="">Select class</option>
+                                </select>
+                            </th>
+                            
                             <th>Action</th>
                         </tr>
                         </tbody>
@@ -209,7 +158,7 @@ const StudentRegistration = () =>{
                     </table>
                     { successMessage && <p className="success">{successMessage}</p> }
                     <div className="row">
-                        <button onClick={handleSubmit}>Add new row</button>
+                        <button onClick={addRow}>Add new row</button>
                     </div>
                     
                 </div>

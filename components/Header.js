@@ -1,17 +1,18 @@
 import { useSession, signOut } from 'next-auth/react';
+import styles from '@styles/Header.module.css';
 
 export default function Header() {
     const { data } = useSession()
    
     return (
-        <header className="header">
-            <div className="user-info">
+        <header className={styles.header}>
+            <div className={styles.userInfo}>
                 {data?.user ? (
-                    <div className="user-profile">
-                        <span className="username">{`Hi ${data?.user?.name}`}</span>
+                    <div className={styles.userProfile}>
+                        <span className={styles.username}>{`Hi ${data?.user?.name}`}</span>
                         <img src={`https://api.dicebear.com/6.x/lorelei/svg?seed=${data.user.name}`} alt={data?.user?.name} />
                         
-                        <button className='logout' onClick={()=> signOut()}>Logout</button>
+                        <button className={styles.logout} onClick={()=> signOut()}>Logout</button>
                     </div>
                     ):
                     (
@@ -22,7 +23,7 @@ export default function Header() {
                 }
             </div>
 
-            <style jsx>{`
+            {/* <style jsx>{`
                 .header {
                     font-family: monospace;
                     color: black;
@@ -34,6 +35,7 @@ export default function Header() {
                     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
                     width: 100%;
                     height: 50px;
+                    border-left: 1px solid black;
                 
                 }
 
@@ -70,7 +72,7 @@ export default function Header() {
                     cursor: pointer;
                     
                 }
-            `}</style>
+            `}</style> */}
         </header>
     );
 }

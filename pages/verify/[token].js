@@ -17,9 +17,9 @@ export default function verify(){
             setErrorMessage("")
 
             // wait 3 seconds then redirect user to login page
-            // setTimeout(()=>{
-            //     router.push("/login")
-            // }, 2000)
+            setTimeout(()=>{
+                router.push("/login")
+            }, 2000)
             
       
         }catch(error){

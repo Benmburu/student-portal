@@ -1,24 +1,5 @@
 import mongoose, { model } from "mongoose";
 
-// const courseSchema = new mongoose.Schema(
-//     {
-//         course_code: {
-//             type: String,
-//         }
-//     },
-//     {
-//         school: {
-//             type: String,
-//         }
-//     },
-//     {
-//         course_name: {
-//             type: String,
-//         }
-//     },
-//     {collection: 'courses'}
-// );
-
 const courseSchema = new mongoose.Schema(
     {
         course_code: {

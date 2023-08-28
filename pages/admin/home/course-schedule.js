@@ -56,9 +56,9 @@ const CourseSchedule = () =>{
 
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
-            let activity = clickedRow.children[0].innerHTML
-            let startDate = clickedRow.children[1].innerHTML
-            let endDate = clickedRow.children[2].innerHTML
+            let activity = clickedRow.children[0].innerText
+            let startDate = clickedRow.children[1].innerText
+            let endDate = clickedRow.children[2].innerText
             const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "add", activity, startDate, endDate }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             // setSuccessMessage("Success")
@@ -73,10 +73,10 @@ const CourseSchedule = () =>{
             console.log(e.target)
             let clickedElement = e.target
             let clickedRow = clickedElement.parentNode.parentNode;
-            console.log(clickedRow.children[0].innerHTML)
-            let activity = clickedRow.children[0].innerHTML
-            let startDate = clickedRow.children[1].innerHTML
-            let endDate = clickedRow.children[2].innerHTML
+            console.log(clickedRow.children[0].innerText)
+            let activity = clickedRow.children[0].innerText
+            let startDate = clickedRow.children[1].innerText
+            let endDate = clickedRow.children[2].innerText
             const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "delete", activity, startDate, endDate }), {headers:{"Content-Type" : "application/json"} })
             // console.log( res)
             clickedRow.remove()

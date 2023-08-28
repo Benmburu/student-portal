@@ -26,6 +26,11 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    role: {
+      type: String,
+      required: true,
+      default: "admin",
+    },
   },
   { collection: 'admin' }, // the collection this schema refers to
   { timestamps: true }

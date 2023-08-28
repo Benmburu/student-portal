@@ -13,6 +13,7 @@ export default async function handler(req, res) {
         // get data stored in the request body
         const { action, className } = req.body;    
         console.log(action)
+        console.log('className',className)
 
         try {
             if (action === "get"){
@@ -21,7 +22,7 @@ export default async function handler(req, res) {
                 const units = await Units.find(options)
 
                 const classes = await Classes.find({})
-                console.log(units)
+                console.log('examResults', examResults)
                 res.status(200).json({ examResults, classes, units })
             }
             else if(action === "delete"){

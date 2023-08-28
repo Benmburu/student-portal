@@ -11,7 +11,7 @@ export default function Login(){
  
   const [ serviceNumber, setServiceNumber ] = useState("");
   const [ password, setPassword ] = useState("");
-  const [ error, setError ] = useState("");
+  const [ error, setErrorMessage ] = useState("");
   const [ verificationCode, setVerificationCode ] = useState("")
   const [ toVerification, setToVerification ] = useState(false)
 
@@ -35,7 +35,7 @@ export default function Login(){
   async function verify(e){
     e.preventDefault()
     // get next-auth login session if all credentials are correct
-    setError("") 
+    refreshMessages()
     const data = await signIn("credentials", {
       redirect: false,
       serviceNumber,
@@ -53,11 +53,11 @@ export default function Login(){
   // asychronous function to handle the sign-in form once the submit button is clicked
   const handleSubmit = async (e) =>{
     e.preventDefault() //prevent default behavior of form to refresh page once submit button is clicked
+    refreshMessages()
 
     try{  
       // send POST data to server in order to verify credentials
       const res = await axios.post("/api/login", JSON.stringify({ serviceNumber, password }), {headers:{"Content-Type" : "application/json"} })
-      setError("") 
 
       // if verification is successful, this is set to true in order to access the page that allows for input of the verification code
       setToVerification(true)
@@ -67,6 +67,17 @@ export default function Login(){
       setError(e.response.data)
     }
   }
+
+  const setError = (message)=>{
+    setErrorMessage(message)
+    setTimeout(()=>{
+      setErrorMessage("")
+    }, 3000)
+  }
+
+  const refreshMessages = ()=>{
+    setErrorMessage("")
+  };
   
   return (
     <>
