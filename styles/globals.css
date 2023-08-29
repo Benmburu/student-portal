@@ -199,3 +199,19 @@ button{
   margin: 1px;
   cursor: pointer;
 }
+
+
+.image{
+  width: auto;
+  height: auto;
+}
+
+/* .center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+/* .legend{
+  background-color: red;
+  background: linear-gradient(0deg, #00000088 30%, #ffffff44 100%);
+} */

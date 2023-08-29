@@ -14,27 +14,31 @@ const Dashboard = () =>{
             <AdminNavBar/>
             <div className={styles.body}>
                 <Header/>
-                <div className="info">
-                <Carousel>
-                <div>
-                      {/* <img src="https://mod.go.ke/wp-content/uploads/2021/12/deftec-01-01-01-01-01-1024x427-1.png" alt="image1"/> */}
-                      <Image className="image" src="/deftec-school.png" alt="deftec logo" width="1024" height="427" />
-                      <p className="legend">Deftec is a cutting-edge educational institution renowned for its exceptional Information Technology (IT) course. </p>
-  
-                  </div>
-                  <div>
-                      {/* <img src="https://mod.go.ke/wp-content/uploads/2021/12/deftec-01-01-01-01-01-1024x427-1.png" alt="image2" /> */}
-                      <Image className="image" src="/deftec-school.png" alt="deftec logo" width="1024" height="427" />
-                      <p className="legend">This renowned school provides a comprehensive electrical engineering course designed to equip students with a deep understanding of principles and applications in the field. The program integrates theoretical knowledge with hands-on experience through state-of-the-art labs and cutting-edge projects. With a focus on fostering innovation and problem-solving skills, students engage in diverse subjects such as circuit analysis, electronics, digital systems, and renewable energy technologies. Faculty members, who are experts in their respective fields, mentor students in their academic journey, while industry partnerships provide opportunities for internships and real-world projects. Graduates of this program emerge as skilled electrical engineers ready to tackle challenges in industries ranging from telecommunications to power systems and beyond.</p>
-  
-                  </div>
-                  <div>
-                      {/* <img src="https://mod.go.ke/wp-content/uploads/2021/12/deftec-01-01-01-01-01-1024x427-1.png" alt="image3"/> */}
-                      <Image className="image" src="/deftec-school.png" alt="deftec logo" width="1024" height="427" />
-                      <p className="legend">Nestled within a vibrant campus, our school provides an exceptional learning environment for aspiring mechanical engineers. With state-of-the-art laboratories and cutting-edge facilities, students engage in hands-on experiences that bridge theory and practice. Our dedicated faculty, comprised of accomplished industry professionals and scholars, guide students through a comprehensive curriculum that covers diverse aspects of mechanical engineering, from thermodynamics and materials science to robotics and automation. Collaborative projects and internships with renowned engineering firms empower students to apply their knowledge to real-world challenges, fostering innovation and problem-solving skills. Graduates emerge equipped with a strong foundation and practical expertise, ready to contribute to the advancement of technology and industry.</p>
-  
-                  </div>
-              </Carousel>
+                <div className="info center">
+                    <Carousel
+                        dynamicHeight={true}
+                        width="99%"
+                        height="auto"
+                        autoPlay={true}
+                        infiniteLoop={true}
+                        centerMode={true}
+                    >
+                    <div>
+                        <Image className="image" src="/IT.jpg" alt="deftec logo" width="1920" height="1186" />
+                        <p className="legend" id="legend">Elevate your tech prowess with our IT diploma, merging theory and hands-on practice to groom skilled professionals for the digital world.</p>
+    
+                    </div>
+                    <div>
+                        <Image className="image" src="/mechanical.jpg" alt="deftec logo" width="1920" height="1279" />
+                        <p className="legend" id="legend">Unlock the world of machines and innovation with our mechanical engineering diploma, shaping tomorrow's engineers through hands-on learning and creativity.</p>
+    
+                    </div>
+                    <div>
+                        <Image className="image" src="/electrical.jpg" alt="deftec logo" width="1920" height="1279" />
+                        <p className="legend" id="legend">Spark your future at our college with a comprehensive electrical engineering diploma for hands-on expertise and cutting-edge innovation.</p>
+    
+                    </div>
+                </Carousel>
                 </div>
             </div>
             <style jsx>
@@ -49,7 +53,13 @@ const Dashboard = () =>{
                         flex-direction: column;
                     }
 
-                    
+                    #legend{
+                        color: white;
+                        bottom: 70px;
+                        // background-color: inherit;
+                        font-size: large;
+                        background: linear-gradient(0deg, #00000088 30%, #ffffff44 100%);
+                    }
                     `
                 }
             </style>
