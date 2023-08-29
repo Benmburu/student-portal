@@ -17,7 +17,7 @@ export default function Login(){
 
   const router = useRouter();
   // check if there's a callback url
-  const callbackUrl = (router.query?.callbackUrl) ?? "/dashboard";
+  const callbackUrl = (router.query?.callbackUrl) ?? "/home/dashboard";
   
   const handleServiceNumberChange = (e) => {
     setServiceNumber(e.target.value);

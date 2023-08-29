@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import Header from "@components/Header";
 import VerticalNavBar from "@components/VerticalNavBar"
 import styles from '@styles/Dashboard.module.css';
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 
 const CourseSchedule = () =>{
@@ -38,12 +40,19 @@ const CourseSchedule = () =>{
         
     }
 
+    const print = ()=>{
+        const doc = new jsPDF()
+        doc.autoTable({ html: '#schedule', theme:'grid' })
+        doc.save('table.pdf')
+    }
+
     return (
         <div className={styles.Dashboard}>
             <VerticalNavBar/>
             <div className={styles.body}>
                 <Header/>
                 <div className="info">
+                    <button onClick={print}>Print schedule</button>
                     <table id="schedule">
                         <tbody>
                         <tr>

@@ -4,6 +4,8 @@ import Header from "@components/Header";
 import VerticalNavBar from "@components/VerticalNavBar"
 import styles from '@styles/Dashboard.module.css';
 import { useSession } from "next-auth/react";
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 
 export default function examResults(){
@@ -18,7 +20,23 @@ export default function examResults(){
             console.log(email)
 
             res  = await axios.post("/api/exam-results", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
+            let table = document.getElementById("results")
 
+            // if (table.children.length === 1 ){
+            //     for (let i=0; i<res.data.results.length;i++){
+            //         let semester = res.data.results[i].semester
+            //         res.data.results[i].results.map((result)=>addRow(result, semester))
+            //     }
+    
+            //     let semesters = []
+            //     res.data.results.map((unit)=>{ 
+            //         if (semesters.indexOf(unit.semester) === -1){
+            //             semesters.push(unit.semester)
+            //         }
+            //     })
+    
+            //     semesters.map((semester)=>addOptions(semester))
+            // }
             for (let i=0; i<res.data.results.length;i++){
                 let semester = res.data.results[i].semester
                 res.data.results[i].results.map((result)=>addRow(result, semester))
@@ -34,7 +52,7 @@ export default function examResults(){
             semesters.map((semester)=>addOptions(semester))
 
         } catch (error) {
-            console.log(error)
+            console.log(error) 
         }
     })()
 
@@ -85,6 +103,12 @@ export default function examResults(){
         classDropDown.add(option);
     }
 
+    const print = ()=>{
+        const doc = new jsPDF()
+        doc.autoTable({ html: '#results', theme:'grid' })
+        doc.save('table.pdf')
+    }
+
     return (
         <div className={styles.Dashboard}>
             <VerticalNavBar/>
@@ -94,6 +118,8 @@ export default function examResults(){
                     <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
                         <option value="">Select semester</option>
                     </select>
+
+                    <button onClick={print}>Print results</button>
 
                     <table id="results">
                         <tbody>
