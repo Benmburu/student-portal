@@ -21,7 +21,6 @@ export default function verifyEmail(){
   
   const handleSubmit = async (e) =>{
     e.preventDefault()
-    // console.log(serviceNumber, name, email, password)
     refreshMessages()
 
     try{

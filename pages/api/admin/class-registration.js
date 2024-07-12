@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         try {
             if (action === "get"){
                 const user = await Class.find({})
-                // const user = await Class.create({ school, course_code, courseName })
+
                 console.log(user)
                 res.status(200).json(user)
             }
@@ -24,23 +24,20 @@ export default async function handler(req, res) {
                 
                 const user = await Class.deleteOne({course_code: code})
                 console.log(user)
-                // const user = await Class.create({ 
-                //     course_code: "1234",
-                //     school: dict
-                //  })
+                
                 res.status(200).json("deleted")
             }
             else if(action === 'add'){
                 const {action, school, course_code, course_name} = req.body
-                // console.log(course_number, school, code, course_name)
+
                 const user = await Class.find({ course_code })
-                // console.log(user.length)
+
                 if (user.length > 0){
                     const user = await Class.findOneAndUpdate({ course_code }, { school, course_name}, { new: true })
                 }else{
                     const user = await Class.create({ course_code, school, course_name, new: true })
                 }
-                // const user = await Class.create({ course_code, school, course_name, upsert: true, new: true, setDefaultsOnInsert: true })
+
                 console.log(user)
                 res.status(200).json("added")
             }

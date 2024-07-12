@@ -24,10 +24,6 @@ export default async function handler(req, res) {
                 
                 const user = await Courses.deleteOne({ course_code })
                 console.log(user)
-                // const user = await Courses.create({ 
-                //     course_code: "1234",
-                //     school: dict
-                //  })
                 res.status(200).json("deleted")
             }
             else if(action === 'add'){
@@ -40,7 +36,6 @@ export default async function handler(req, res) {
                 }else{
                     const user = await Courses.create({ course_code, school, course_name, new: true })
                 }
-                // const user = await Courses.create({ course_code, school, course_name, upsert: true, new: true, setDefaultsOnInsert: true })
                 console.log(user)
                 res.status(200).json("added")
             }

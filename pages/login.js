@@ -91,7 +91,6 @@ export default function Login(){
             containerClassName={styles.formContainer}
             inputClassName={styles.singleInput}
             onChange={handleVerificationCodeChange}
-            // className={styles.error}
           />
           { error && <p className="error">{error}</p> }
           <button onClick={verify}>Submit</button>

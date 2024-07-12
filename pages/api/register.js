@@ -14,12 +14,6 @@ export default async function handler(req, res) {
 
         try {
             // check if student exists
-            // const serviceNumberExists = await serviceNumbers.findOne({ serviceNumber });
-
-            // if (!serviceNumberExists) {
-            //     res.status(401).json("Service Number does not exist")
-
-            // }else {
             // check is student is registered
             let userExists = await User.findOne({ serviceNumber })
 

@@ -16,7 +16,6 @@ export default function verify(){
         setErrorMessage("")
         setSuccessMessage("")
         
-        // console.log(password, confirmedPassword, token)
         if (password !== confirmedPassword){
             setErrorMessage("Passwords must match.")
         }
@@ -31,7 +30,6 @@ export default function verify(){
 
             } catch (error) {
               setErrorMessage(error.response.data)
-              // console.log(error.response.data)
                 
             }
         }

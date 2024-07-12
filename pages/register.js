@@ -34,7 +34,6 @@ export default function Register(){
   const handleSubmit = async (e) =>{
     e.preventDefault()
     refreshMessages()
-    // console.log(serviceNumber, name, email, password)
 
     try{
       const { res } = await axios.post("/api/register", JSON.stringify({ serviceNumber, name, email, password }), {headers:{"Content-Type" : "application/json"} })

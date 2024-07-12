@@ -26,14 +26,10 @@ const CourseSchedule = () =>{
         
         let table = document.getElementById("schedule")
         let row = table.insertRow(-1)
-        // let buttonId = Math.floor((Math.random() * 1000000) + 3);
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
         let cell3 = row.insertCell(2);
-        // let cell4 = row.insertCell(3);
-
-        // Add some text to the new cells:
         cell1.innerHTML = course?.activity
         cell2.innerHTML = course?.startDate
         cell3.innerHTML = course?.endDate

@@ -8,7 +8,6 @@ export default async function handler(req, res){
         const { email } = req.body
         initDB()
         
-        // const user = await Admin.findOne({ email })
         const user = await Admin.findOne({ email })
         console.log(user)
         // send jwt email token for password reset
