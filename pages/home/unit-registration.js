@@ -7,7 +7,7 @@ import axios from "axios";
 
 const UnitRegistration = () =>{
     const [ successMessage, setSuccessMessage ] = useState("");
-    // let successMessage = "";
+
     let email = "";
     let res = "";
     let registeredUnits = [];
@@ -19,7 +19,7 @@ const UnitRegistration = () =>{
             email = data?.user?.email
 
             res  = await axios.post("/api/unit-registration", JSON.stringify({ action: "get", email: email }), {headers:{"Content-Type" : "application/json"} })
-            // console.log(res.data.units)
+
             res.data.units.map((unit)=>addRow(unit))
 
             let semesters = []
@@ -29,7 +29,6 @@ const UnitRegistration = () =>{
                 }
             })
 
-            // console.log(semesters)
             semesters.map((semester)=>addOptions(semester))
 
         } catch (error) {
@@ -68,14 +67,8 @@ const UnitRegistration = () =>{
 
             if (e.target.checked){
                 registeredUnits.push(unitDetails)
-                // console.log('dets', unitCode, unitName, semester)
+
             }
-            // else{
-            //     let index = registeredUnits.indexOf(unitDetails)
-            //     console.log('index', index)
-            //     registeredUnits.splice(index, 1)
-            // }
-            // console.log('registeredUnits', registeredUnits)
         })
            
     }
@@ -99,7 +92,6 @@ const UnitRegistration = () =>{
                 table.deleteRow(i);
             }
             console.log('deleted')
-            // const  res  = await axios.post("/api/unit-registration", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
 
             const filtered = res.data.units.filter((unit)=>unit.semester===value)
 
@@ -116,16 +108,6 @@ const UnitRegistration = () =>{
         option.value = semester;
         unitsDropDown.add(option);
     }
-
-    // const setSuccess = ()=>{
-    //     // successMessage = "Success";
-    //     setSuccessMessage("Success")
-    //     setTimeout(()=>{
-    //         // successMessage = "";
-    //         setSuccessMessage("")
-    //     }, 3000)
-    // }
-
     return (
         <div className={styles.Dashboard}>
             <VerticalNavBar/>

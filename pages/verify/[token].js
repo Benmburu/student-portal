@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function verify(){
+export default function Verify(){
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
 

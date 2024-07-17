@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-export default function verifyEmail(){
+export default function VerifyEmail(){
   const [ email, setEmail ] = useState("");
   const [ errorMessage, setErrorMessage ] = useState("");
   const [ successMessage, setSuccessMessage ] = useState("");

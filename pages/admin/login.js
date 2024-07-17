@@ -6,6 +6,7 @@ import axios from "axios";
 import AuthCode from 'react-auth-code-input';
 import styles from "./login.module.css";
 import Image from 'next/image'
+import Link from 'next/link';
 
 export default function Login(){
  
@@ -142,7 +143,7 @@ export default function Login(){
                 type="submit"
                 disabled={ !password || !serviceNumber }          
               >Login</button>
-              <a href="/admin/forgot_password/verify_email">Forgot password?</a>
+              <Link href="/admin/forgot_password/verify_email">Forgot password?</Link>
             </form>
 
             <style jsx>{`

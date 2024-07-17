@@ -60,7 +60,7 @@ Create a .env.local file in the root directory of the website and update the fol
     MONGODB_PASSWORD = your_mongodb_password
     NEXTAUTH_SECRET = your_nextauth_secret
 
-    MONGO_URI=your_mongodb_uri
+    MONGODB_URI=your_mongodb_uri
     EMAIL_SECRET=your_jwt_secret
     GMAIL_USER=your_email_address
     GMAIL_PASS=your_email_password
