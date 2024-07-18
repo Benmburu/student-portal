@@ -4,39 +4,25 @@ import Header from "@components/Header";
 import VerticalNavBar from "@components/VerticalNavBar"
 import styles from '@styles/Dashboard.module.css';
 import { useSession } from "next-auth/react";
-import jsPDF from 'jspdf'
-import 'jspdf-autotable'
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 
-export default function examResults(){
+export default function ExamResults(){
 
     let email = "";
     let res = "";
+    const { data } = useSession()
 
-    (async ()=>{
+    useEffect(async ()=>{
         try {
-            const { data } = useSession()
+            // const { data } = useSession()
             email = data?.user?.email
             console.log(email)
 
             res  = await axios.post("/api/exam-results", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
             let table = document.getElementById("results")
 
-            // if (table.children.length === 1 ){
-            //     for (let i=0; i<res.data.results.length;i++){
-            //         let semester = res.data.results[i].semester
-            //         res.data.results[i].results.map((result)=>addRow(result, semester))
-            //     }
-    
-            //     let semesters = []
-            //     res.data.results.map((unit)=>{ 
-            //         if (semesters.indexOf(unit.semester) === -1){
-            //             semesters.push(unit.semester)
-            //         }
-            //     })
-    
-            //     semesters.map((semester)=>addOptions(semester))
-            // }
             for (let i=0; i<res.data.results.length;i++){
                 let semester = res.data.results[i].semester
                 res.data.results[i].results.map((result)=>addRow(result, semester))
@@ -54,7 +40,7 @@ export default function examResults(){
         } catch (error) {
             console.log(error) 
         }
-    })()
+    }, [data])
 
     const addRow = async (results, semester, grade)=>{
         
@@ -85,7 +71,7 @@ export default function examResults(){
                 table.deleteRow(i);
             }
             console.log('deleted')
-            // const  res  = await axios.post("/api/exam-results", JSON.stringify({ email: email }), {headers:{"Content-Type" : "application/json"} })
+
             const filtered = res.data.results.filter((results)=>results.semester===value)
             filtered[0].results.map((result)=>addRow(result, filtered[0].semester))
 

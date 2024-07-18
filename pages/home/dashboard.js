@@ -16,6 +16,7 @@ const Dashboard = () =>{
                 <Header/>
                 <div className="info center">
                     <Carousel
+                        showThumbs={false}
                         dynamicHeight={true}
                         width="99%"
                         height="auto"

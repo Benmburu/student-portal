@@ -5,7 +5,7 @@ import styles from '@styles/Dashboard.module.css';
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
-const UnitRegistration = () =>{
+export default function UnitRegistration(){
     const [ successMessage, setSuccessMessage ] = useState("");
     const { data } = useSession();
 
@@ -179,5 +179,3 @@ const UnitRegistration = () =>{
         
     )
 }
-
-export default UnitRegistration
