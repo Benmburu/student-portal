@@ -4,7 +4,7 @@ import Header from "@components/Header";
 import { useRouter } from "next/router";
 import axios from "axios";
 import AuthCode from 'react-auth-code-input';
-import styles from "./login.module.css";
+import styles from "@styles/login.module.css";
 import Image from 'next/image'
 import Link from 'next/link';
 

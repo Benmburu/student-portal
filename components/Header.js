@@ -1,5 +1,6 @@
 import { useSession, signOut } from 'next-auth/react';
 import styles from '@styles/Header.module.css';
+import Image from 'next/image';
 
 export default function Header() {
     const { data } = useSession()
@@ -10,7 +11,7 @@ export default function Header() {
                 {data?.user ? (
                     <div className={styles.userProfile}>
                         <span className={styles.username}>{`Hi ${data?.user?.name}`}</span>
-                        <img src={`https://api.dicebear.com/6.x/lorelei/svg?seed=${data.user.name}`} alt={data?.user?.name} />
+                        <Image src={`https://api.dicebear.com/6.x/lorelei/svg?seed=${data.user.name}`} alt={data?.user?.name} />
                         
                         <button className={styles.logout} onClick={()=> signOut()}>Logout</button>
                     </div>

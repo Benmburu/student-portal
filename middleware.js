@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { includes } from "lodash";
+// import { includes } from "lodash";
 import { getToken } from "next-auth/jwt";
 
 const isAdminRoute = (pathname) => {
@@ -15,7 +15,7 @@ export async function middleware(req) {
     const role = token?.role;
     const { pathname } = req.nextUrl;
 
-    if (isUserRoute(pathname) && !includes(["student"], role)) {
+    if (isUserRoute(pathname) && !role.includes("student")) {
         return NextResponse.redirect(new URL('/login', req.url));
     }
 
@@ -29,3 +29,4 @@ export async function middleware(req) {
 export const config = {
     matcher: ["/dashboard", "/admin/home/:path*", "/home/:path*"]
 };
+// !includes(["student"], role)

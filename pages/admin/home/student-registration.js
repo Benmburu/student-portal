@@ -9,7 +9,6 @@ const StudentRegistration = () =>{
     const [ action, setAction ] = useState("get")
     const [ errorMessage, setErrorMessage ] = useState("");
     const [ successMessage, setSuccessMessage ] = useState("");
-    // const [ classDropDownOption, setClassDropDownOption ] = useState("")
 
 
     useEffect(()=>{
@@ -93,7 +92,6 @@ const StudentRegistration = () =>{
             let email = clickedRow.children[2].innerHTML
             let className = clickedRow.children[3].innerHTML
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "add", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
-            // console.log(res)
             setSuccess()
             
         });
@@ -111,7 +109,6 @@ const StudentRegistration = () =>{
             let email = clickedRow.children[2].innerHTML
             let className = clickedRow.children[3].innerHTML
             const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "delete", serviceNumber, name, email, className }), {headers:{"Content-Type" : "application/json"} })
-            // console.log(res)
             clickedRow.remove()
             setSuccess()
             
@@ -132,10 +129,7 @@ const StudentRegistration = () =>{
             <div className={styles.body}>
                 <Header/>
                 <div className="info">
-
-                    {/* <select name="class" id="class" onChange={(e)=>updateTable(e.target.value)}>
-                        <option value="">Select class</option>
-                    </select> */}
+                    
 
                     <table id="courses">
                         <tbody>

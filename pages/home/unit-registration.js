@@ -7,15 +7,16 @@ import axios from "axios";
 
 const UnitRegistration = () =>{
     const [ successMessage, setSuccessMessage ] = useState("");
+    const { data } = useSession();
 
     let email = "";
     let res = "";
     let registeredUnits = [];
     let unitDetails = "";
 
-    (async ()=>{
+    useEffect (async ()=>{
         try {
-            const { data } = useSession()
+            // const { data } = useSession()
             email = data?.user?.email
 
             res  = await axios.post("/api/unit-registration", JSON.stringify({ action: "get", email: email }), {headers:{"Content-Type" : "application/json"} })
@@ -34,7 +35,7 @@ const UnitRegistration = () =>{
         } catch (error) {
             console.log(error)
         }
-    })()
+    }, [data])
 
     const addRow = async (unit)=>{
         

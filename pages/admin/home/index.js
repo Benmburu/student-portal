@@ -30,7 +30,7 @@ const Dashboard = () =>{
                     </div>
                     <div>
                         <Image className="image" src="/mechanical.jpg" alt="deftec logo" width="1920" height="1279" />
-                        <p className="legend" id="legend">Unlock the world of machines and innovation with our mechanical engineering diploma, shaping tomorrow's engineers through hands-on learning and creativity.</p>
+                        <p className="legend" id="legend">Unlock the world of machines and innovation with our mechanical engineering diploma, shaping tomorrow&apos;s engineers through hands-on learning and creativity.</p>
     
                     </div>
                     <div>
