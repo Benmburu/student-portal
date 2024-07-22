@@ -26,5 +26,9 @@
     "react-auth-code-input": "^3.2.1",
     "react-dom": "^18.2.0",
     "react-responsive-carousel": "^3.2.23"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "typescript": "^5.5.3"
   }
 }
