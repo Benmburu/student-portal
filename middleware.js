@@ -15,6 +15,10 @@ export async function middleware(req) {
     const role = token?.role;
     const { pathname } = req.nextUrl;
 
+    if (!role){
+        return NextResponse.redirect(new URL('/login', req.url));
+    }
+
     if (isUserRoute(pathname) && !role.includes("student")) {
         return NextResponse.redirect(new URL('/login', req.url));
     }
