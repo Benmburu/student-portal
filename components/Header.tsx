@@ -3,7 +3,7 @@ import styles from '@styles/Header.module.css';
 import Image from 'next/image';
 
 export default function Header() {
-    const { data:session } = useSession();
+    const { data: session } = useSession();
    
     return (
         <header className={styles.header}>
