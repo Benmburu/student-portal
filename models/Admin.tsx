@@ -1,8 +1,17 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+interface IAdmin extends mongoose.Document{
+  serviceNumber?: string;
+  email?: string;
+  password?: string;
+  verificationCode?: number;
+  name?: string;
+  role: string
+}
+
 // schema used to model the document in a mongoDB database
-const adminSchema = new mongoose.Schema(
+const adminSchema: mongoose.Schema<IAdmin> = new mongoose.Schema(
   {
     serviceNumber: {
       type: String,
@@ -32,16 +41,18 @@ const adminSchema = new mongoose.Schema(
       default: "admin",
     },
   },
-  { collection: 'admin' }, // the collection this schema refers to
-  { timestamps: true }
+  { 
+    collection: 'admin', // the collection this schema refers to
+    timestamps: true
+  }
 );
 
-adminSchema.pre("save", async function (next) {
+adminSchema.pre<IAdmin>("save", async function (next) {
   // Hash password before saving user
   if (this.isModified("password")) {
     // salt the password making it harder to crack if the DB was ever compromised
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    this.password = await bcrypt.hash(this.password as string, salt);
   }
   next();
 });

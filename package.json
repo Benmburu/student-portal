@@ -29,6 +29,7 @@
     "react-responsive-carousel": "^3.2.23"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/nodemailer": "^6.4.15",
     "@types/react": "^18.3.3",
     "typescript": "^5.5.3"
