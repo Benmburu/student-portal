@@ -57,5 +57,6 @@ adminSchema.pre<IAdmin>("save", async function (next) {
   next();
 });
 
-// use this model if it exists, otherwise create a new model named User using the userSchema
-export default mongoose.models.Admin || mongoose.model("Admin", adminSchema);
+// use this model if it exists, otherwise create a new model named Admin using the adminSchema
+const Admin = mongoose.models.Admin || mongoose.model<IAdmin>("Admin", adminSchema);
+export default Admin;
