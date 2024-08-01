@@ -33,4 +33,5 @@ const ClassSchema: mongoose.Schema<IClass> = new mongoose.Schema(
 );
 
 // use this model if it exists, otherwise create a new model named Class using the classSchema
-export default mongoose.models.Class || mongoose.model<IClass>("Class", ClassSchema);
+const Class = mongoose.models.Class || mongoose.model<IClass>("Class", ClassSchema);
+export default Class;
