@@ -3,59 +3,82 @@ import { useState } from "react";
 import Image from 'next/image'
 
 export default function Register(){
-  const [ serviceNumber, setServiceNumber ] = useState("");
-  const [ name, setName ] = useState("");
-  const [ email, setEmail ] = useState("");
-  const [ password, setPassword ] = useState("");
-  const [ errorMessage, setErrorMessage ] = useState("");
-  const [ successMessage, setSuccessMessage ] = useState("");
 
-  const handleServiceNumberChange = (e) => {
-    setServiceNumber(e.target.value);
+  interface RegisterState{
+    serviceNumber: string;
+    name: string;
+    email: string;
+    password: string;
+    errorMessage: string;
+    successMessage: string;
+  }
+
+  const [ registerState, setRegisterState ] = useState<RegisterState>({
+    serviceNumber: "",
+    name: "",
+    email: "",
+    password: "",
+    errorMessage: "",
+    successMessage: ""
+  });
+
+  const handleServiceNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRegisterState( prev => ({ ...prev, serviceNumber: e.target.value }) );
   };
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRegisterState( prev => ({ ...prev, name: e.target.value }) );
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRegisterState( prev => ({ ...prev, email: e.target.value }) );
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRegisterState( prev => ({ ...prev, password: e.target.value }) );
   };
 
   const refreshMessages = ()=>{
-    setErrorMessage("")
-    setSuccessMessage("")
+    setRegisterState( prev => ({ ...prev, errorMessage: "" }) )
+    setRegisterState( prev => ({ ...prev, successMessage: "" }) )
   };
   
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e: React.FormEvent) =>{
     e.preventDefault()
     refreshMessages()
 
     try{
-      const { res } = await axios.post("/api/register", JSON.stringify({ serviceNumber, name, email, password }), {headers:{"Content-Type" : "application/json"} })
+      const res = await axios.post("/api/register", JSON.stringify({ 
+        serviceNumber: registerState.serviceNumber, 
+        name: registerState.name, 
+        email: registerState.email, 
+        password: registerState.password
+      }), 
+      {headers:{"Content-Type" : "application/json"} 
+    })
       
       setSuccess("User successfully registered. Please click the link sent to your email address to verify your account.")
 
-    }catch(error){
-      setError(error.response.data)
+    }catch(e){
+      if ( axios.isAxiosError(e) && e.response ){
+        setError( e.response.data )
+      }else{
+        setError("We encountered an unexpected error")
+      }
     }
   }
 
-  const setSuccess = (message)=>{
-    setSuccessMessage(message)
+  const setSuccess = ( message: string )=>{
+    setRegisterState( prev => ({ ...prev, successMessage: "" }) )
     setTimeout(()=>{
-        setSuccessMessage("")
+      setRegisterState( prev => ({ ...prev, successMessage: "" }) )
     }, 3000)
   }
 
-  const setError = (message)=>{
-    setErrorMessage(message)
+  const setError = ( message: string )=>{
+    setRegisterState( prev => ({ ...prev, errorMessage: message }) )
     setTimeout(()=>{
-      setErrorMessage("")
+      setRegisterState( prev => ({ ...prev, errorMessage: "" }) )
     }, 3000)
   }
   
@@ -66,25 +89,25 @@ export default function Register(){
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="serviceNumber">Service Number</label>
-          <input type="text" id="serviceNumber" value={serviceNumber} onChange={handleServiceNumberChange} placeholder="ABC123-001/2018" required />
+          <input type="text" id="serviceNumber" value={registerState.serviceNumber} onChange={handleServiceNumberChange} placeholder="ABC123-001/2018" required />
         </div>
 
         <div className="form-group">
           <label htmlFor="name">Name</label>
-          <input type="text" id="name" value={name} onChange={handleNameChange} placeholder="John Smith" required />
+          <input type="text" id="name" value={registerState.name} onChange={handleNameChange} placeholder="John Smith" required />
         </div>
 
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" value={email} onChange={handleEmailChange} placeholder="example@gmail.com" required />
+          <input type="email" id="email" value={registerState.email} onChange={handleEmailChange} placeholder="example@gmail.com" required />
         </div>
 
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" value={password} onChange={handlePasswordChange} required />
+          <input type="password" id="password" value={registerState.password} onChange={handlePasswordChange} required />
         </div>
-        { successMessage && <p className="success">{successMessage}</p> }
-        { errorMessage && <p className="error">{errorMessage}</p> }
+        { registerState.successMessage && <p className="success">{registerState.successMessage}</p> }
+        { registerState.errorMessage && <p className="error">{registerState.errorMessage}</p> }
         <button type="submit">Register</button>
       </form>
 
