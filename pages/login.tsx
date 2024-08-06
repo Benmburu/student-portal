@@ -8,43 +8,53 @@ import styles from "@styles/login.module.css";
 import Image from 'next/image'
 import Link from 'next/link';
 
+interface LoginState {
+  serviceNumber: string;
+  password: string;
+  error: string;
+  verificationCode: string;
+  toVerification: boolean;
+}
+
 export default function Login(){
- 
-  const [ serviceNumber, setServiceNumber ] = useState("");
-  const [ password, setPassword ] = useState("");
-  const [ error, setErrorMessage ] = useState("");
-  const [ verificationCode, setVerificationCode ] = useState("")
-  const [ toVerification, setToVerification ] = useState(false)
+
+  const [ loginState, setLoginState ] = useState<LoginState>({
+    serviceNumber: "",
+    password: "",
+    error: "",
+    verificationCode: "",
+    toVerification: false
+  })
 
   const router = useRouter();
   // check if there's a callback url
-  const callbackUrl = (router.query?.callbackUrl) ?? "/home/dashboard";
+  const callbackUrl = (router.query?.callbackUrl as string) ?? "/home/dashboard";
   
-  const handleServiceNumberChange = (e) => {
-    setServiceNumber(e.target.value);
+  const handleServiceNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginState(prev => ({ ...prev, serviceNumber: e.target.value }));
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginState( prev => ({ ...prev, password: e.target.value }) );
   };
 
-  const handleVerificationCodeChange = (e)=>{
-    setVerificationCode(e)
+  const handleVerificationCodeChange = ( code: string)=>{
+    setLoginState( prev => ({ ...prev, verificationCode: code }) )
   }
 
   // this function handles the verification code part of sign-in
-  async function verify(e){
+  async function verify(e: React.FormEvent){
     e.preventDefault()
     // get next-auth login session if all credentials are correct
     refreshMessages()
     const data = await signIn("credentials", {
       redirect: false,
-      serviceNumber,
-      password,
-      verificationCode
+      serviceNumber: loginState.serviceNumber,
+      password: loginState.password,
+      verificationCode: loginState.verificationCode
     })
 
-    if (data.error){
+    if (data?.error){
       setError("Invalid verification code.")
     }else{
       router.push(callbackUrl)
@@ -52,48 +62,58 @@ export default function Login(){
   }
 
   // asychronous function to handle the sign-in form once the submit button is clicked
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e: React.FormEvent) =>{
     e.preventDefault() //prevent default behavior of form to refresh page once submit button is clicked
     refreshMessages()
 
     try{  
       // send POST data to server in order to verify credentials
-      const res = await axios.post("/api/login", JSON.stringify({ serviceNumber, password }), {headers:{"Content-Type" : "application/json"} })
+      const res = await axios.post("/api/login", JSON.stringify({ 
+        serviceNumber: loginState.serviceNumber, 
+        password: loginState.password
+      }), {
+        headers:{"Content-Type" : "application/json"} 
+      })
 
       // if verification is successful, this is set to true in order to access the page that allows for input of the verification code
-      setToVerification(true)
+      setLoginState( prev => ({ ...prev, toVerification: true }) )
       
 
     }catch(e){
-      setError(e.response.data)
+      if (axios.isAxiosError(e) && e.response ){
+        setError(e.response.data)
+      }else{
+        setError("An unexpected error occurred")
+      }
+      
     }
   }
 
-  const setError = (message)=>{
-    setErrorMessage(message)
+  const setError = ( message: string )=>{
+    setLoginState( prev => ({ ...prev, error: message }) );
     setTimeout(()=>{
-      setErrorMessage("")
+      setLoginState( prev => ({ ...prev, error: "" }) );
     }, 3000)
   }
 
   const refreshMessages = ()=>{
-    setErrorMessage("")
+    setLoginState( prev => ({ ...prev, error: "" }) );
   };
   
   return (
     <>
-      {toVerification? //javascript ternary operator which chooses which form to display based on the value of the variable 'toVerification'
+      {loginState.toVerification? //javascript ternary operator which chooses which form to display based on the value of the variable 'toVerification'
         <div className="container">
           <h1>Verification code</h1>
           <AuthCode
             allowedCharacters="numeric"
             ariaLabel="OTP input form"
-            length="4"
+            length={4}
             containerClassName={styles.formContainer}
             inputClassName={styles.singleInput}
             onChange={handleVerificationCodeChange}
           />
-          { error && <p className="error">{error}</p> }
+          { loginState.error && <p className="error">{loginState.error}</p> }
           <button onClick={verify}>Submit</button>
           {/* <add functionality to button */}
           <style jsx>{`
@@ -140,17 +160,17 @@ export default function Login(){
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="serviceNumber">Service Number</label>
-                <input type="text" id="serviceNumber" value={serviceNumber} onChange={handleServiceNumberChange} placeholder="ABC123-001/2018" required />
+                <input type="text" id="serviceNumber" value={loginState.serviceNumber} onChange={handleServiceNumberChange} placeholder="ABC123-001/2018" required />
               </div>
 
               <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input type="password" id="password" value={password} onChange={handlePasswordChange} required />
+                <input type="password" id="password" value={loginState.password} onChange={handlePasswordChange} required />
               </div>
-              { error && <p className="error">{error}</p> }
+              { loginState.error && <p className="error">{loginState.error}</p> }
               <button 
                 type="submit"
-                disabled={ !password || !serviceNumber }          
+                disabled={ !loginState.password || !loginState.serviceNumber }          
               >Login</button>
               <Link href="/forgot_password/verify_email">Forgot password?</Link>
               <Link href="/register">New User? Register</Link>
