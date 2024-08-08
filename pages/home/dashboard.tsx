@@ -6,7 +6,7 @@ import { Carousel } from 'react-responsive-carousel';
 import Image from "next/image";
 import VerticalNavBar from "@components/VerticalNavBar";
 
-const Dashboard = () =>{
+const Dashboard: React.FC = () =>{
 
 
     return (
@@ -19,13 +19,12 @@ const Dashboard = () =>{
                         showThumbs={false}
                         dynamicHeight={true}
                         width="99%"
-                        height="auto"
                         autoPlay={true}
                         infiniteLoop={true}
                         centerMode={true}
                     >
                     <div>
-                        <Image className="image" src="/IT.jpg" alt="deftec logo" width="1920" height="1186" />
+                        <Image className="image" src="/IT.jpg" alt="deftec logo" width={1920} height={1186} />
                         <p className="legend" id="legend">Elevate your tech prowess with our IT diploma, merging theory and hands-on practice to groom skilled professionals for the digital world.</p>
     
                     </div>
