@@ -3,18 +3,24 @@ import React, { useEffect, useState } from "react";
 import Header from "@components/Header";
 import VerticalNavBar from "@components/VerticalNavBar"
 import styles from '@styles/Dashboard.module.css';
-import jsPDF from 'jspdf'
-import 'jspdf-autotable'
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
+interface Course{
+    activity?: string;
+    startDate?: string;
+    endDate?: string;
+}
 
 
-const CourseSchedule = () =>{
+const CourseSchedule: React.FC = () =>{
 
     useEffect(()=>{
         (async ()=>{
             try {
             
-                const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "get" }), {headers:{"Content-Type" : "application/json"} })
-                res.data.map((res)=>{addRow(res)})
+                const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "get" }), {headers:{"Content-Type" : "application/json"} });
+                res.data.map(( res: Course )=>{addRow( res )});
 
             } catch (error) {
                 console.log(error)
@@ -22,23 +28,24 @@ const CourseSchedule = () =>{
         })()
     },[])
 
-    const addRow = async (course)=>{
+    const addRow = async (course: Course): Promise<void> =>{
         
-        let table = document.getElementById("schedule")
-        let row = table.insertRow(-1)
+        let table = document.getElementById("schedule") as HTMLTableElement || null;
+        if (table){
+            let row = table.insertRow(-1);
 
-        let cell1 = row.insertCell(0);
-        let cell2 = row.insertCell(1);
-        let cell3 = row.insertCell(2);
-        cell1.innerHTML = course?.activity
-        cell2.innerHTML = course?.startDate
-        cell3.innerHTML = course?.endDate
-        
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            let cell3 = row.insertCell(2);
+            cell1.innerHTML = course?.activity || '';
+            cell2.innerHTML = course?.startDate || '';
+            cell3.innerHTML = course?.endDate || '';
+        }
     }
 
-    const print = ()=>{
+    const print = (): void =>{
         const doc = new jsPDF()
-        doc.autoTable({ html: '#schedule', theme:'grid' })
+        autoTable(doc, { html: '#schedule', theme:'grid' })
         doc.save('table.pdf')
     }
 

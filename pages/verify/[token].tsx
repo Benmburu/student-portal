@@ -3,8 +3,16 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Verify(){
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+
+    interface VerifyState{
+        errorMessage: string;
+        successMessage: string;
+    }
+
+    const [ verifyState, setVerifyState ] = useState<VerifyState>({
+        errorMessage: "",
+        successMessage: ""
+    });
 
     const router = useRouter()
     const token = router?.query?.token
@@ -12,9 +20,9 @@ export default function Verify(){
     const verifyToken = async () =>{
         try{
             // send POST request to verify the jwt token in the email link
-            const { res } = await axios.post("/api/verify", JSON.stringify({ token }), {headers:{"Content-Type" : "application/json"} })
-            setSuccessMessage("User successfully verified. Please log in.")
-            setErrorMessage("")
+            const res = await axios.post("/api/verify", JSON.stringify({ token }), {headers:{"Content-Type" : "application/json"} })
+            setVerifyState( prev => ({ ...prev, successMessage: "User successfully verified. Please log in." }) );
+            setVerifyState( prev => ({ ...prev, errorMessage: "" }) );
 
             // wait 3 seconds then redirect user to login page
             setTimeout(()=>{
@@ -22,9 +30,14 @@ export default function Verify(){
             }, 2000)
             
       
-        }catch(error){
-            setErrorMessage(error?.response?.data)
-            setSuccessMessage("")
+        }catch(e: any){ // TODO: Implement proper type checking
+            if (axios.isAxiosError(e) && e.response ){
+                setVerifyState( prev => ({ ...prev, errorMessage: e.response.data as string }) );
+                setVerifyState( prev => ({ ...prev, successMessage: "" }) );
+            }else{
+                setVerifyState( prev => ({ ...prev, errorMessage: "We encountered and unexpected error." }) );
+                setVerifyState( prev => ({ ...prev, successMessage: "" }) );
+            }
         }
     }
 
@@ -37,8 +50,8 @@ export default function Verify(){
         
         <>
             <div className="body">
-                { successMessage && <p className="success">{successMessage}</p> }
-                { errorMessage && <p className="error">{errorMessage}</p> }
+                { verifyState.successMessage && <p className="success">{verifyState.successMessage}</p> }
+                { verifyState.errorMessage && <p className="error">{verifyState.errorMessage}</p> }
             </div>
             <style jsx>
                 {
