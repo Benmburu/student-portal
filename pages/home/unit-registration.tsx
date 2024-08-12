@@ -5,41 +5,49 @@ import styles from '@styles/Dashboard.module.css';
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
+interface Unit{
+    semester: string;
+    unitCode: string;
+    unitName: string;
+}
+
 export default function UnitRegistration(){
     const [ successMessage, setSuccessMessage ] = useState("");
-    const { data } = useSession();
+    const { data: sessionData } = useSession();
 
-    let email = "";
-    let res = "";
-    let registeredUnits = [];
-    let unitDetails = "";
+    let email: string = "";
+    let res: {data:{units: Unit[]}} = {data:{units: []}};
+    let registeredUnits: Unit[] = [];
+    let unitDetails: Unit | null = null;
 
-    useEffect (async ()=>{
-        try {
-            // const { data } = useSession()
-            email = data?.user?.email
-
-            res  = await axios.post("/api/unit-registration", JSON.stringify({ action: "get", email: email }), {headers:{"Content-Type" : "application/json"} })
-
-            res.data.units.map((unit)=>addRow(unit))
-
-            let semesters = []
-            res.data.units.map((unit)=>{
-                if (semesters.indexOf(unit.semester) === -1){
-                    semesters.push(unit.semester)
-                }
-            })
-
-            semesters.map((semester)=>addOptions(semester))
-
-        } catch (error) {
-            console.log(error)
+    useEffect (() => {(
+        async ()=>{
+            try {
+                // const { data } = useSession()
+                email = sessionData?.user?.email || "";
+    
+                res  = await axios.post("/api/unit-registration", JSON.stringify({ action: "get", email: email }), {headers:{"Content-Type" : "application/json"} })
+    
+                res.data.units.map((unit: Unit)=>addRow(unit))
+    
+                let semesters: string[] = [];
+                res.data.units.map((unit)=>{
+                    if (semesters.indexOf(unit.semester) === -1){
+                        semesters.push(unit.semester)
+                    }
+                })
+    
+                semesters.map((semester)=>addOptions(semester))
+    
+            } catch (error) {
+                console.log(error)
+            }
         }
-    }, [data])
+    )()}, [sessionData])
 
-    const addRow = async (unit)=>{
+    const addRow = async (unit: Unit): Promise<void> =>{
         
-        let table = document.getElementById("units")
+        let table = document.getElementById("units") as HTMLTableElement;
         let row = table.insertRow(-1)
         let rowId = Math.floor((Math.random() * 1000000) + 3);
 
@@ -54,19 +62,20 @@ export default function UnitRegistration(){
         cell3.innerHTML = unit.unitName
         cell4.innerHTML = unit.semester
 
-        let rowCheckbox = document.getElementById(rowId);
-        rowCheckbox.addEventListener('change', (e)=>{
-            let unitCode = e.target.parentNode.parentNode.children[1].innerHTML
-            let unitName = e.target.parentNode.parentNode.children[2].innerHTML
-            let semester = e.target.parentNode.parentNode.children[3].innerHTML
+        let rowCheckbox = document.getElementById(rowId.toString()) as HTMLInputElement;
+        rowCheckbox.addEventListener('change', (e: Event)=>{
+            const target = e.target as HTMLInputElement;
+            let unitCode = target.parentElement?.parentElement?.children[1].innerHTML || "";
+            let unitName = target.parentElement?.parentElement?.children[2].innerHTML || "";
+            let semester = target.parentElement?.parentElement?.children[3].innerHTML || "";
 
             unitDetails = {
-                unitCode: unitCode,
-                unitName: unitName,
-                semester: semester
+                unitCode,
+                unitName,
+                semester
             }
 
-            if (e.target.checked){
+            if (target.checked){
                 registeredUnits.push(unitDetails)
 
             }
@@ -82,11 +91,11 @@ export default function UnitRegistration(){
         // setSuccess()
     }
 
-    const updateTable = async (value)=>{
+    const updateTable = async ( value: string ): Promise<void> =>{
         try {
             
             console.log('classDropDownOption: ', value)
-            let table = document.getElementById("units")
+            let table = document.getElementById("units") as HTMLTableElement
 
             for(let i = table.rows.length - 1; i > 0; i--)
             {
@@ -94,16 +103,16 @@ export default function UnitRegistration(){
             }
             console.log('deleted')
 
-            const filtered = res.data.units.filter((unit)=>unit.semester===value)
+            const filtered = res.data.units.filter(( unit )=>unit.semester===value)
 
-            filtered.map((student)=>{addRow(student)})
+            filtered.map((student)=>{ addRow( student )})
         } catch (error) {
             console.log(error)
         }
     }
 
-    const addOptions = (semester) =>{
-        let unitsDropDown = document.getElementById("semester")
+    const addOptions = ( semester: string ): void =>{
+        let unitsDropDown = document.getElementById("semester") as HTMLSelectElement
         let option = document.createElement("option");
         option.text = semester;
         option.value = semester;
