@@ -30,9 +30,9 @@ export default function Verify(){
             }, 2000)
             
       
-        }catch(e: any){ // TODO: Implement proper type checking
+        }catch(e){ // TODO: Implement proper type checking
             if (axios.isAxiosError(e) && e.response ){
-                setVerifyState( prev => ({ ...prev, errorMessage: e.response.data as string }) );
+                setVerifyState( prev => ({ ...prev, errorMessage: e as string }) );
                 setVerifyState( prev => ({ ...prev, successMessage: "" }) );
             }else{
                 setVerifyState( prev => ({ ...prev, errorMessage: "We encountered and unexpected error." }) );
