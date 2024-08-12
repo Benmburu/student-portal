@@ -10,30 +10,30 @@ import Link from 'next/link';
 
 export default function Login(){
  
-  const [ serviceNumber, setServiceNumber ] = useState("");
-  const [ password, setPassword ] = useState("");
-  const [ error, setError ] = useState("");
-  const [ verificationCode, setVerificationCode ] = useState("")
-  const [ toVerification, setToVerification ] = useState(false)
+  const [ serviceNumber, setServiceNumber ] = useState<string>("");
+  const [ password, setPassword ] = useState<string>("");
+  const [ error, setError ] = useState<string>("");
+  const [ verificationCode, setVerificationCode ] = useState<string>("")
+  const [ toVerification, setToVerification ] = useState<boolean>(false)
 
   const router = useRouter();
   // check if there's a callback url
-  const callbackUrl = (router.query?.callbackUrl) ?? "/admin/home";
+  const callbackUrl = (router.query?.callbackUrl as string) ?? "/admin/home";
   
-  const handleServiceNumberChange = (e) => {
+  const handleServiceNumberChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setServiceNumber(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
 
-  const handleVerificationCodeChange = (e)=>{
+  const handleVerificationCodeChange = (e: string): void  =>{
     setVerificationCode(e)
   }
 
   // this function handles the verification code part of sign-in
-  async function verify(e){
+  async function verify(e: React.FormEvent){
     e.preventDefault()
     // get next-auth login session if all credentials are correct
     setError("") 
@@ -45,7 +45,7 @@ export default function Login(){
       role: 'admin',
     })
 
-    if (data.error){
+    if (data?.error){
       setError("Invalid verification code.")
     }else{
       router.push(callbackUrl)
@@ -53,7 +53,7 @@ export default function Login(){
   }
 
   // asychronous function to handle the sign-in form once the submit button is clicked
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e: React.FormEvent) =>{
     e.preventDefault() //prevent default behavior of form to refresh page once submit button is clicked
 
     try{  
@@ -66,7 +66,9 @@ export default function Login(){
       
 
     }catch(e){
-      setError(e.response.data)
+      if (axios.isAxiosError(e)){
+        setError(e.response?.data)
+      }
     }
   }
   
@@ -78,7 +80,7 @@ export default function Login(){
           <AuthCode
             allowedCharacters="numeric"
             ariaLabel="OTP input form"
-            length="4"
+            length={4}
             containerClassName={styles.formContainer}
             inputClassName={styles.singleInput}
             onChange={handleVerificationCodeChange}

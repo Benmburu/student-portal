@@ -6,7 +6,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import Image from "next/image";
 
-const Dashboard = () =>{
+const Dashboard: React.FC = () =>{
 
 
     return (
@@ -18,7 +18,6 @@ const Dashboard = () =>{
                     <Carousel
                         dynamicHeight={true}
                         width="99%"
-                        height="auto"
                         autoPlay={true}
                         infiniteLoop={true}
                         centerMode={true}
