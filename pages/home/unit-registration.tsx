@@ -12,7 +12,7 @@ interface Unit{
 }
 
 export default function UnitRegistration(){
-    const [ successMessage, setSuccessMessage ] = useState("");
+    const [ successMessage, setSuccessMessage ] = useState<string>("");
     const { data: sessionData } = useSession();
 
     let email: string = "";
@@ -83,7 +83,7 @@ export default function UnitRegistration(){
            
     }
 
-    const submitUnits = async ()=>{
+    const submitUnits = async (): Promise<void> =>{
         // e.preventDefault()
 
         res  = await axios.post("/api/unit-registration", JSON.stringify({ action: "add", email: email, registeredUnits }), {headers:{"Content-Type" : "application/json"} })

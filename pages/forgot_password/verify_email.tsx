@@ -2,29 +2,25 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function VerifyEmail(){
-  const [ email, setEmail ] = useState("");
-  const [ errorMessage, setErrorMessage ] = useState("");
-  const [ successMessage, setSuccessMessage ] = useState("");
+  const [ email, setEmail ] = useState<string>("");
+  const [ errorMessage, setErrorMessage ] = useState<string>("");
+  const [ successMessage, setSuccessMessage ] = useState<string>("");
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const refreshMessages = ()=>{
+  const refreshMessages = (): void =>{
     setErrorMessage("")
     setSuccessMessage("")
   };
   
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> =>{
     e.preventDefault()
     refreshMessages()
 
     try{
-      const { res } = await axios.post("/api/forgot_password/verify_email", JSON.stringify({ email }), {headers:{"Content-Type" : "application/json"} })
+      const res = await axios.post("/api/forgot_password/verify_email", JSON.stringify({ email }), {headers:{"Content-Type" : "application/json"} })
       
       setSuccessMessage("Please click the link sent to your email address reset your password.")
       setErrorMessage("")
