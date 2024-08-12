@@ -3,36 +3,35 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Verify(){
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmedPassword, setConfirmedPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const [successMessage, setSuccessMessage] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [confirmedPassword, setConfirmedPassword] = useState<string>("");
 
     const router = useRouter()
     const token = router?.query?.token
 
-    const handleSubmit = async (e)=>{
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
         setErrorMessage("")
         setSuccessMessage("")
         
-        // console.log(password, confirmedPassword, token)
         if (password !== confirmedPassword){
             setErrorMessage("Passwords must match.")
         }
         else{
             try {
-                const res = await axios.post("/api/admin/forgot_password/reset_password", JSON.stringify({ token, password }), {headers:{"Content-Type" : "application/json"} })
-                // console.log(res.data)
+                const res = await axios.post("/api/forgot_password/reset_password", JSON.stringify({ token, password }), {headers:{"Content-Type" : "application/json"} })
+                console.log(res.data)
                 setSuccessMessage(res.data)
                 setTimeout(()=>{
-                    router.push("/admin/login")
+                    router.push("/login")
                 }, 2000)
 
             } catch (error) {
-              setErrorMessage(error.response.data)
-              // console.log(error.response.data)
-                
+              if (axios.isAxiosError(error)){
+                setErrorMessage(error.response?.data as string)
+              }
             }
         }
 
