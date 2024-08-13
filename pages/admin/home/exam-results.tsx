@@ -4,11 +4,29 @@ import Header from "@components/Header";
 import AdminNavBar from "@components/AdminNavBar"
 import styles from '@styles/Dashboard.module.css';
 
+interface Class{
+    className: string;
+    semester: string
+}
+interface Result{
+    serviceNumber: string;
+    studentName: string;
+    semester: string;
+    results: Results[];
+}
+interface Results{
+    unitName: string;
+    marks: string;
+    grade: string;
+} 
+interface Unit{
+    unitName: string;
+}
 
-const ExamResults = () =>{
-    const [ action, setAction ] = useState("get")
-    const [ errorMessage, setErrorMessage ] = useState("");
-    const [ successMessage, setSuccessMessage ] = useState("");
+const ExamResults: React.FC = () =>{
+    const [ action, setAction ] = useState<string>("get")
+    const [ errorMessage, setErrorMessage ] = useState<string>("");
+    const [ successMessage, setSuccessMessage ] = useState<string>("");
     
 
     
@@ -16,11 +34,10 @@ const ExamResults = () =>{
         (async ()=>{
             try {
             
-                const  res  = await axios.post("/api/admin/exam-results", JSON.stringify({ action, className: "" }), {headers:{"Content-Type" : "application/json"} })
-                // res.data.units.map((unit)=>{addRow(unit)})
+                const  res  = await axios.post<{ examResults: Result[], classes: Class[], units: Unit[] }>("/api/admin/exam-results", JSON.stringify({ action, className: "" }), {headers:{"Content-Type" : "application/json"} })
                 modifyColumnName(res.data.units)
-                res.data.examResults.map((res)=>{addRow(res)})
-                res.data.classes.map((className)=>{addOptions(className)})
+                res.data.examResults.map((res)=>{addNewUnit(res)})
+                res.data.classes.map((className: Class)=>{addOptions(className)})
 
             } catch (error) {
                 console.log(error)
@@ -28,8 +45,8 @@ const ExamResults = () =>{
         })()
     },[])
 
-    const modifyColumnName = (units)=>{
-        let table = document.getElementById("results")
+    const modifyColumnName = ( units: Unit[] ): void =>{
+        let table = document.getElementById("results") as HTMLTableElement;
 
         //set the column names for the units for each class
         table.rows[0].children[3].innerHTML = units[0]?.unitName || "unit1"
@@ -42,11 +59,16 @@ const ExamResults = () =>{
         table.rows[0].children[10].innerHTML = units[7]?.unitName || "unit8"
     }
 
-    const addRow = async (results)=>{
+    const addRow = ( e: React.MouseEvent<HTMLButtonElement> ): void =>{
+        e.preventDefault()
+        addNewUnit()
+    }
+
+    const addNewUnit = async ( results?: Result ): Promise<void> =>{
         
-        let table = document.getElementById("results")
+        let table = document.getElementById("results") as HTMLTableElement;
         let row = table.insertRow(-1)
-        let buttonId = Math.floor((Math.random() * 1000000) + 3);
+        let buttonId = Math.floor((Math.random() * 1000000) + 3).toString();
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
@@ -91,27 +113,27 @@ const ExamResults = () =>{
         cell12.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
         //make the cells editable
-        cell1.setAttribute("contenteditable", true)
-        cell2.setAttribute("contenteditable", true)
-        cell3.setAttribute("contenteditable", true)
-        cell4.setAttribute("contenteditable", true)
-        cell5.setAttribute("contenteditable", true)
-        cell6.setAttribute("contenteditable", true)
-        cell7.setAttribute("contenteditable", true)
-        cell8.setAttribute("contenteditable", true)
-        cell9.setAttribute("contenteditable", true)
-        cell10.setAttribute("contenteditable", true)
-        cell11.setAttribute("contenteditable", true)
+        cell1.setAttribute("contenteditable", "true")
+        cell2.setAttribute("contenteditable", "true")
+        cell3.setAttribute("contenteditable", "true")
+        cell4.setAttribute("contenteditable", "true")
+        cell5.setAttribute("contenteditable", "true")
+        cell6.setAttribute("contenteditable", "true")
+        cell7.setAttribute("contenteditable", "true")
+        cell8.setAttribute("contenteditable", "true")
+        cell9.setAttribute("contenteditable", "true")
+        cell10.setAttribute("contenteditable", "true")
+        cell11.setAttribute("contenteditable", "true")
 
-        let editButton = document.getElementById(buttonId);
-        let deleteButton = document.getElementById(`${buttonId+"-del"}`);
+        let editButton = document.getElementById(buttonId) as HTMLButtonElement;
+        let deleteButton = document.getElementById(`${buttonId+"-del"}`) as HTMLButtonElement;
 
-        editButton.addEventListener('click', async (e) => {
+        editButton.addEventListener('click', async (e): Promise<void> => {
             e.preventDefault()
             setSuccessMessage("")
 
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
+            let clickedElement = e.target as HTMLElement;
+            let clickedRow = clickedElement.parentNode?.parentNode as HTMLTableRowElement;;
 
             let serviceNumber = clickedRow.children[0].innerHTML
             let studentName = clickedRow.children[1].innerHTML
@@ -125,7 +147,7 @@ const ExamResults = () =>{
             let unit7 = clickedRow.children[9].innerHTML
             let unit8 = clickedRow.children[10].innerHTML
 
-            let className = document.getElementById("class").value
+            let className = (document.getElementById("class") as HTMLSelectElement)?.value
 
             let results = [
                 {
@@ -178,13 +200,13 @@ const ExamResults = () =>{
             
         });
 
-        deleteButton.addEventListener('click', async (e) => {
+        deleteButton.addEventListener('click', async (e): Promise<void> => {
             e.preventDefault()
             setSuccessMessage("")
 
             console.log(e.target)
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
+            let clickedElement = e.target as HTMLElement;
+            let clickedRow = clickedElement.parentNode?.parentNode as HTMLTableRowElement;
             console.log(clickedRow.children[0].innerHTML)
             let serviceNumber = clickedRow.children[0].innerHTML
             let studentName = clickedRow.children[1].innerHTML
@@ -198,7 +220,7 @@ const ExamResults = () =>{
         
     }
 
-    const gradeMarks = (result)=>{
+    const gradeMarks = ( result: string ): string =>{
         let marks = parseInt(result)
         if (marks >= 70){
             return 'A'
@@ -217,11 +239,11 @@ const ExamResults = () =>{
         }
     }
 
-    const updateTable = async (value)=>{
+    const updateTable = async (value: string): Promise<void> =>{
         try {
             
             console.log('classDropDownOption: ', value)
-            let table = document.getElementById("results")
+            let table = document.getElementById("results") as HTMLTableElement;
 
             for(let i = table.rows.length - 1; i > 0; i--)
             {
@@ -232,17 +254,17 @@ const ExamResults = () =>{
             
             modifyColumnName(res.data.units)
             // console.log('units: ',res.data.units)
-            res.data.examResults.map((student)=>{addRow(student)})
+            res.data.examResults.map(( student: Result )=>{addNewUnit(student)})
         } catch (error) {
             console.log(error)
         }
     }
 
-    const updateSemesterTable = async (value)=>{
+    const updateSemesterTable = async (value: string): Promise<void> =>{
         try {
             
             console.log('classDropDownOption: ', value)
-            let table = document.getElementById("results")
+            let table = document.getElementById("results") as HTMLTableElement;
 
             for(let i = table.rows.length - 1; i > 0; i--)
             {
@@ -253,29 +275,29 @@ const ExamResults = () =>{
             // console.log(res.data.students)
             // console.log(res.data.units)
             modifyColumnName(res.data.units)
-            res.data.examResults.map((student)=>{addRow(student)})
+            res.data.examResults.map(( student: Result )=>{addNewUnit(student)})
         } catch (error) {
             console.log(error)
         }
     }
 
-    const addSemesterOptions = (classes)=>{
-        let classDropDown = document.getElementById("semester")
+    const addSemesterOptions = ( classes: Class ): void =>{
+        let classDropDown = document.getElementById("semester") as HTMLSelectElement;
         let option = document.createElement("option");
         option.text = classes.semester;
         option.value = classes.semester;
         classDropDown.add(option);
     }
 
-    const addOptions = (classes) =>{
-        let classDropDown = document.getElementById("class")
+    const addOptions = ( classes: Class ): void =>{
+        let classDropDown = document.getElementById("class") as HTMLSelectElement;
         let option = document.createElement("option");
         option.text = classes.className;
         option.value = classes.className;
         classDropDown.add(option);
     }
 
-    const setSuccess = ()=>{
+    const setSuccess = (): void =>{
         setSuccessMessage("Success")
         setTimeout(()=>{
             setSuccessMessage("")
