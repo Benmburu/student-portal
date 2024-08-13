@@ -4,29 +4,31 @@ import Header from "@components/Header";
 import AdminNavBar from "@components/AdminNavBar"
 import styles from '@styles/Dashboard.module.css';
 
-
-// import courseStyles from '@styles/courseStyles.module.css'
+interface Course{
+    serviceNumber: string;
+    name: string;
+    email: string;
+}
 
 const ClassRegistration = () =>{
     // const [ users, setUsers ] = useState([])
     // const [ school, setSchool] = useState("SITDS")
     // const [ course_code, setCourseCode ] = useState("12345")
     // const [ courseName, setCourseName ] = useState("Diploma in ICT")
-    const [ action, setAction ] = useState("get")
+    const [ action, setAction ] = useState<string>("get")
     // const [ errorMessage, setErrorMessage ] = useState("");
-    const [ successMessage, setSuccessMessage ] = useState("");
+    const [ successMessage, setSuccessMessage ] = useState<string>("");
     
-
     
     useEffect(()=>{
-        (async ()=>{
+        (async (): Promise<void> =>{
             try {
             
                 // const {res} = await axios.post("/api/admin/courses", JSON.stringify({ action: "get" }), {headers:{"Content-Type" : "application/json"} })
-                const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
+                const  res  = await axios.post<Course[]>("/api/admin/student-registration", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
                 // setUsers(res.data)
 
-                res.data.map((res, index)=>{addRow(res, index)})
+                res.data.map((res)=>{addRow(res)})
                 // console.log(res.data)
                 // console.log(courses)
             } catch (error) {
@@ -35,12 +37,8 @@ const ClassRegistration = () =>{
         })()
     },[])
 
-    const handleSave = (e)=>{
-        console.log(e)
-    }
-
-    const addRow = (course, index)=>{
-        let table = document.getElementById("courses")
+    const addRow = ( course: Course ): void =>{
+        let table = document.getElementById("courses") as HTMLTableElement;
         let row = table.insertRow(-1)
 
         let cell1 = row.insertCell(0);
@@ -58,20 +56,20 @@ const ClassRegistration = () =>{
         cell4.innerHTML = course.email
         // cell6.innerHTML = '<button onclick={code=this.parentElement.parentElement.children[2].textContent;console.log(code);await axios.post("/api/admin/courses", JSON.stringify({ code }), {headers:{"Content-Type" : "application/json"} });}>save</button> <button onclick={code=this.parentElement.parentElement.children[2].textContent;>delete</button>';
 
-        cell1.setAttribute("contenteditable", false)
-        cell2.setAttribute("contenteditable", true)
-        cell3.setAttribute("contenteditable", true)
-        cell4.setAttribute("contenteditable", true)
+        cell1.setAttribute("contenteditable", "false")
+        cell2.setAttribute("contenteditable", "true")
+        cell3.setAttribute("contenteditable", "true")
+        cell4.setAttribute("contenteditable", "true")
         // cell5.setAttribute("contenteditable", true)
         // cell6.setAttribute("contenteditable", true)
     }
 
-    const handleSubmit = async (e)=>{
+    const handleSubmit = async (e: React.FormEvent<HTMLInputElement>): Promise<void> =>{
         e.preventDefault()
         
         
         
-        let table = document.getElementById("courses")
+        let table = document.getElementById("courses") as HTMLTableElement;
         let row = table.insertRow(-1)
 
         let cell1 = row.insertCell(0);
@@ -89,25 +87,25 @@ const ClassRegistration = () =>{
         // cell5.innerHTML = "";
         // cell6.innerHTML = "<button>save</button> <button>delete</button>";
 
-        cell1.setAttribute("contenteditable", false)
-        cell2.setAttribute("contenteditable", true)
-        cell3.setAttribute("contenteditable", true)
-        cell4.setAttribute("contenteditable", true)
+        cell1.setAttribute("contenteditable", "false")
+        cell2.setAttribute("contenteditable", "true")
+        cell3.setAttribute("contenteditable", "true")
+        cell4.setAttribute("contenteditable", "true")
         // cell5.setAttribute("contenteditable", true)
         // cell6.setAttribute("contenteditable", true)
         
     }
 
-    const handleDelete = async ()=>{
+    const handleDelete = async (): Promise<void> =>{
         // console.log('delete')
-        let table = document.getElementById('courses');
+        let table = document.getElementById('courses') as HTMLTableElement;
         let length = table.children[0].children.length ;
         for (let i=1; i<length; i++){
             // console.log(i)
             // let row = i
             console.log(table)
-            let checked = table.children[0].children[i].children[0].children[0].checked 
-            let code = table.children[0].children[i].children[1].textContent
+            let checked = (table.rows[i].cells[0].children[0] as HTMLInputElement).checked 
+            let code = table.rows[i].cells[1].textContent
             // console.log(checked)
             // console.log(code)
             let row = i
@@ -117,7 +115,7 @@ const ClassRegistration = () =>{
                 try {
                     const  res  = await axios.post("/api/admin/student-registration", JSON.stringify({ action: "delete", code }), {headers:{"Content-Type" : "application/json"} })
                     // console.log(res)
-                    table.children[0].deleteRow(row)
+                    table.deleteRow(row)
                 } catch (error) {
                     
                 }
@@ -127,8 +125,8 @@ const ClassRegistration = () =>{
         }
     }
 
-    const handleAdd = async ()=>{
-        let table = document.getElementById('courses');
+    const handleAdd = async (): Promise<void> =>{
+        let table = document.getElementById('courses') as HTMLTableElement;
         let length = table.children[0].children.length ;
 
         for (let i=1; i<length; i++){
@@ -158,9 +156,9 @@ const ClassRegistration = () =>{
         setSuccess()
     }
 
-    const setSuccess = ()=>{
+    const setSuccess = (): void=>{
         setSuccessMessage("Success")
-        setTimeout(()=>{
+        setTimeout((): void =>{
             setSuccessMessage("")
         }, 3000)
     }
