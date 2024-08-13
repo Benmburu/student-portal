@@ -4,20 +4,25 @@ import Header from "@components/Header";
 import AdminNavBar from "@components/AdminNavBar"
 import styles from '@styles/Dashboard.module.css';
 
+interface Course{
+    activity: string;
+    startDate: string;
+    endDate: string;
+}
 
-const CourseSchedule = () =>{
-    const [ action, setAction ] = useState("get")
-    const [ errorMessage, setErrorMessage ] = useState("");
-    const [ successMessage, setSuccessMessage ] = useState("");
+const CourseSchedule: React.FC = () =>{
+    const [ action, setAction ] = useState<string>("get")
+    const [ errorMessage, setErrorMessage ] = useState<string>("");
+    const [ successMessage, setSuccessMessage ] = useState<string>("");
     
 
     
     useEffect(()=>{
-        (async ()=>{
+        (async (): Promise<void> =>{
             try {
             
-                const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
-                res.data.map((res)=>{addRow(res)})
+                const  res  = await axios.post<Course[]>("/api/admin/course-schedule", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
+                res.data.map(( res: Course )=>{addNewCourse(res)})
 
             } catch (error) {
                 console.log(error)
@@ -25,11 +30,16 @@ const CourseSchedule = () =>{
         })()
     },[])
 
-    const addRow = async (course)=>{
+    const addRow = (e: React.FormEvent<HTMLButtonElement>): void =>{
+        e.preventDefault();
+        addNewCourse();
+    }
+
+    const addNewCourse = async ( course?: Course ): Promise<void> =>{
         
-        let table = document.getElementById("schedule")
+        let table = document.getElementById("schedule") as HTMLTableElement;
         let row = table.insertRow(-1)
-        let buttonId = Math.floor((Math.random() * 1000000) + 3);
+        let buttonId = Math.floor((Math.random() * 1000000) + 3).toString();
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
@@ -43,22 +53,22 @@ const CourseSchedule = () =>{
         cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
-        cell1.setAttribute("contenteditable", true)
-        cell2.setAttribute("contenteditable", true)
-        cell3.setAttribute("contenteditable", true)
+        cell1.setAttribute("contenteditable", "true")
+        cell2.setAttribute("contenteditable", "true")
+        cell3.setAttribute("contenteditable", "true")
 
-        let editButton = document.getElementById(buttonId);
-        let deleteButton = document.getElementById(`${buttonId+"-del"}`);
+        let editButton = document.getElementById(buttonId) as HTMLButtonElement;
+        let deleteButton = document.getElementById(`${buttonId+"-del"}`) as HTMLButtonElement;
 
-        editButton.addEventListener('click', async (e) => {
+        editButton.addEventListener('click', async (e): Promise<void> => {
             e.preventDefault()
             setSuccessMessage("")
 
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
-            let activity = clickedRow.children[0].innerText
-            let startDate = clickedRow.children[1].innerText
-            let endDate = clickedRow.children[2].innerText
+            let clickedElement = e.target as HTMLElement;
+            let clickedRow = clickedElement.closest("tr");
+            let activity = clickedRow?.cells[0].innerText
+            let startDate = clickedRow?.cells[1].innerText
+            let endDate = clickedRow?.cells[2].innerText
             const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "add", activity, startDate, endDate }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             // setSuccessMessage("Success")
@@ -66,20 +76,20 @@ const CourseSchedule = () =>{
             
         });
 
-        deleteButton.addEventListener('click', async (e) => {
+        deleteButton.addEventListener('click', async (e): Promise<void> => {
             e.preventDefault()
             setSuccessMessage("")
 
             console.log(e.target)
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
-            console.log(clickedRow.children[0].innerText)
-            let activity = clickedRow.children[0].innerText
-            let startDate = clickedRow.children[1].innerText
-            let endDate = clickedRow.children[2].innerText
+            let clickedElement = e.target as HTMLElement;
+            let clickedRow = clickedElement.closest("tr");
+            // console.log(clickedRow.children[0].innerText)
+            let activity = clickedRow?.cells[0].innerText
+            let startDate = clickedRow?.cells[1].innerText
+            let endDate = clickedRow?.cells[2].innerText
             const  res  = await axios.post("/api/admin/course-schedule", JSON.stringify({ action: "delete", activity, startDate, endDate }), {headers:{"Content-Type" : "application/json"} })
             // console.log( res)
-            clickedRow.remove()
+            clickedRow?.remove()
             // setSuccessMessage("Success")
             setSuccess()
             
@@ -87,9 +97,9 @@ const CourseSchedule = () =>{
         
     }
 
-    const setSuccess = ()=>{
+    const setSuccess = (): void =>{
         setSuccessMessage("Success")
-        setTimeout(()=>{
+        setTimeout((): void =>{
             setSuccessMessage("")
         }, 3000)
     }
