@@ -1,13 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { HTMLInputAutoCompleteAttribute, useEffect, useState } from "react";
 import Header from "@components/Header";
 import AdminNavBar from "@components/AdminNavBar"
 import styles from '@styles/Dashboard.module.css';
 
-const UnitRegistration = () =>{
-    const [ action, setAction ] = useState("get")
-    const [ errorMessage, setErrorMessage ] = useState("");
-    const [ successMessage, setSuccessMessage ] = useState("");
+interface Unit{
+    unitCode: string;
+    unitName: string;
+    className: string;
+    semester: string;
+}
+
+interface Class{
+    className: string
+}
+
+const UnitRegistration: React.FC = () =>{
+    const [ action, setAction ] = useState<string>("get")
+    const [ errorMessage, setErrorMessage ] = useState<string>("");
+    const [ successMessage, setSuccessMessage ] = useState<string>("");
     
 
     
@@ -15,9 +26,9 @@ const UnitRegistration = () =>{
         (async ()=>{
             try {
             
-                const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action, className: "" }), {headers:{"Content-Type" : "application/json"} })
-                res.data.classes.map((className)=>{addOptions(className)})
-                res.data.units.map((unit)=>{addRow(unit)})
+                const  res  = await axios.post<{ classes: Class[], units: Unit[] }>("/api/admin/unit-registration", JSON.stringify({ action, className: "" }), {headers:{"Content-Type" : "application/json"} })
+                res.data.classes.forEach(( className: Class )=>{addOptions(className)})
+                res.data.units.forEach(( unit: Unit )=>{addNewUnit(unit)})
 
             } catch (error) {
                 console.log(error)
@@ -25,11 +36,16 @@ const UnitRegistration = () =>{
         })()
     },[])
 
-    const addRow = async (unit)=>{
+    const addRow = (e: React.MouseEvent<HTMLButtonElement>) =>{
+        e.preventDefault();
+        addNewUnit();
+    }
+
+    const addNewUnit = async ( unit?: Unit)=>{
         
-        let table = document.getElementById("units")
+        let table = document.getElementById("units") as HTMLTableElement;
         let row = table.insertRow(-1)
-        let buttonId = Math.floor((Math.random() * 1000000) + 3);
+        let buttonId = Math.floor((Math.random() * 1000000) + 3).toString();
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
@@ -40,27 +56,27 @@ const UnitRegistration = () =>{
         // Add some text to the new cells:
         cell1.innerHTML = unit?.unitCode || "";
         cell2.innerHTML = unit?.unitName || "";
-        cell3.innerHTML = unit?.className || document.getElementById("class").value;
+        cell3.innerHTML = unit?.className || (document.getElementById("class") as HTMLSelectElement)?.value;
         cell4.innerHTML = unit?.semester || "";
         cell5.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
-        cell1.setAttribute("contenteditable", true)
-        cell2.setAttribute("contenteditable", true)
-        cell4.setAttribute("contenteditable", true)
+        cell1.setAttribute("contenteditable", "true")
+        cell2.setAttribute("contenteditable", "true")
+        cell4.setAttribute("contenteditable", "true")
 
-        let editButton = document.getElementById(buttonId);
-        let deleteButton = document.getElementById(`${buttonId+"-del"}`);
+        let editButton = document.getElementById(buttonId) as HTMLButtonElement;
+        let deleteButton = document.getElementById(`${buttonId+"-del"}`)as HTMLButtonElement;
 
-        editButton.addEventListener('click', async (e) => {
+        editButton.addEventListener('click', async (e): Promise<void> => {
             e.preventDefault()
             setSuccessMessage("")
 
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
+            let clickedElement = e.target as HTMLElement;
+            let clickedRow = clickedElement.parentNode?.parentNode as HTMLTableRowElement;
             let unitCode = clickedRow.children[0].innerHTML
             let unitName = clickedRow.children[1].innerHTML
-            let className = document.getElementById("class").value 
+            let className = (document.getElementById("class") as HTMLSelectElement)?.value 
             let semester = clickedRow.children[2].innerHTML
 
             const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action: "add", unitCode, unitName, className, semester }), {headers:{"Content-Type" : "application/json"} })
@@ -74,8 +90,8 @@ const UnitRegistration = () =>{
             setSuccessMessage("")
 
             console.log(e.target)
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
+            let clickedElement = e.target as HTMLElement;
+            let clickedRow = clickedElement.parentNode?.parentNode as HTMLTableRowElement;
             console.log(clickedRow.children[0].innerHTML)
             let unitCode = clickedRow.children[0].innerHTML
             let unitName = clickedRow.children[1].innerHTML
@@ -90,11 +106,11 @@ const UnitRegistration = () =>{
         
     }
 
-    const updateTable = async (value)=>{
+    const updateTable = async ( value: string )=>{
         try {
             
             console.log('unitDropDownOption: ', value)
-            let table = document.getElementById("units")
+            let table = document.getElementById("units") as HTMLTableElement;
 
             for(let i = table.rows.length - 1; i > 0; i--)
             {
@@ -103,14 +119,14 @@ const UnitRegistration = () =>{
             console.log('deleted')
             const  res  = await axios.post("/api/admin/unit-registration", JSON.stringify({ action, className: value }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res.data.students)
-            res.data.units.map((unit)=>{addRow(unit)})
+            res.data.units.map(( unit: Unit )=>{addNewUnit(unit)})
         } catch (error) {
             console.log(error)
         }
     }
 
-    const addOptions = (classes) =>{
-        let classDropDown = document.getElementById("class")
+    const addOptions = ( classes: Class ) =>{
+        let classDropDown = document.getElementById("class") as HTMLSelectElement;
         let option = document.createElement("option");
         option.text = classes.className;
         option.value = classes.className;
