@@ -4,17 +4,17 @@ import Header from "@components/Header";
 import AdminNavBar from "@components/AdminNavBar"
 import styles from '@styles/Dashboard.module.css';
 
+interface Courses{
+    course_code: string;
+    school: string;
+    course_name: string;
+}
 
-// import courseStyles from '@styles/courseStyles.module.css'
+const Course: React.FC = () =>{
 
-const Course = () =>{
-    // const [ courses, setCourses ] = useState([])
-    // const [ school, setSchool] = useState("SITDS")
-    // const [ course_code, setCourseCode ] = useState("12345")
-    // const [ courseName, setCourseName ] = useState("Diploma in ICT")
-    const [ action, setAction ] = useState("get")
-    const [ errorMessage, setErrorMessage ] = useState("");
-    const [ successMessage, setSuccessMessage ] = useState("");
+    const [ action, setAction ] = useState<string>("get")
+    const [ errorMessage, setErrorMessage ] = useState<string>("");
+    const [ successMessage, setSuccessMessage ] = useState<string>("");
 
     
     useEffect(()=>{
@@ -22,16 +22,16 @@ const Course = () =>{
             try {
                 const  res  = await axios.post("/api/admin/courses", JSON.stringify({ action }), {headers:{"Content-Type" : "application/json"} })
 
-                res.data.map((res)=>{addRow(res)})
+                res.data.map(( res: Courses )=>{addRow(res)})
                 
             } catch (error) {
                 console.log(error)
             }
         })()
     },[])
-
-    const addRow = (course)=>{
-        let table = document.getElementById("courses")
+    
+    const addRow = ( course: Courses ): void =>{
+        let table = document.getElementById("courses") as HTMLTableElement;
         let row = table.insertRow(-1)
 
         let cell1 = row.insertCell(0);
@@ -44,19 +44,19 @@ const Course = () =>{
         cell3.innerHTML = course.course_name
         cell4.innerHTML = `<button id=${course.course_code}>save</button> <button id=${course.course_code+"-del"}>delete</button>`
 
-        cell1.setAttribute("contenteditable", true)
-        cell2.setAttribute("contenteditable", true)
-        cell3.setAttribute("contenteditable", true)
+        cell1.setAttribute("contenteditable", "true")
+        cell2.setAttribute("contenteditable", "true")
+        cell3.setAttribute("contenteditable", "true")
 
-        let editButton = document.getElementById(course.course_code);
-        let deleteButton = document.getElementById(`${course.course_code+"-del"}`);
+        let editButton = document.getElementById(course.course_code) as HTMLButtonElement;
+        let deleteButton = document.getElementById(`${course.course_code+"-del"}`) as HTMLButtonElement;
 
-        editButton.addEventListener('click', async (e) => {
+        editButton.addEventListener('click', async (e): Promise<void> => {
             e.preventDefault()
             setSuccessMessage("")
 
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
+            let clickedElement = e.target as HTMLElement;
+            let clickedRow = clickedElement.parentNode?.parentNode as HTMLTableRowElement;
             console.log(clickedRow.children[0].innerHTML)
             let course_code = clickedRow.children[0].innerHTML
             let school = clickedRow.children[1].innerHTML
@@ -67,13 +67,13 @@ const Course = () =>{
             
         });
 
-        deleteButton.addEventListener('click', async (e) => {
+        deleteButton.addEventListener('click', async (e): Promise<void> => {
             e.preventDefault()
             setSuccessMessage("")
 
             console.log(e.target)
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
+            let clickedElement = e.target as HTMLElement;
+            let clickedRow = clickedElement.parentNode?.parentNode as HTMLTableRowElement;
             console.log(clickedRow.children[0].innerHTML)
             let course_code = clickedRow.children[0].innerHTML
             let school = clickedRow.children[1].innerHTML
@@ -86,14 +86,14 @@ const Course = () =>{
         });
     }
 
-    const handleSubmit = async (e)=>{
+    const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>): Promise<void> =>{
         e.preventDefault()
         
         
         
-        let table = document.getElementById("courses")
+        let table = document.getElementById("courses") as HTMLTableElement;
         let row = table.insertRow(-1)
-        let buttonId = Math.floor((Math.random() * 10000) + 3);
+        let buttonId = Math.floor((Math.random() * 10000) + 3).toString();
 
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
@@ -107,19 +107,19 @@ const Course = () =>{
         cell4.innerHTML = `<button id=${buttonId}>save</button> <button id=${buttonId + "-del"}>delete</button>`
         
 
-        cell1.setAttribute("contenteditable", true)
-        cell2.setAttribute("contenteditable", true)
-        cell3.setAttribute("contenteditable", true)
+        cell1.setAttribute("contenteditable", "true")
+        cell2.setAttribute("contenteditable", "true")
+        cell3.setAttribute("contenteditable", "true")
 
-        let editButton = document.getElementById(buttonId);
-        let deleteButton = document.getElementById(`${buttonId+"-del"}`);
+        let editButton = document.getElementById(buttonId) as HTMLButtonElement;
+        let deleteButton = document.getElementById(`${buttonId+"-del"}`) as HTMLButtonElement;
 
-        editButton.addEventListener('click', async (e) => {
+        editButton.addEventListener('click', async (e): Promise<void> => {
             e.preventDefault()
             setSuccessMessage("")
 
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
+            let clickedElement = e.target as HTMLElement;
+            let clickedRow = clickedElement.parentNode?.parentNode as HTMLTableRowElement;
             console.log(clickedRow.children[0].innerHTML)
             let course_code = clickedRow.children[0].innerHTML
             let school = clickedRow.children[1].innerHTML
@@ -130,13 +130,13 @@ const Course = () =>{
             
         });
 
-        deleteButton.addEventListener('click', async (e) => {
+        deleteButton.addEventListener('click', async (e): Promise<void> => {
             e.preventDefault()
             setSuccessMessage("")
 
             // console.log(e.target)
-            let clickedElement = e.target
-            let clickedRow = clickedElement.parentNode.parentNode;
+            let clickedElement = e.target as HTMLElement;
+            let clickedRow = clickedElement.parentNode?.parentNode as HTMLTableRowElement;
             console.log(clickedRow)
             let course_code = clickedRow.children[0].innerHTML
             let school = clickedRow.children[1].innerHTML
@@ -150,7 +150,7 @@ const Course = () =>{
         
     }
 
-    const setSuccess = ()=>{
+    const setSuccess = (): void =>{
         setSuccessMessage("Success")
         setTimeout(()=>{
             setSuccessMessage("")
