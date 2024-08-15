@@ -7,7 +7,7 @@ interface DecodedToken{
     email: string;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse){
+export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     if (req.method === 'POST'){
         const { token } = req.body
         // verify jwt email token
