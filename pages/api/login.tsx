@@ -20,7 +20,10 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
         initDB()
         
         // get data stored in the request body
-        const { serviceNumber, password } = req.body;    
+        const { serviceNumber, password } = req.body as {
+            serviceNumber: string;
+            password: string
+        };    
 
         try {
             // check if user is registered            

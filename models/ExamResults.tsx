@@ -33,7 +33,7 @@ interface IExamResultSchema extends mongoose.Document{
 
 const examResultSchema: mongoose.Schema<IExamResultSchema> = new mongoose.Schema(
     {
-        serviceNumber: {
+      serviceNumber: {
         type: String,
         required: false,
       },
