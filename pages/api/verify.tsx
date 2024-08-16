@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 interface DecodedToken{
     email: string;
+    confirmed: boolean;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
@@ -17,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 {email: decoded.email },
                 {confirmed: true},
                 {new: true},
-                )
+                );
             res.status(200).json("Successfully verified.")
         }catch(err: unknown){
             if (err instanceof JsonWebTokenError || err instanceof NotBeforeError|| err instanceof TokenExpiredError){

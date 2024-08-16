@@ -11,7 +11,7 @@ interface IUser{
 interface IResultSchema{
     unitName?: string;
     marks?: string;
-    grade?: string
+    grade?: string;
 } 
 
 interface IExamResultSchema{
@@ -19,7 +19,7 @@ interface IExamResultSchema{
     studentName?: string;
     semester?: string;
     className?: string;
-    results?: [IResultSchema]
+    results?: [IResultSchema];
   }
 // asynchronous function to handle server-side requests to this page
 export default async function handler( req: NextApiRequest, res: NextApiResponse ): Promise<void> {

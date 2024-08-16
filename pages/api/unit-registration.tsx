@@ -25,7 +25,7 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
         initDB()
         
         // get data stored in the request body
-        const { action, email } = req.body;    
+        const { action, email } = req.body; 
         console.log(email)
 
         try {
