@@ -57,11 +57,11 @@ const Course: React.FC = () =>{
 
             let clickedElement = e.target as HTMLElement;
             let clickedRow = clickedElement.parentNode?.parentNode as HTMLTableRowElement;
-            console.log(clickedRow.children[0].innerHTML)
+
             let course_code = clickedRow.children[0].innerHTML
             let school = clickedRow.children[1].innerHTML
             let course_name = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/courses", JSON.stringify({ action: "add", course_code, school, course_name }), {headers:{"Content-Type" : "application/json"} })
+            await axios.post("/api/admin/courses", JSON.stringify({ action: "add", course_code, school, course_name }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             setSuccess()
             
@@ -71,14 +71,15 @@ const Course: React.FC = () =>{
             e.preventDefault()
             setSuccessMessage("")
 
-            console.log(e.target)
+            // console.log(e.target)
             let clickedElement = e.target as HTMLElement;
             let clickedRow = clickedElement.parentNode?.parentNode as HTMLTableRowElement;
-            console.log(clickedRow.children[0].innerHTML)
+            // console.log(clickedRow.children[0].innerHTML)
+
             let course_code = clickedRow.children[0].innerHTML
             let school = clickedRow.children[1].innerHTML
             let course_name = clickedRow.children[2].innerHTML
-            const  res  = await axios.post("/api/admin/courses", JSON.stringify({ action: "delete", course_code, school, course_name }), {headers:{"Content-Type" : "application/json"} })
+            await axios.post("/api/admin/courses", JSON.stringify({ action: "delete", course_code, school, course_name }), {headers:{"Content-Type" : "application/json"} })
             // console.log(res)
             clickedRow.remove()
             setSuccess()

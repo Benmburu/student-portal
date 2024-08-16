@@ -32,7 +32,7 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
                 const options = className === ""? {} : { className: className }
                 const students = await User.find(options)
 
-                const classes = await Classes.find({}).lean() as IClass;
+                const classes = await Classes.find({}).lean() as IClass[];
                 console.log(students)
                 res.status(200).json({ students, classes })
             }
@@ -69,6 +69,6 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
         }
     }else{
         res.setHeader("Allow", ["POST"]);
-        res.status(405).end(`Method ${req.method} Not Allowed.`)
+        res.status(405).end(`Method ${req.method?.toUpperCase()} Not Allowed.`)
     }
   }

@@ -9,18 +9,18 @@ interface IUser{
 }
 
 interface IResultSchema{
-    unitName?: string;
-    marks?: string;
-    grade?: string;
+    unitName: string;
+    marks: string;
+    grade: string;
 } 
 
 interface IExamResultSchema{
-    serviceNumber?: string;
-    studentName?: string;
-    semester?: string;
-    className?: string;
-    results?: [IResultSchema];
-  }
+    serviceNumber: string;
+    studentName: string;
+    semester: string;
+    className: string;
+    results: [IResultSchema];
+}
 // asynchronous function to handle server-side requests to this page
 export default async function handler( req: NextApiRequest, res: NextApiResponse ): Promise<void> {
     
@@ -35,7 +35,7 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
         try {
             let user = await User.findOne({ email }) as IUser;
             let serviceNumber = user.serviceNumber
-            const results = await ExamResults.find({ serviceNumber }) as IExamResultSchema;
+            const results = await ExamResults.find({ serviceNumber }).lean() as IExamResultSchema;
 
             res.status(200).json({ results })
 

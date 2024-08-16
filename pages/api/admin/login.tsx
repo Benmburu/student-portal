@@ -2,9 +2,18 @@ import initDB from "@lib/mongodb";
 import Admin from "@models/Admin";
 import bcrypt from "bcryptjs";
 import transporter from "@lib/nodemailer";
+import { NextApiRequest, NextApiResponse } from "next";
+
+interface IUser{
+    serviceNumber: string;
+    password: string;
+    email: string;
+    verificationCode: string;
+    confirmed: boolean;
+}
 
 // asynchronous function to handle server-side requests to this page
-export default async function handler(req, res) {
+export default async function handler( req: NextApiRequest, res: NextApiResponse ): Promise<void> {
     
     if (req.method === "POST"){
         // start database connection
@@ -15,7 +24,7 @@ export default async function handler(req, res) {
 
         try {
             // check if user is registered            
-            let user = await Admin.findOne({ serviceNumber })
+            let user = await Admin.findOne({ serviceNumber }) as IUser;
             // console.log(user)
 
             if (!user){
@@ -32,18 +41,18 @@ export default async function handler(req, res) {
             res.status(200).json("Login successful")
 
             // generate verification code
-            const verificationCode = Math.floor(1000 + Math.random() * 9000)
+            const verificationCode = Math.floor(1000 + Math.random() * 9000).toString()
 
             // save verification code in the database
             user = await Admin.findOneAndUpdate(
                 {serviceNumber: serviceNumber},
                 {verificationCode: verificationCode},
                 {new: true},
-                )
+                ) as IUser;
 
             // send email containing the verification code
             // change this function if you want to send the verification code through text instead
-            console.log(user.email)
+            console.error(user.email)
             transporter.sendMail({
                 to: user.email,
                 from: "noreply@gmail.com", //gmail, by default, uses the senders email address as the senders so this field is unchangeable
@@ -56,5 +65,8 @@ export default async function handler(req, res) {
             // log errors
             console.log(error);
         }
+    }else{
+        res.setHeader("Allow", ["POST"]);
+        res.status(405).end(`Method ${req.method?.toUpperCase()} Not Allowed`)
     }
   }
