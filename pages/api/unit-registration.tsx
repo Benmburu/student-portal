@@ -1,6 +1,5 @@
 import Units from "@models/Units";
 import initDB from "@lib/mongodb";
-import Classes from "@models/Classes";
 import User from "@models/User";
 import RegisteredUnits from "@models/RegisteredUnits";
 import { NextApiRequest, NextApiResponse } from "next";

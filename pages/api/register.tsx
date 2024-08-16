@@ -4,8 +4,16 @@ import serviceNumbers from "@models/ServiceNumbers";
 import jwt from "jsonwebtoken";
 import transporter from "@lib/nodemailer";
 import bcrypt from "bcryptjs";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
+interface IUser{
+    password: string;
+    serviceNumber: string;
+    name: string;
+    email: string;
+}
+
+export default async function handler( req: NextApiRequest, res: NextApiResponse ): Promise<void> {
   if (req.method === "POST"){
         // start database connection
         initDB()
@@ -29,10 +37,10 @@ export default async function handler(req, res) {
 
                 const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(password, salt);
-                const user = await User.findOneAndUpdate({ serviceNumber }, { name, email, password: hashedPassword })
+                const user = await User.findOneAndUpdate({ serviceNumber }, { name, email, password: hashedPassword }) as IUser;
 
                 // sign the jwt email token using the EMAIL_SECRET
-                const emailToken = jwt.sign({ email: user.email }, process.env.EMAIL_SECRET, {
+                const emailToken = jwt.sign({ email: user.email }, process.env.EMAIL_SECRET as string, {
                     expiresIn: "1d",
                 })
 
@@ -54,5 +62,8 @@ export default async function handler(req, res) {
             // log any errors
             console.log(error);
         }
+    }else{
+        res.setHeader("Allow", ["POST"])
+        res.status(405).end(`Method ${req.method?.toUpperCase()} Not Allowed.`)
     }
   }
