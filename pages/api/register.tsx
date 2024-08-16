@@ -23,7 +23,7 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
         try {
             // check if student exists
             // check is student is registered
-            let userExists = await User.findOne({ serviceNumber })
+            let userExists = await User.findOne({ serviceNumber }) as IUser;
 
             if (!userExists){
                 // res.status(401).json("User already registered")

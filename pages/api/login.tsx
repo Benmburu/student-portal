@@ -2,9 +2,18 @@ import initDB from "@lib/mongodb";
 import User from "@models/User";
 import bcrypt from "bcryptjs";
 import transporter from "@lib/nodemailer";
+import { NextApiRequest, NextApiResponse } from "next";
+
+interface IUser{
+    serviceNumber: string;
+    password: string;
+    verificationCode: string;
+    email: string;
+    confirmed: boolean;
+}
 
 // asynchronous function to handle server-side requests to this page
-export default async function handler(req, res) {
+export default async function handler( req: NextApiRequest, res: NextApiResponse ): Promise<void> {
     
     if (req.method === "POST"){
         // start database connection
@@ -15,7 +24,7 @@ export default async function handler(req, res) {
 
         try {
             // check if user is registered            
-            const user = await User.findOne({ serviceNumber })
+            const user = await User.findOne({ serviceNumber }) as IUser;
             console.log(user)
             if (!user){
                 return res.status(401).json("Invalid email or password")
@@ -30,12 +39,10 @@ export default async function handler(req, res) {
                 return res.status(401).json("Invalid email or password")
             }
 
-            if (!user.confirmed){
-                return res.status(401).json("Please verify email.")
-            }else{
-                // send client-side response that login details are okay
-                res.status(200).json("Login successful")
-
+            if (user.confirmed){
+                return res.status(200).json("Login successful")
+            }else{                              
+                // Tell user to finish account registration
                 // generate verification code
                 const verificationCode = Math.floor(1000 + Math.random() * 9000)
 
@@ -44,8 +51,8 @@ export default async function handler(req, res) {
                     {serviceNumber: serviceNumber},
                     {verificationCode: verificationCode},
                     {new: true},
-                    )
-
+                    ) as IUser;
+                
                 // send email containing the verification code
                 // change this function if you want to send the verification code through text instead
                 console.log(user.email)
@@ -55,11 +62,16 @@ export default async function handler(req, res) {
                     subject: "Verification code",
                     html: `Your verification code is:<br><strong>${verificationCode}</strong> <br>Please do not share it with anyone.`
                 }) 
+
+                res.status(401).json("Please verify your email by clicking on the link sent.")
             }
 
         } catch (error) {
             // log errors
             console.log(error);
         }
+    }else{
+        res.setHeader("Allow", ["POST"]);
+        res.status(405).end(`Method ${req.method?.toUpperCase()} Not Allowed.`)
     }
   }
