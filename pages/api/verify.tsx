@@ -20,10 +20,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 {new: true},
                 );
             res.status(200).json("Successfully verified.")
-        }catch(err: unknown){
+        }
+        catch(err: unknown){
             if (err instanceof JsonWebTokenError || err instanceof NotBeforeError|| err instanceof TokenExpiredError){
                 res.status(401).json("Not verified.")
-            }else{
+            }
+            else{
                 console.error("Error verifying token:", err);
                 res.status(500).json("Internal server error.");
             }
